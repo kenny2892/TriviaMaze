@@ -128,26 +128,6 @@ public class Controller
 		changeHoverColor(wDoorImg, wDoorHitBox, Color.web("F7FE40"));
 	}
 	
-	public void customizeBtn()
-	{
-		
-	}
-	
-	public void saveBtn()
-	{
-		
-	}
-	
-	public void loadBtn()
-	{
-		
-	}
-	
-	public void settingsBtn()
-	{
-		
-	}
-	
 	private void changeImageColor(ImageView imageToChange, Color color)
 	{
 		ColorAdjust monochrome = new ColorAdjust();
@@ -192,7 +172,8 @@ public class Controller
                 )
         );
 
-        imageToChange.effectProperty().bind(
+        imageToChange.effectProperty().bind
+        (
                 Bindings
                     .when(hitBox.hoverProperty())
                         .then((Effect) colorize)
@@ -201,5 +182,45 @@ public class Controller
 
         imageToChange.setCache(true);
         imageToChange.setCacheHint(CacheHint.SPEED);
+	}
+	
+	public void customizeBtn()
+	{
+		System.out.println("Customize");
+	}
+	
+	public void saveBtn()
+	{
+		System.out.println("Save");
+	}
+	
+	public void loadBtn()
+	{
+		System.out.println("Load");
+	}
+	
+	public void settingsBtn()
+	{
+		System.out.println("Settings");
+	}
+	
+	public void nDoorBtn()
+	{
+		System.out.println("North Door");
+	}
+	
+	public void sDoorBtn()
+	{
+		System.out.println("South Door");
+	}
+	
+	public void eDoorBtn()
+	{
+		System.out.println("East Door");
+	}
+	
+	public void wDoorBtn()
+	{
+		System.out.println("West Door");
 	}
 }
