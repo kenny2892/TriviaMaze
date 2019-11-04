@@ -12,6 +12,7 @@ public class Maze extends Application
 {
 	private int playerX;
 	private int playerY;
+	public static Scene scene;
 	
 	@Override
 	public void start(Stage primaryStage)
@@ -19,10 +20,11 @@ public class Maze extends Application
 		try
 		{
 			Parent root = FXMLLoader.load(getClass().getResource("/application/Main.fxml"));
-			Scene scene = new Scene(root);
+			scene = new Scene(root);
 //			scene.getStylesheets().add(getClass().getResource("/Main/application.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.setResizable(false);
+			primaryStage.setFullScreen(true);
+//			primaryStage.setResizable(false);
 			primaryStage.sizeToScene();
 			primaryStage.show();
 

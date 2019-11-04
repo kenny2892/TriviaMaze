@@ -1,8 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 
-
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
-	<!-- TODO Add Nodes -->
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+   <children>
+      <Rectangle fx:id="bgRectangle" height="1080.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1920.0" />
+      <ImageView fx:id="customizeImg" fitHeight="103.0" fitWidth="640.0" layoutX="52.0" layoutY="932.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Customize.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="settingsImg" fitHeight="103.0" fitWidth="473.0" layoutX="1430.0" layoutY="928.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Settings.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="loadImg" fitHeight="105.0" fitWidth="335.0" layoutX="1012.0" layoutY="929.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Load.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="saveImg" fitHeight="105.0" fitWidth="330.0" layoutX="622.0" layoutY="929.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Save.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="mapImg" fitHeight="627.0" fitWidth="1114.0" layoutX="407.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Map%20-%20Temp.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="sDoorImg" fitHeight="150.0" fitWidth="200.0" layoutX="914.0" layoutY="748.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Door.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="nDoorImg" fitHeight="150.0" fitWidth="200.0" layoutX="901.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Door.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="wDoorImg" fitHeight="150.0" fitWidth="200.0" layoutX="481.0" layoutY="380.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Door.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="eDoorImg" fitHeight="150.0" fitWidth="200.0" layoutX="1371.0" layoutY="381.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Door.png" />
+         </image>
+      </ImageView>
+      <Rectangle fx:id="customizeHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="104.0" layoutX="52.0" layoutY="929.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="480.0" />
+      <Rectangle fx:id="saveHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="105.0" layoutX="621.0" layoutY="929.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="307.0" />
+      <Rectangle fx:id="loadHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="105.0" layoutX="1012.0" layoutY="929.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="335.0" />
+      <Rectangle fx:id="settingsHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="104.0" layoutX="1430.0" layoutY="929.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="440.0" />
+      <Rectangle fx:id="sDoorHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="150.0" layoutX="912.0" layoutY="748.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="104.0" />
+      <Rectangle fx:id="nDoorHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="150.0" layoutX="898.0" layoutY="22.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="104.0" />
+      <Rectangle fx:id="wDoorHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="150.0" layoutX="478.0" layoutY="380.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="104.0" />
+      <Rectangle fx:id="eDoorHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="150.0" layoutX="1368.0" layoutY="381.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="104.0" />
+   </children>
 </AnchorPane>
