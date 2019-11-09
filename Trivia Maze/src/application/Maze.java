@@ -22,7 +22,8 @@ public class Maze extends Application
 			Scene scene = new Scene(root);
 //			scene.getStylesheets().add(getClass().getResource("/Main/application.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.setResizable(false);
+			primaryStage.setFullScreen(true);
+//			primaryStage.setResizable(false);
 			primaryStage.sizeToScene();
 			primaryStage.show();
 
