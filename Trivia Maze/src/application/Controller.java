@@ -5,6 +5,8 @@ import java.io.File;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
+import javafx.scene.Group;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
@@ -17,64 +19,44 @@ import javafx.scene.shape.Rectangle;
 
 public class Controller
 {
-	@FXML
-	private ImageView customizeImg;
+	@FXML private ImageView customizeImg;
+	@FXML private ImageView saveImg;
+	@FXML private ImageView loadImg;
+	@FXML private ImageView settingsImg;
+	@FXML private ImageView helpImg;
+	@FXML private Rectangle customizeHitBox;
+	@FXML private Rectangle saveHitBox;
+	@FXML private Rectangle loadHitBox;
+	@FXML private Rectangle settingsHitBox;
+	@FXML private Rectangle helpHitBox;
+	@FXML private Group mapGroup;
+	@FXML private ImageView nDoorImg;
+	@FXML private ImageView sDoorImg;
+	@FXML private ImageView wDoorImg;
+	@FXML private ImageView eDoorImg;
+	@FXML private Rectangle nDoorHitBox;
+	@FXML private Rectangle sDoorHitBox;
+	@FXML private Rectangle wDoorHitBox;
+	@FXML private Rectangle eDoorHitBox;
+	@FXML private Group customizationGroup;
+	@FXML private ColorPicker buttonColorPicker;
+	@FXML private ColorPicker buttonHighlightColorPicker;
+	@FXML private ColorPicker doorColorPicker;
+	@FXML private ColorPicker doorHighlightColorPicker;
+	@FXML private Group helpGroup;
+	@FXML private Group settingsGroup;
 
-	@FXML
-	private ImageView saveImg;
-
-	@FXML
-	private ImageView loadImg;
-
-	@FXML
-	private ImageView settingsImg;
-	
-	@FXML
-	private Rectangle customizeHitBox;
-
-	@FXML
-	private Rectangle saveHitBox;
-
-	@FXML
-	private Rectangle loadHitBox;
-
-	@FXML
-	private Rectangle settingsHitBox;
-	
-	@FXML
-	private ImageView nDoorImg;
-
-	@FXML
-	private ImageView sDoorImg;
-
-	@FXML
-	private ImageView wDoorImg;
-
-	@FXML
-	private ImageView eDoorImg;
-	
-	@FXML
-	private Rectangle nDoorHitBox;
-
-	@FXML
-	private Rectangle sDoorHitBox;
-
-	@FXML
-	private Rectangle wDoorHitBox;
-
-	@FXML
-	private Rectangle eDoorHitBox;
-	
 	public void initialize()
 	{
 		setClippingMasks();
-		setDefaultColors();
-		setDefaultHighlightColors();
+		setColors();
+		backToMain();
 	}
-	
+
 	private void setClippingMasks()
 	{
 		File customizeFile = new File(this.getClass().getResource("/resources/images/Customize.png").getPath().replace("%20", " ").substring(1));
+
 		ImageView clip = new ImageView(new Image(customizeFile.toURI().toString()));
 		customizeImg.setClip(clip);
 
@@ -90,135 +72,137 @@ public class Controller
 		clip = new ImageView(new Image(settingFile.toURI().toString()));
 		settingsImg.setClip(clip);
 
+		File helpFile = new File(this.getClass().getResource("/resources/images/Help.png").getPath().replace("%20", " ").substring(1));
+		clip = new ImageView(new Image(helpFile.toURI().toString()));
+		helpImg.setClip(clip);
+
 		nDoorImg.setClip(clipDoor());
 		sDoorImg.setClip(clipDoor());
 		eDoorImg.setClip(clipDoor());
 		wDoorImg.setClip(clipDoor());
 	}
-	
+
 	private ImageView clipDoor()
 	{
 		File doorFile = new File(this.getClass().getResource("/resources/images/Door.png").getPath().replace("%20", " ").substring(1));
 		return new ImageView(new Image(doorFile.toURI().toString()));
 	}
-	
-	private void setDefaultColors()
-	{
-		changeImageColor(customizeImg, Color.web("EE793C"));
-		changeImageColor(saveImg, Color.web("EE793C"));
-		changeImageColor(loadImg, Color.web("EE793C"));
-		changeImageColor(settingsImg, Color.web("EE793C"));
 
-		changeImageColor(nDoorImg, Color.WHITE);
-		changeImageColor(sDoorImg, Color.WHITE);
-		changeImageColor(eDoorImg, Color.WHITE);
-		changeImageColor(wDoorImg, Color.WHITE);
-	}
-	
-	private void setDefaultHighlightColors()
+	private void setColors()
 	{
-		changeHoverColor(customizeImg, customizeHitBox, Color.web("F7FE40"));
-		changeHoverColor(saveImg, saveHitBox, Color.web("F7FE40"));
-		changeHoverColor(loadImg, loadHitBox, Color.web("F7FE40"));
-		changeHoverColor(settingsImg, settingsHitBox, Color.web("F7FE40"));
+		buttonColorPicker.setValue(Color.web("EE793C"));
+		doorColorPicker.setValue(Color.WHITE);
+		
+		buttonHighlightColorPicker.setValue(Color.web("F7FE40"));
+		doorHighlightColorPicker.setValue(Color.web("F7FE40"));
 
-		changeHoverColor(nDoorImg, nDoorHitBox, Color.web("F7FE40"));
-		changeHoverColor(sDoorImg, sDoorHitBox, Color.web("F7FE40"));
-		changeHoverColor(eDoorImg, eDoorHitBox, Color.web("F7FE40"));
-		changeHoverColor(wDoorImg, wDoorHitBox, Color.web("F7FE40"));
+		buttonColors();
+		doorColors();
 	}
-	
-	private void changeImageColor(ImageView imageToChange, Color color)
+
+	private void changeImageColor(ImageView imageToChange, Rectangle hitBox, Color mainColor, Color highlightColor)
 	{
+		ColorAdjust adjust = new ColorAdjust();
+
+		adjust.setBrightness(mainColor.getBrightness());
+		adjust.setHue(mainColor.getHue());
+		adjust.setSaturation(mainColor.getSaturation());
+		adjust.setContrast(1);
+
 		ColorAdjust monochrome = new ColorAdjust();
-        monochrome.setSaturation(-1.0);
+		monochrome.setSaturation(-1.0);
 
-        Blend colorize = new Blend
-        (
-                BlendMode.MULTIPLY,
-                monochrome,
-                new ColorInput
-                (
-                        0,
-                        0,
-                        imageToChange.getImage().getWidth(),
-                        imageToChange.getImage().getHeight(),
-                        color
-           		)
-        );
-        
-        imageToChange.setEffect(colorize);
+		Blend highlight = new Blend(BlendMode.MULTIPLY, monochrome,
+				new ColorInput(0, 0, imageToChange.getImage().getWidth(), imageToChange.getImage().getHeight(), highlightColor));
 
-        imageToChange.setCache(true);
-        imageToChange.setCacheHint(CacheHint.SPEED);
+		Blend colorize = new Blend(BlendMode.MULTIPLY, adjust,
+				new ColorInput(0, 0, imageToChange.getImage().getWidth(), imageToChange.getImage().getHeight(), mainColor));
+
+		imageToChange.effectProperty()
+				.bind(Bindings.when(hitBox.hoverProperty()).then((Effect) highlight).otherwise((Effect) colorize));
+
+		imageToChange.setCache(true);
+		imageToChange.setCacheHint(CacheHint.SPEED);
 	}
-	
-	private void changeHoverColor(ImageView imageToChange, Rectangle hitBox, Color color)
+
+	public void buttonColors()
 	{
-		ColorAdjust monochrome = new ColorAdjust();
-        monochrome.setSaturation(-1.0);
+		Color mainColor = buttonColorPicker.getValue();
+		Color highlightColor = buttonHighlightColorPicker.getValue();
 
-        Blend colorize = new Blend
-        (
-                BlendMode.MULTIPLY,
-                monochrome,
-                new ColorInput
-                (
-                        0,
-                        0,
-                        imageToChange.getImage().getWidth(),
-                        imageToChange.getImage().getHeight(),
-                        color
-                )
-        );
-
-        imageToChange.effectProperty().bind
-        (
-                Bindings
-                    .when(hitBox.hoverProperty())
-                        .then((Effect) colorize)
-                        .otherwise((Effect) null)
-        );
-
-        imageToChange.setCache(true);
-        imageToChange.setCacheHint(CacheHint.SPEED);
+		changeImageColor(customizeImg, customizeHitBox, mainColor, highlightColor);
+		changeImageColor(saveImg, saveHitBox, mainColor, highlightColor);
+		changeImageColor(loadImg, loadHitBox, mainColor, highlightColor);
+		changeImageColor(settingsImg, settingsHitBox, mainColor, highlightColor);
+		changeImageColor(helpImg, helpHitBox, mainColor, highlightColor);
 	}
-	
+
+	public void doorColors()
+	{
+		Color mainColor = doorColorPicker.getValue();
+		Color highlightColor = doorHighlightColorPicker.getValue();
+
+		changeImageColor(nDoorImg, nDoorHitBox, mainColor, highlightColor);
+		changeImageColor(sDoorImg, sDoorHitBox, mainColor, highlightColor);
+		changeImageColor(eDoorImg, eDoorHitBox, mainColor, highlightColor);
+		changeImageColor(wDoorImg, wDoorHitBox, mainColor, highlightColor);
+	}
+
 	public void customizeBtn()
 	{
 		System.out.println("Customize");
+		customizationGroup.setVisible(true);
+		mapGroup.setVisible(false);
 	}
 	
+	public void backToMain()
+	{
+		customizationGroup.setVisible(false);
+		helpGroup.setVisible(false);
+		settingsGroup.setVisible(false);
+		
+		mapGroup.setVisible(true);
+	}
+
 	public void saveBtn()
 	{
 		System.out.println("Save");
 	}
-	
+
 	public void loadBtn()
 	{
 		System.out.println("Load");
 	}
-	
+
 	public void settingsBtn()
 	{
 		System.out.println("Settings");
+		settingsGroup.setVisible(true);
+		mapGroup.setVisible(false);
 	}
-	
+
+	public void helpBtn()
+	{
+		System.out.println("Help");
+		helpGroup.setVisible(true);
+		mapGroup.setVisible(false);
+	}
+
 	public void nDoorBtn()
 	{
 		System.out.println("North Door");
 	}
-	
+
 	public void sDoorBtn()
 	{
 		System.out.println("South Door");
 	}
-	
+
 	public void eDoorBtn()
 	{
 		System.out.println("East Door");
 	}
-	
+
 	public void wDoorBtn()
 	{
 		System.out.println("West Door");

@@ -49,7 +49,7 @@ public class Maze extends Application
 	{
 		final int mazeRows = 5;
 		final int mazeColumns = 5;
-		mazeBuilder(mazeRows, mazeColumns);
+//		mazeBuilder(mazeRows, mazeColumns);
 		
 		launch(args);
 	}
