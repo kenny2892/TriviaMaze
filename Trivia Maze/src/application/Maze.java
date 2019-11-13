@@ -13,7 +13,7 @@ public class Maze extends Application
 	private static int playerX;
 	private static int playerY;
 	
-	private static Room[][] gameMaze;
+	static Room[][] gameMaze;
 	
 	@Override
 	public void start(Stage primaryStage)
