@@ -24,19 +24,33 @@ public class Controller
 	@FXML private ImageView saveImg;
 	@FXML private ImageView loadImg;
 	@FXML private ImageView settingsImg;
+	@FXML private ImageView helpImg;
 	@FXML private Rectangle customizeHitBox;
 	@FXML private Rectangle saveHitBox;
 	@FXML private Rectangle loadHitBox;
 	@FXML private Rectangle settingsHitBox;
+	@FXML private Rectangle helpHitBox;
+	@FXML private Group mapGroup;
 	@FXML private ImageView nDoorImg;
 	@FXML private ImageView sDoorImg;
 	@FXML private ImageView wDoorImg;
 	@FXML private ImageView eDoorImg;
+	@FXML private ImageView nDoorStatusImg;
+	@FXML private ImageView sDoorStatusImg;
+	@FXML private ImageView wDoorStatusImg;
+	@FXML private ImageView eDoorStatusImg;
 	@FXML private Rectangle nDoorHitBox;
 	@FXML private Rectangle sDoorHitBox;
 	@FXML private Rectangle wDoorHitBox;
 	@FXML private Rectangle eDoorHitBox;
-	
+	@FXML private Group customizationGroup;
+	@FXML private ColorPicker buttonColorPicker;
+	@FXML private ColorPicker buttonHighlightColorPicker;
+	@FXML private ColorPicker doorColorPicker;
+	@FXML private ColorPicker doorHighlightColorPicker;
+	@FXML private Group helpGroup;
+	@FXML private Group settingsGroup;
+
 	public void initialize()
 	{
 		setClippingMasks();

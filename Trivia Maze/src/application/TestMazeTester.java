@@ -9,11 +9,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TestMazeTester {
+	
+	private static int mazeRows;
+	private static int mazeColumns;
+	private static Room[][] gameMaze;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception
 	{
-		Maze.mazeBuilder(5, 5);
+		mazeRows = 5;
+		mazeColumns = 5;
+		gameMaze = Maze.createMaze(mazeRows, mazeColumns);
 	}
 
 	@AfterAll
@@ -37,24 +43,24 @@ class TestMazeTester {
 	@Test
 	void mazeColumnLength()
 	{
-		assertEquals(5, Maze.gameMaze.length);
+		assertEquals(5, gameMaze.length);
 	}
 	
 	@Test
 	void mazeRowLength()
 	{
-		assertEquals(5, Maze.gameMaze[0].length);
+		assertEquals(5, gameMaze[0].length);
 	}
 	
 	@Test
 	void eachElementIsARoom()
 	{
 		boolean eachElementIsARoom = true;
-		for(int rowIndex = 0; rowIndex < Maze.gameMaze[0].length; rowIndex++)
+		for(int rowIndex = 0; rowIndex < gameMaze[0].length; rowIndex++)
 		{
-			for(int columnIndex = 0; columnIndex < Maze.gameMaze.length; columnIndex++)
+			for(int columnIndex = 0; columnIndex < gameMaze.length; columnIndex++)
 			{
-				if(!(Maze.gameMaze[rowIndex][columnIndex] instanceof Room))
+				if(!(gameMaze[rowIndex][columnIndex] instanceof Room))
 				{
 					eachElementIsARoom = false;
 					assertTrue(eachElementIsARoom);
@@ -68,16 +74,24 @@ class TestMazeTester {
 	void eachRoomHasFourDoors()
 	{
 		boolean eachRoomHasFourDoors = true;
-		for(int rowIndex = 0; rowIndex < Maze.gameMaze[0].length; rowIndex++)
+		for(int rowIndex = 0; rowIndex < gameMaze[0].length; rowIndex++)
 		{
-			for(int columnIndex = 0; columnIndex < Maze.gameMaze.length; columnIndex++)
+			for(int columnIndex = 0; columnIndex < gameMaze.length; columnIndex++)
 			{
+				
+				int northDoorIndex = rowIndex - 1;
+				int southDoorIndex = rowIndex + 1;
+				int eastDoorIndex = columnIndex + 1;
+				int westDoorIndex = columnIndex - 1;
+				
+				Room currentRoom = gameMaze[rowIndex][columnIndex];
+				
 				if
 				(
-					!(Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.NORTH) instanceof Door) ||
-					!(Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.SOUTH) instanceof Door) ||
-					!(Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.EAST) instanceof Door) ||
-					!(Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.WEST) instanceof Door)
+					!(currentRoom.isDoorLocked(Direction.NORTH) == northDoorIndex < 0) ||
+					!(currentRoom.isDoorLocked(Direction.SOUTH) == southDoorIndex >= gameMaze[0].length) ||
+					!(currentRoom.isDoorLocked(Direction.EAST) == eastDoorIndex >= gameMaze.length) ||
+					!(currentRoom.isDoorLocked(Direction.WEST) == westDoorIndex < 0)
 				)
 				{
 					eachRoomHasFourDoors = false;
@@ -89,31 +103,29 @@ class TestMazeTester {
 	}
 	
 	@Test
-	void eachDoorHasAQuestion()
+	void playerAndExitAreNotInTheSameLocation()
 	{
-		boolean eachDoorHasAQuestion = true;
-		for(int rowIndex = 0; rowIndex < Maze.gameMaze[0].length; rowIndex++)
-		{
-			for(int columnIndex = 0; columnIndex < Maze.gameMaze.length; columnIndex++)
-			{
-				if
-				(
-					!(Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.NORTH).getQuestion() instanceof Question ||
-					Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.NORTH).getQuestion() instanceof NullQuestion) ||
-					!(Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.SOUTH).getQuestion() instanceof Question ||
-					Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.SOUTH).getQuestion() instanceof NullQuestion) ||
-					!(Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.EAST).getQuestion() instanceof Question ||
-					Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.EAST).getQuestion() instanceof NullQuestion) ||
-					!(Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.WEST).getQuestion() instanceof Question ||
-					Maze.gameMaze[rowIndex][columnIndex].getDoor(Direction.WEST).getQuestion() instanceof NullQuestion)
-				)
-				{
-					eachDoorHasAQuestion = false;
-					assertTrue(eachDoorHasAQuestion);
-				}
-			}
-		}
-		assertTrue(eachDoorHasAQuestion);
+		Maze.setEnteranceExit(mazeRows, mazeColumns);
+		assertTrue(!(Maze.getPlayerX() == Maze.getExitX() && Maze.getPlayerY() == Maze.getExitY()));
+	}
+	
+	@Test
+	void enteranceAndExitVariablesAreNotZeroOrAbove()
+	{
+		assertTrue(Maze.getExitX() < 0);
+		assertTrue(Maze.getExitY() < 0);
+		assertTrue(Maze.getPlayerX() < 0);
+		assertTrue(Maze.getPlayerY() < 0);
+	}
+	
+	@Test
+	void enteranceAndExitAreWithinMaze()
+	{
+		Maze.setEnteranceExit(mazeRows, mazeColumns);
+		assertTrue(Maze.getExitX() >= 0 && Maze.getExitX() < mazeColumns);
+		assertTrue(Maze.getExitY() >= 0 && Maze.getExitY() < mazeRows);
+		assertTrue(Maze.getPlayerX() >= 0 && Maze.getPlayerX() < mazeColumns);
+		assertTrue(Maze.getPlayerY() >= 0 && Maze.getPlayerY() < mazeRows);
 	}
 
 }
