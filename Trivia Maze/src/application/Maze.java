@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 
 public class Maze extends Application
 {
-	private int playerX;
-	private int playerY;
+	private static int playerX;
+	private static int playerY;
 	
 	private static Room[][] gameMaze;
 	
@@ -49,176 +49,56 @@ public class Maze extends Application
 	{
 		final int mazeRows = 5;
 		final int mazeColumns = 5;
-//		mazeBuilder(mazeRows, mazeColumns);
+		gameMaze = createMaze(mazeRows, mazeColumns);
 		
 		launch(args);
 	}
 	
-	private static void mazeBuilder(final int mazeRows, final int mazeColumns)
+	public static Room[][] createMaze(int rows, int cols)
 	{
-		gameMaze = new Room[mazeRows][mazeColumns];
+		Room[][] maze = new Room[rows][cols];
 		
-		setUpInsideMaze(mazeRows, mazeColumns);
-		setUpMazeBorder(mazeRows, mazeColumns);
-		setUpMazeCorners(mazeRows, mazeColumns);
-	}
-	
-	private static void setUpInsideMaze(final int mazeRows, final int mazeColumns)
-	{
-		boolean doorIsLocked = false;
-		Question defaultQuestion = new NullQuestion();
-		Door genericDoor = new Door(doorIsLocked, defaultQuestion);
-		
-		for(int rowIndex = 1; rowIndex < mazeRows - 1; rowIndex++)
+		for(int row = 0; row < rows; row++)
 		{
-			for(int columnIndex = 1; columnIndex < mazeColumns - 1; columnIndex++)
+			for(int col = 0; col < cols; col++)
 			{
-				Door northDoor = genericDoor;
-				Door southDoor = genericDoor;
-				Door eastDoor = genericDoor;
-				Door westDoor = genericDoor;
+				int nIndex = row - 1;
+				int sIndex = row + 1;
+				int eIndex = col + 1;
+				int wIndex = col - 1;
 				
-				gameMaze[rowIndex][columnIndex] = new Room
-						(
-						 northDoor,
-						 southDoor,
-						 eastDoor,
-						 westDoor
-						 );
+				maze[row][col] = new Room(new Door(nIndex < 0), new Door(sIndex >= rows), new Door(eIndex >= cols), new Door(wIndex < 0));
 			}
 		}
+		
+		return maze;
 	}
 	
-	private static void setUpMazeBorder(final int mazeRows, final int mazeColumns)
+	public static void setPlayerLocation(int x, int y)
 	{
-		boolean doorIsLocked = false;
-		Question defaultQuestion = new NullQuestion();
-		Door genericDoor = new Door(doorIsLocked, defaultQuestion);
+		if(x < 0)
+			throw new IllegalArgumentException("Passed X was negative.");
+
+		else if(y < 0)
+			throw new IllegalArgumentException("Passed Y was negative.");
 		
-		for(int columnIndex = 0; columnIndex < mazeColumns - 1; columnIndex++)
-		{
-			// Top
-			Door northDoor = new NullDoor();
-			Door southDoor = genericDoor;
-			Door eastDoor = genericDoor;
-			Door westDoor = genericDoor;
-			
-			gameMaze[0][columnIndex] = new Room
-					(
-					northDoor,
-					southDoor,
-					eastDoor,
-					westDoor
-					);
-			
-			// Bottom
-			northDoor = genericDoor;
-			southDoor = new NullDoor();
-			eastDoor = genericDoor;
-			westDoor = genericDoor;
-			
-			gameMaze[mazeRows][columnIndex] = new Room
-					(
-					northDoor,
-					southDoor,
-					eastDoor,
-					westDoor
-					);
-		}
+		else if(x >= gameMaze[0].length)
+			throw new IllegalArgumentException("Passed X was greater than the maze's column count.");
 		
-		for(int rowIndex = 0; rowIndex < mazeColumns - 1; rowIndex++)
-		{
-			// Left
-			Door northDoor = genericDoor;
-			Door southDoor = genericDoor;
-			Door eastDoor = genericDoor;
-			Door westDoor = new NullDoor();
-			
-			gameMaze[rowIndex][0] = new Room
-					(
-					northDoor,
-					southDoor,
-					eastDoor,
-					westDoor
-					);
-			
-			// Right
-			northDoor = genericDoor;
-			southDoor = new NullDoor();
-			eastDoor = genericDoor;
-			westDoor = genericDoor;
-			
-			gameMaze[rowIndex][mazeColumns] = new Room
-					(
-					northDoor,
-					southDoor,
-					eastDoor,
-					westDoor
-					);
-		}
+		else if(y >= gameMaze.length)
+			throw new IllegalArgumentException("Passed Y was greater than the maze's row count.");
 		
+		playerX = x;
+		playerY = y;
 	}
 	
-	private static void setUpMazeCorners(final int mazeRows, final int mazeColumns)
+	public static int getPlayerX()
 	{
-		boolean doorIsLocked = false;
-		Question defaultQuestion = new NullQuestion();
-		Door genericDoor = new Door(doorIsLocked, defaultQuestion);
-		
-		// Top Left
-		Door northDoor = new NullDoor();
-		Door southDoor = genericDoor;
-		Door eastDoor = genericDoor;
-		Door westDoor = new NullDoor();
-		
-		gameMaze[0][0] = new Room
-				(
-				northDoor,
-				southDoor,
-				eastDoor,
-				westDoor
-				);
-		
-		// Top Right
-		northDoor = new NullDoor();
-		southDoor = genericDoor;
-		eastDoor = new NullDoor();
-		westDoor = genericDoor;
-		
-		gameMaze[0][mazeColumns] = new Room
-				(
-				northDoor,
-				southDoor,
-				eastDoor,
-				westDoor
-				);
-		
-		// Bottom Right
-		northDoor = genericDoor;
-		southDoor = new NullDoor();
-		eastDoor = new NullDoor();
-		westDoor = genericDoor;
-		
-		gameMaze[mazeRows][mazeColumns] = new Room
-				(
-				northDoor,
-				southDoor,
-				eastDoor,
-				westDoor
-				);
-		
-		// Bottom Left
-		northDoor = genericDoor;
-		southDoor = new NullDoor();
-		eastDoor = genericDoor;
-		westDoor = new NullDoor();
-		
-		gameMaze[mazeRows][0] = new Room
-				(
-				northDoor,
-				southDoor,
-				eastDoor,
-				westDoor
-				);
+		return playerX;
+	}
+	
+	public static int getPlayerY()
+	{
+		return playerY;
 	}
 }

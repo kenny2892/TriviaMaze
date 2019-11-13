@@ -2,77 +2,62 @@ package application;
 
 public class Room
 {
-	private Door northDoor;
-	private Door southDoor;
-	private Door westDoor;
-	private Door eastDoor;
+	private Door northDoor, southDoor, eastDoor, westDoor;
 
 	public Room(Door northDoor, Door southDoor, Door eastDoor, Door westDoor)
-	{
-		if(northDoor == null)
-			throw new IllegalArgumentException("The northDoor parameter was passed as null.");
-		
-		else if(southDoor == null)
-			throw new IllegalArgumentException("The southDoor parameter was passed as null.");
-		
-		else if(westDoor == null)
-			throw new IllegalArgumentException("The westDoor parameter was passed as null.");
-		
-		else if(eastDoor == null)
-			throw new IllegalArgumentException("The eastDoor parameter was passed as null.");
-		
+	{		
 		this.northDoor = northDoor;
 		this.southDoor = southDoor;
 		this.eastDoor = eastDoor;
 		this.westDoor = westDoor;
 	}
 
-	public Door getDoor(Direction direction)
+	public boolean isDoorLocked(Direction direction)
 	{
 		switch(direction)
 		{
 			case NORTH:
-				return northDoor;
+				return northDoor.isLocked();
 
 			case EAST:
-				return eastDoor;
+				return eastDoor.isLocked();
 
 			case WEST:
-				return westDoor;
+				return westDoor.isLocked();
 
 			case SOUTH:
-				return southDoor;
+				return southDoor.isLocked();
 
 			default:
-				return new NullDoor();
+				return true;
 		}
 	}
 
-	public boolean setDoor(Direction direction, Door door)
+	public boolean setDoorLock(Direction direction, boolean isLocked)
 	{
-		if(door == null)
-			return false;
+		if(direction == null)
+			throw new IllegalArgumentException("Invalid Direction");
 		
 		switch(direction)
 		{
 			case NORTH:
-				northDoor = door;
+				northDoor.setLocked(isLocked);
 				break;
 
 			case EAST:
-				eastDoor = door;
+				eastDoor.setLocked(isLocked);
 				break;
 
 			case WEST:
-				westDoor = door;
+				westDoor.setLocked(isLocked);
 				break;
 
 			case SOUTH:
-				southDoor = door;
+				southDoor.setLocked(isLocked);
 				break;
 
 			default:
-				return false;
+				throw new IllegalArgumentException("Invalid Direction");
 		}
 		
 		return true;

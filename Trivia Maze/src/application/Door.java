@@ -3,19 +3,11 @@ package application;
 public class Door
 {
 	private boolean isLocked;
-	private Question question;
+	private boolean opened;
 
-	public Door(boolean isLocked, Question question)
+	public Door(boolean isLocked)
 	{
-		if(question == null)
-			throw new IllegalArgumentException("The question parameter was null.");
-		
 		this.isLocked = isLocked;
-	}
-
-	public Question getQuestion()
-	{
-		return this.question;
 	}
 
 	public boolean isLocked()
@@ -26,5 +18,15 @@ public class Door
 	public void setLocked(boolean isLocked)
 	{
 		this.isLocked = isLocked;
+	}
+	
+	public void open()
+	{
+		opened = true;
+	}
+	
+	public boolean isOpen()
+	{
+		return opened;
 	}
 }
