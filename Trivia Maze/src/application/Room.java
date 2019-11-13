@@ -5,7 +5,19 @@ public class Room
 	private Door northDoor, southDoor, eastDoor, westDoor;
 
 	public Room(Door northDoor, Door southDoor, Door eastDoor, Door westDoor)
-	{		
+	{
+		if(northDoor == null)
+			throw new IllegalArgumentException("The northDoor parameter was passed as null.");
+
+		else if(southDoor == null)
+			throw new IllegalArgumentException("The southDoor parameter was passed as null.");
+
+		else if(eastDoor == null)
+			throw new IllegalArgumentException("The eastDoor parameter was passed as null.");
+
+		else if(westDoor == null)
+			throw new IllegalArgumentException("The westDoor parameter was passed as null.");
+		
 		this.northDoor = northDoor;
 		this.southDoor = southDoor;
 		this.eastDoor = eastDoor;
@@ -14,6 +26,9 @@ public class Room
 
 	public boolean isDoorLocked(Direction direction)
 	{
+		if(direction == null)
+			throw new IllegalArgumentException("Passed in direction is null.");
+		
 		switch(direction)
 		{
 			case NORTH:
@@ -29,14 +44,38 @@ public class Room
 				return southDoor.isLocked();
 
 			default:
-				return true;
+				throw new IllegalArgumentException("Invalid Direction");
+		}
+	}
+
+	public boolean isDoorOpened(Direction direction)
+	{
+		if(direction == null)
+			throw new IllegalArgumentException("Passed in direction is null.");
+		
+		switch(direction)
+		{
+			case NORTH:
+				return northDoor.isOpen();
+
+			case EAST:
+				return eastDoor.isOpen();
+
+			case WEST:
+				return westDoor.isOpen();
+
+			case SOUTH:
+				return southDoor.isOpen();
+
+			default:
+				throw new IllegalArgumentException("Invalid Direction");
 		}
 	}
 
 	public boolean setDoorLock(Direction direction, boolean isLocked)
 	{
 		if(direction == null)
-			throw new IllegalArgumentException("Invalid Direction");
+			throw new IllegalArgumentException("Passed in direction is null.");
 		
 		switch(direction)
 		{
