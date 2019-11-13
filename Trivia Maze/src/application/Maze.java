@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Random;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -10,10 +12,13 @@ import javafx.stage.Stage;
 
 public class Maze extends Application
 {
-	private static int playerX;
-	private static int playerY;
+	private static int playerX = -1;
+	private static int playerY = -1;
 	
-	private static Room[][] gameMaze;
+	static Room[][] gameMaze;
+	
+	private static int exitX = -1;
+	private static int exitY = -1;
 	
 	@Override
 	public void start(Stage primaryStage)
@@ -50,6 +55,7 @@ public class Maze extends Application
 		final int mazeRows = 5;
 		final int mazeColumns = 5;
 		gameMaze = createMaze(mazeRows, mazeColumns);
+		setEnteranceExit(mazeRows, mazeColumns);
 		
 		launch(args);
 	}
@@ -72,6 +78,20 @@ public class Maze extends Application
 		}
 		
 		return maze;
+	}
+	
+	public static void setEnteranceExit(final int mazeRows, final int mazeColumns)
+	{
+		Random rnjesus = new Random();
+		exitX = rnjesus.nextInt(mazeColumns);
+		exitY = rnjesus.nextInt(mazeRows);
+		
+		do
+		{
+			playerX = rnjesus.nextInt(mazeColumns);
+			playerY = rnjesus.nextInt(mazeRows);
+		} while (playerX == exitX && playerY == exitY);
+
 	}
 	
 	public static void setPlayerLocation(int x, int y)
@@ -100,5 +120,15 @@ public class Maze extends Application
 	public static int getPlayerY()
 	{
 		return playerY;
+	}
+	
+	public static int getExitX()
+	{
+		return exitX;
+	}
+	
+	public static int getExitY()
+	{
+		return exitY;
 	}
 }
