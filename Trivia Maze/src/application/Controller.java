@@ -249,8 +249,7 @@ public class Controller
 		else 
 			imgURL = this.getClass().getResource("/resources/images/Door Check.png");
 			
-		
-		String path = imgURL.getPath().replace("%20", " ").substring(1);
+		String path = imgURL.toExternalForm();
 		Image pic = new Image(path);
 		
 		view.setImage(pic);

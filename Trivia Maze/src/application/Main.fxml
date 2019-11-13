@@ -54,7 +54,7 @@
                      </image>
                   </ImageView>
                   <ImageView fx:id="sDoorStatusImg" fitHeight="150.0" fitWidth="104.0" layoutX="2.0" pickOnBounds="true" preserveRatio="true" />
-                  <Rectangle fx:id="sDoorHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="150.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="104.0" />
+                  <Rectangle fx:id="sDoorHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="150.0" opacity="0.01" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="104.0" />
                </children>
             </Group>
             <Group fx:id="nDoorGroup" layoutX="491.0" onMouseClicked="#nDoorBtn">
