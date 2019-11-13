@@ -1,6 +1,7 @@
 package application;
 
 import java.io.File;
+import java.net.URL;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -34,6 +35,10 @@ public class Controller
 	@FXML private ImageView sDoorImg;
 	@FXML private ImageView wDoorImg;
 	@FXML private ImageView eDoorImg;
+	@FXML private ImageView nDoorStatusImg;
+	@FXML private ImageView sDoorStatusImg;
+	@FXML private ImageView wDoorStatusImg;
+	@FXML private ImageView eDoorStatusImg;
 	@FXML private Rectangle nDoorHitBox;
 	@FXML private Rectangle sDoorHitBox;
 	@FXML private Rectangle wDoorHitBox;
@@ -191,20 +196,62 @@ public class Controller
 	public void nDoorBtn()
 	{
 		System.out.println("North Door");
+		setDoorStatus(Direction.NORTH, true);
 	}
 
 	public void sDoorBtn()
 	{
 		System.out.println("South Door");
+		setDoorStatus(Direction.SOUTH, false);
 	}
 
 	public void eDoorBtn()
 	{
 		System.out.println("East Door");
+		setDoorStatus(Direction.EAST, false);
 	}
 
 	public void wDoorBtn()
 	{
 		System.out.println("West Door");
+		setDoorStatus(Direction.WEST, true);
+	}
+	
+	private void setDoorStatus(Direction direction, boolean isLocked)
+	{
+		switch(direction)
+		{
+			case NORTH:
+				doorStatusDisplay(nDoorImg, isLocked);
+				break;
+
+			case EAST:
+				doorStatusDisplay(eDoorImg, isLocked);
+				break;
+
+			case WEST:
+				doorStatusDisplay(wDoorImg, isLocked);
+				break;
+
+			case SOUTH:
+				doorStatusDisplay(sDoorImg, isLocked);
+				break;
+		}
+	}
+	
+	private void doorStatusDisplay(ImageView view, boolean isLocked)
+	{
+		URL imgURL = null;
+		
+		if(isLocked)
+			imgURL = this.getClass().getResource("/resources/images/Door X.png");
+		
+		else 
+			imgURL = this.getClass().getResource("/resources/images/Door Check.png");
+			
+		String path = imgURL.toExternalForm();
+		Image pic = new Image(path);
+		
+		view.setImage(pic);
 	}
 }
