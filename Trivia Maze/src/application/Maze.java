@@ -24,6 +24,8 @@ public class Maze extends Application
 	
 	private static Room[][] gameMaze;
 	private static ArrayList<Question> questions;
+	private static Direction currentDirection;
+	private static Question currentQuestion;
 	
 	private static int exitX = -1;
 	private static int exitY = -1;
@@ -100,6 +102,8 @@ public class Maze extends Application
 			array = getMultipleChoice(connect, array);
 			array = getTrueFalse(connect, array);
 			
+			Collections.shuffle(array);
+			
 			connect.close();
 		}
 		
@@ -141,8 +145,7 @@ public class Maze extends Application
 				MultipleChoiceQuestion mcQuestion = new MultipleChoiceQuestion(question, optionAra, indexOfAnswer);
 				array.add(mcQuestion);
 			}
-			
-			Collections.shuffle(array);
+
 			results.close();
 			pst.close();
 		}
@@ -167,26 +170,20 @@ public class Maze extends Application
 			while(results.next())
 			{
 				String question = results.getString("Questions");
-				String options = results.getString("Options");
 				String answer = results.getString("Answers");
 				
-				ArrayList<String> optionAra = new ArrayList<String>(Arrays.asList(options.split("\n")));
+				ArrayList<String> options = new ArrayList<String>();
+				options.add("True");
+				options.add("False");
 				
-				int indexOfAnswer = 0;
-				for(String option : optionAra)
-				{
-					if(!option.startsWith(answer))
-						indexOfAnswer++;
-					
-					else
-						break;
-				}
+				int index = 0;
+				if(answer.compareTo("False") == 0)
+					index = 1;
 				
-				MultipleChoiceQuestion mcQuestion = new MultipleChoiceQuestion(question, optionAra, indexOfAnswer);
-				array.add(mcQuestion);
+				TrueFalseQuestion tfQuestion = new TrueFalseQuestion(question, options, index);
+				array.add(tfQuestion);
 			}
 			
-			Collections.shuffle(array);
 			results.close();
 			pst.close();
 		}
@@ -234,7 +231,7 @@ public class Maze extends Application
 	
 	public static Room getCurrRoom()
 	{
-		return gameMaze[playerY][playerX];
+		return gameMaze[playerX][playerY];
 	}
 	
 	public static int getPlayerX()
@@ -257,11 +254,51 @@ public class Maze extends Application
 		return exitY;
 	}
 	
-	public static Question getQuestion()
+	public static Question getQuestion(Direction direction)
 	{
+		if(direction == null)
+			return null;
+		
 		Question toUse = questions.get(0);
 		questions.remove(0);
 		
+		currentDirection = direction;
+		
 		return toUse;
+	}
+	
+	public static boolean checkAnswer(int chosenAnswer)
+	{
+		if(currentQuestion == null)
+			return false;
+
+		boolean correct = currentQuestion.getCorrectIndex() == chosenAnswer;
+		
+		Room curr = gameMaze[playerY][playerX];
+		curr.setDoorLock(currentDirection, !correct);
+		
+		if(!correct)
+			return correct;
+		
+		switch(currentDirection)
+		{
+			case NORTH:
+				setPlayerLocation(playerX, playerY--);
+				break;
+				
+			case SOUTH:
+				setPlayerLocation(playerX, playerY++);
+				break;
+				
+			case EAST:
+				setPlayerLocation(playerX++, playerY);
+				break;
+				
+			case WEST:
+				setPlayerLocation(playerX--, playerY);
+				break;
+		}
+		
+		return true;
 	}
 }

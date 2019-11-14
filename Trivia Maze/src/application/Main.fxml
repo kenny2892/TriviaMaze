@@ -214,98 +214,102 @@
             <TextArea editable="false" layoutX="-290.0" layoutY="167.0" prefHeight="388.0" prefWidth="846.0" text="To Be Created" />
          </children>
       </Group>
-      <TextArea fx:id="mcQuestionText" editable="false" layoutX="406.0" layoutY="186.0" prefHeight="152.0" prefWidth="1126.0" style="-fx-background-color: transparent;">
-         <font>
-            <Font name="Arial" size="24.0" />
-         </font>
-      </TextArea>
-      <Text fill="WHITE" layoutX="707.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QUESTION:" textAlignment="RIGHT">
-         <font>
-            <Font name="Arial" size="96.0" />
-         </font>
-      </Text>
-      <Group fx:id="mcGroupA" layoutX="213.0" layoutY="385.0">
+      <Group fx:id="mcGroup" layoutX="213.0" layoutY="70.09375">
          <children>
-            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="93.0" text="A">
+            <TextArea fx:id="mcQuestionText" editable="false" layoutX="193.0" layoutY="115.90625" prefHeight="152.0" prefWidth="1126.0" style="-fx-background-color: transparent;">
                <font>
-                  <Font name="Arial" size="57.0" />
+                  <Font name="Arial" size="24.0" />
                </font>
-            </Button>
-            <Text fx:id="mcTextA" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            </TextArea>
+            <Text fill="WHITE" layoutX="494.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="QUESTION:" textAlignment="RIGHT">
                <font>
-                  <Font name="Arial" size="48.0" />
+                  <Font name="Arial" size="96.0" />
                </font>
             </Text>
-         </children>
-      </Group>
-      <Group fx:id="mcGroupB" layoutX="1020.0" layoutY="385.0">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="93.0" text="B">
-               <font>
-                  <Font name="Arial" size="57.0" />
-               </font>
-            </Button>
-            <Text fx:id="mcTextB" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
-               <font>
-                  <Font name="Arial" size="48.0" />
-               </font>
-            </Text>
-         </children>
-      </Group>
-      <Group fx:id="mcGroupC" layoutX="213.0" layoutY="558.0">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="93.0" text="C">
-               <font>
-                  <Font name="Arial" size="57.0" />
-               </font>
-            </Button>
-            <Text fx:id="mcTextC" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
-               <font>
-                  <Font name="Arial" size="48.0" />
-               </font>
-            </Text>
-         </children>
-      </Group>
-      <Group fx:id="mcGroupD" layoutX="1020.0" layoutY="558.0">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="93.0" text="D">
-               <font>
-                  <Font name="Arial" size="57.0" />
-               </font>
-            </Button>
-            <Text fx:id="mcTextD" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
-               <font>
-                  <Font name="Arial" size="48.0" />
-               </font>
-            </Text>
-         </children>
-      </Group>
-      <Group fx:id="mcGroupE" layoutX="213.0" layoutY="720.0">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="93.0" text="E">
-               <font>
-                  <Font name="Arial" size="57.0" />
-               </font>
-            </Button>
-            <Text fx:id="mcTextE" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
-               <font>
-                  <Font name="Arial" size="48.0" />
-               </font>
-            </Text>
-         </children>
-      </Group>
-      <Group fx:id="mcGroupF" layoutX="1020.0" layoutY="720.0">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="93.0" text="F">
-               <font>
-                  <Font name="Arial" size="57.0" />
-               </font>
-            </Button>
-            <Text fx:id="mcTextF" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
-               <font>
-                  <Font name="Arial" size="48.0" />
-               </font>
-            </Text>
+            <Group fx:id="mcGroupA" layoutY="314.90625">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#selectmcA" prefHeight="75.0" prefWidth="93.0" text="A">
+                     <font>
+                        <Font name="Arial" size="57.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="mcTextA" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <font>
+                        <Font name="Arial" size="48.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Group>
+            <Group fx:id="mcGroupB" layoutX="807.0" layoutY="314.90625">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#selectmcB" prefHeight="75.0" prefWidth="93.0" text="B">
+                     <font>
+                        <Font name="Arial" size="57.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="mcTextB" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <font>
+                        <Font name="Arial" size="48.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Group>
+            <Group fx:id="mcGroupC" layoutY="487.90625">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#selectmcC" prefHeight="75.0" prefWidth="93.0" text="C">
+                     <font>
+                        <Font name="Arial" size="57.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="mcTextC" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <font>
+                        <Font name="Arial" size="48.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Group>
+            <Group fx:id="mcGroupD" layoutX="807.0" layoutY="487.90625">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#selectmcD" prefHeight="75.0" prefWidth="93.0" text="D">
+                     <font>
+                        <Font name="Arial" size="57.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="mcTextD" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <font>
+                        <Font name="Arial" size="48.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Group>
+            <Group fx:id="mcGroupE" layoutY="649.90625">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#selectmcE" prefHeight="75.0" prefWidth="93.0" text="E">
+                     <font>
+                        <Font name="Arial" size="57.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="mcTextE" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <font>
+                        <Font name="Arial" size="48.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Group>
+            <Group fx:id="mcGroupF" layoutX="807.0" layoutY="649.90625">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#selectmcF" prefHeight="75.0" prefWidth="93.0" text="F">
+                     <font>
+                        <Font name="Arial" size="57.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="mcTextF" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <font>
+                        <Font name="Arial" size="48.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Group>
          </children>
       </Group>
    </children>

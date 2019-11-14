@@ -2,12 +2,14 @@ package application;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
@@ -56,7 +58,8 @@ public class Controller
 	@FXML private Group helpGroup;
 	@FXML private Group settingsGroup;
 	@FXML private ImageView playerIcon;
-	@FXML private Text mcQuestionText;
+	@FXML private Group mcGroup;
+	@FXML private TextArea mcQuestionText;
 	@FXML private Group mcGroupA;
 	@FXML private Text mcTextA;
 	@FXML private Group mcGroupB;
@@ -72,20 +75,21 @@ public class Controller
 
 	public void initialize()
 	{
+		mcQuestionText.setWrapText(true);
+		
 		setClippingMasks();
 		setColors();
-		startGame();
-		playerIcon(Maze.getPlayerX(), Maze.getPlayerY());
 		backToMain();
 	}
 
-	private void startGame()
+	private void showDoors()
 	{
 		Room curr = Maze.getCurrRoom();
 		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
 		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
 		setDoorStatus(curr, Direction.EAST, eDoorGroup, eDoorStatusImg);
 		setDoorStatus(curr, Direction.WEST, wDoorGroup, wDoorStatusImg);
+		playerIcon(Maze.getPlayerX(), Maze.getPlayerY());
 	}
 
 	private void setDoorStatus(Room curr, Direction direction, Group doorGroup, ImageView statusImg)
@@ -228,8 +232,10 @@ public class Controller
 		customizationGroup.setVisible(false);
 		helpGroup.setVisible(false);
 		settingsGroup.setVisible(false);
+		mcGroup.setVisible(false);
 
 		mapGroup.setVisible(true);
+		showDoors();
 	}
 
 	public void saveBtn()
@@ -259,21 +265,57 @@ public class Controller
 	public void nDoorBtn()
 	{
 		System.out.println("North Door");
+		Question question;
+
+		do // For Testing Purposes
+		{
+			question = Maze.getQuestion(Direction.NORTH);
+		} while(question instanceof TrueFalseQuestion);
+
+		if (question instanceof MultipleChoiceQuestion)
+			showMcQuestion((MultipleChoiceQuestion) question);
 	}
 
 	public void sDoorBtn()
 	{
 		System.out.println("South Door");
+		Question question;
+
+		do // For Testing Purposes
+		{
+			question = Maze.getQuestion(Direction.SOUTH);
+		} while(question instanceof TrueFalseQuestion);
+
+		if (question instanceof MultipleChoiceQuestion)
+			showMcQuestion((MultipleChoiceQuestion) question);
 	}
 
 	public void eDoorBtn()
 	{
 		System.out.println("East Door");
+		Question question;
+
+		do // For Testing Purposes
+		{
+			question = Maze.getQuestion(Direction.EAST);
+		} while(question instanceof TrueFalseQuestion);
+
+		if (question instanceof MultipleChoiceQuestion)
+			showMcQuestion((MultipleChoiceQuestion) question);
 	}
 
 	public void wDoorBtn()
 	{
 		System.out.println("West Door");
+		Question question;
+
+		do // For Testing Purposes
+		{
+			question = Maze.getQuestion(Direction.WEST);
+		} while(question instanceof TrueFalseQuestion);
+
+		if (question instanceof MultipleChoiceQuestion)
+			showMcQuestion((MultipleChoiceQuestion) question);
 	}
 
 	private void playerIcon(int x, int y)
@@ -306,7 +348,7 @@ public class Controller
 				playerIcon.setLayoutX(743);
 				playerIcon.setLayoutY(83);
 				break;
-				
+
 			case "1_0":
 				playerIcon.setLayoutX(302);
 				playerIcon.setLayoutY(178);
@@ -331,7 +373,7 @@ public class Controller
 				playerIcon.setLayoutX(754);
 				playerIcon.setLayoutY(178);
 				break;
-				
+
 			case "2_0":
 				playerIcon.setLayoutX(291);
 				playerIcon.setLayoutY(280);
@@ -356,7 +398,7 @@ public class Controller
 				playerIcon.setLayoutX(768);
 				playerIcon.setLayoutY(280);
 				break;
-				
+
 			case "3_0":
 				playerIcon.setLayoutX(279);
 				playerIcon.setLayoutY(390);
@@ -381,7 +423,7 @@ public class Controller
 				playerIcon.setLayoutX(783);
 				playerIcon.setLayoutY(390);
 				break;
-				
+
 			case "4_0":
 				playerIcon.setLayoutX(265);
 				playerIcon.setLayoutY(486);
@@ -407,5 +449,88 @@ public class Controller
 				playerIcon.setLayoutY(486);
 				break;
 		}
+	}
+
+	private void showMcQuestion(MultipleChoiceQuestion question)
+	{
+		mapGroup.setVisible(false);
+		mcGroup.setVisible(true);
+		mcQuestionText.setText(question.getQuestion());
+		ArrayList<String> answers = question.getAnswers();
+
+		hideAllAnswers();
+		
+		switch(answers.size())
+		{
+			case 6:
+				mcGroupF.setVisible(true);
+				mcTextF.setText(answers.get(5));
+
+			case 5:
+				mcGroupE.setVisible(true);
+				mcTextE.setText(answers.get(4));
+
+			case 4:
+				mcGroupD.setVisible(true);
+				mcTextD.setText(answers.get(3));
+
+			case 3:
+				mcGroupC.setVisible(true);
+				mcTextC.setText(answers.get(2));
+
+			case 2:
+				mcGroupB.setVisible(true);
+				mcTextB.setText(answers.get(1));
+				
+			case 1:
+				mcGroupA.setVisible(true);
+				mcTextA.setText(answers.get(0));
+		}
+	}
+	
+	private void hideAllAnswers()
+	{
+		mcGroupA.setVisible(false);
+		mcGroupB.setVisible(false);
+		mcGroupC.setVisible(false);
+		mcGroupD.setVisible(false);
+		mcGroupE.setVisible(false);
+		mcGroupF.setVisible(false);
+	}
+	
+	public void selectmcA()
+	{
+		Maze.checkAnswer(0);
+		backToMain();
+	}
+	
+	public void selectmcB()
+	{
+		Maze.checkAnswer(1);
+		backToMain();
+	}
+	
+	public void selectmcC()
+	{
+		Maze.checkAnswer(2);
+		backToMain();
+	}
+	
+	public void selectmcD()
+	{
+		Maze.checkAnswer(3);
+		backToMain();
+	}
+	
+	public void selectmcE()
+	{
+		Maze.checkAnswer(4);
+		backToMain();
+	}
+	
+	public void selectmcF()
+	{
+		Maze.checkAnswer(5);
+		backToMain();
 	}
 }
