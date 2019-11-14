@@ -85,6 +85,7 @@ public class Controller
 	private void showDoors()
 	{
 		Room curr = Maze.getCurrRoom();
+		System.out.println(Maze.getPlayerX() + " " + Maze.getPlayerY());
 		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
 		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
 		setDoorStatus(curr, Direction.EAST, eDoorGroup, eDoorStatusImg);
@@ -117,6 +118,9 @@ public class Controller
 
 			statusImg.setImage(pic);
 		}
+		
+		else
+			statusImg.setImage(null);
 	}
 
 	private void setClippingMasks()
@@ -265,6 +269,18 @@ public class Controller
 	public void nDoorBtn()
 	{
 		System.out.println("North Door");
+		
+		Room curr = Maze.getCurrRoom();
+		if(curr.isDoorLocked(Direction.NORTH))
+			return;
+		
+		else if(curr.isDoorOpened(Direction.NORTH))
+		{
+			Maze.checkAnswer(-1);
+			backToMain();
+			return;
+		}
+		
 		Question question;
 
 		do // For Testing Purposes
@@ -279,6 +295,18 @@ public class Controller
 	public void sDoorBtn()
 	{
 		System.out.println("South Door");
+		
+		Room curr = Maze.getCurrRoom();
+		if(curr.isDoorLocked(Direction.SOUTH))
+			return;
+		
+		else if(curr.isDoorOpened(Direction.SOUTH))
+		{
+			Maze.checkAnswer(-1);
+			backToMain();
+			return;
+		}
+		
 		Question question;
 
 		do // For Testing Purposes
@@ -293,6 +321,18 @@ public class Controller
 	public void eDoorBtn()
 	{
 		System.out.println("East Door");
+		
+		Room curr = Maze.getCurrRoom();
+		if(curr.isDoorLocked(Direction.EAST))
+			return;
+		
+		else if(curr.isDoorOpened(Direction.EAST))
+		{
+			Maze.checkAnswer(-1);
+			backToMain();
+			return;
+		}
+		
 		Question question;
 
 		do // For Testing Purposes
@@ -307,6 +347,18 @@ public class Controller
 	public void wDoorBtn()
 	{
 		System.out.println("West Door");
+		
+		Room curr = Maze.getCurrRoom();
+		if(curr.isDoorLocked(Direction.WEST))
+			return;
+		
+		else if(curr.isDoorOpened(Direction.WEST))
+		{
+			Maze.checkAnswer(-1);
+			backToMain();
+			return;
+		}
+		
 		Question question;
 
 		do // For Testing Purposes
@@ -320,7 +372,7 @@ public class Controller
 
 	private void playerIcon(int x, int y)
 	{
-		String index = x + "_" + y;
+		String index = y + "_" + x;
 
 		switch(index)
 		{
