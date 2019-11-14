@@ -139,13 +139,13 @@ public class Maze extends Application
 				ArrayList<String> optionAra = new ArrayList<String>(Arrays.asList(options.split("\n")));
 				
 				int indexOfAnswer = 0;
-				for(String option : optionAra)
+				
+				for(int i = 0; i < optionAra.size(); i++)
 				{
-					if(!option.startsWith(answer))
-						indexOfAnswer++;
+					if(optionAra.get(i).startsWith(answer))
+						indexOfAnswer = i;
 					
-					else
-						break;
+					optionAra.set(i, optionAra.get(i).substring(3));
 				}
 				
 				MultipleChoiceQuestion mcQuestion = new MultipleChoiceQuestion(question, optionAra, indexOfAnswer);

@@ -832,6 +832,7 @@ public class Controller
 				backToMain();
 				mapGroup.setVisible(false);
 				winnerText.setVisible(true);
+				return;
 			}
 		}
 		
