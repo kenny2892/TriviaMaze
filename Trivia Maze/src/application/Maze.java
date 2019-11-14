@@ -231,7 +231,7 @@ public class Maze extends Application
 	
 	public static Room getCurrRoom()
 	{
-		return gameMaze[playerX][playerY];
+		return gameMaze[playerY][playerX];
 	}
 	
 	public static int getPlayerX()
@@ -263,6 +263,7 @@ public class Maze extends Application
 		questions.remove(0);
 		
 		currentDirection = direction;
+		currentQuestion = toUse;
 		
 		return toUse;
 	}
@@ -272,10 +273,15 @@ public class Maze extends Application
 		if(currentQuestion == null)
 			return false;
 
-		boolean correct = currentQuestion.getCorrectIndex() == chosenAnswer;
+		boolean correct = true;
 		
-		Room curr = gameMaze[playerY][playerX];
-		curr.setDoorLock(currentDirection, !correct);
+		if(chosenAnswer != -1)
+			correct = currentQuestion.getCorrectIndex() == chosenAnswer;
+		
+		else
+			swapDirection();
+		
+		updateMazeRooms(!correct);
 		
 		if(!correct)
 			return correct;
@@ -283,22 +289,93 @@ public class Maze extends Application
 		switch(currentDirection)
 		{
 			case NORTH:
-				setPlayerLocation(playerX, playerY--);
+				setPlayerLocation(playerX, playerY - 1);
 				break;
 				
 			case SOUTH:
-				setPlayerLocation(playerX, playerY++);
+				setPlayerLocation(playerX, playerY + 1);
 				break;
 				
 			case EAST:
-				setPlayerLocation(playerX++, playerY);
+				setPlayerLocation(playerX + 1, playerY);
 				break;
 				
 			case WEST:
-				setPlayerLocation(playerX--, playerY);
+				setPlayerLocation(playerX - 1, playerY);
 				break;
 		}
 		
 		return true;
+	}
+	
+	private static void updateMazeRooms(boolean isLocked)
+	{
+		Room curr = getCurrRoom();
+		curr.setDoorLock(currentDirection, isLocked);
+		gameMaze[playerY][playerX] = curr;
+		
+		Room connectedRoom = null;
+		switch(currentDirection)
+		{
+			case NORTH:
+				if(playerY - 1 >= 0)
+				{
+					connectedRoom = gameMaze[playerY - 1][playerX];
+					connectedRoom.setDoorLock(Direction.SOUTH, isLocked);
+					gameMaze[playerY - 1][playerX] = connectedRoom;
+				}
+				break;
+				
+			case SOUTH:
+				if(playerY + 1 < gameMaze[0].length)
+				{
+					connectedRoom = gameMaze[playerY + 1][playerX];
+					connectedRoom.setDoorLock(Direction.NORTH, isLocked);
+					gameMaze[playerY + 1][playerX] = connectedRoom;
+				}
+				break;
+				
+			case EAST:
+				if(playerX + 1 < gameMaze.length)
+				{
+					connectedRoom = gameMaze[playerY][playerX + 1];
+					connectedRoom.setDoorLock(Direction.WEST, isLocked);
+					gameMaze[playerY][playerX + 1] = connectedRoom;
+				}
+				break;
+				
+			case WEST:
+				if(playerX - 1 >= 0)
+				{
+					connectedRoom = gameMaze[playerY][playerX - 1];
+					connectedRoom.setDoorLock(Direction.EAST, isLocked);
+					gameMaze[playerY][playerX - 1] = connectedRoom;
+				}
+				break;
+		}
+	}
+	
+	private static void swapDirection()
+	{
+		switch(currentDirection)
+		{
+			case NORTH:
+				currentDirection = Direction.SOUTH;
+				break;
+				
+			case SOUTH:
+				currentDirection = Direction.NORTH;
+				break;
+				
+			case EAST:
+
+				currentDirection = Direction.WEST;
+				break;
+				
+			case WEST:
+
+				currentDirection = Direction.EAST;
+				break;
+		}
 	}
 }
