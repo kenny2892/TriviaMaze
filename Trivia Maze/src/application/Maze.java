@@ -27,7 +27,7 @@ public class Maze extends Application
 	private static Direction currentDirection;
 	private static Question currentQuestion;
 	
-	private static int exitX = -1; // TODO EXIT
+	private static int exitX = -1;
 	private static int exitY = -1;
 	
 	@Override
