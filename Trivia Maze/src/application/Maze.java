@@ -21,14 +21,13 @@ public class Maze extends Application
 {
 	private static int playerX = -1;
 	private static int playerY = -1;
+	private static int exitX = -1;
+	private static int exitY = -1;
 	
 	private static Room[][] gameMaze;
 	private static ArrayList<Question> questions;
 	private static Direction currentDirection;
 	private static Question currentQuestion;
-	
-	private static int exitX = -1;
-	private static int exitY = -1;
 	
 	@Override
 	public void start(Stage primaryStage)
@@ -65,8 +64,9 @@ public class Maze extends Application
 		final int mazeRows = 5;
 		final int mazeColumns = 5;
 		gameMaze = createMaze(mazeRows, mazeColumns);
-		questions = createQuestionDatabase();
 		setEnteranceExit(mazeRows, mazeColumns);
+		questions = createQuestionDatabase();
+		
 		
 		launch(args);
 	}

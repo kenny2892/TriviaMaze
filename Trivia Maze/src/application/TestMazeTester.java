@@ -41,19 +41,19 @@ class TestMazeTester {
 	}
 
 	@Test
-	void isMazeColumns_ofLengthaMazeColumns_mazeColumns()
+	void createMaze_correctColumnLength_5()
 	{
-		assertEquals(mazeColumns, gameMaze.length);
+		assertEquals(5, gameMaze.length);
 	}
 	
 	@Test
-	void mazeRowLength()
+	void createMaze_corretRowLength_5()
 	{
-		assertEquals(mazeRows, gameMaze[0].length);
+		assertEquals(5, gameMaze[0].length);
 	}
 	
 	@Test
-	void eachElementIsARoom()
+	void createMaze_eachElementIsARoom_True()
 	{
 		boolean eachElementIsARoom = true;
 		for(int rowIndex = 0; rowIndex < gameMaze[0].length; rowIndex++)
@@ -71,7 +71,7 @@ class TestMazeTester {
 	}
 	
 	@Test
-	void eachRoomHasFourDoors()
+	void createMaze_eachRoomHasFourDoors_True()
 	{
 		boolean eachRoomHasFourDoors = true;
 		for(int rowIndex = 0; rowIndex < gameMaze[0].length; rowIndex++)
@@ -103,29 +103,62 @@ class TestMazeTester {
 	}
 	
 	@Test
-	void playerAndExitAreNotInTheSameLocation()
+	void variableInitialization_playerXNotAbove0_True()
 	{
-		Maze.setEnteranceExit(mazeRows, mazeColumns);
-		assertTrue(!(Maze.getPlayerX() == Maze.getExitX() && Maze.getPlayerY() == Maze.getExitY()));
+		System.out.println(Maze.getPlayerX());
+		assertTrue(Maze.getPlayerX() < 0);
 	}
 	
 	@Test
-	void enteranceAndExitVariablesAreNotZeroOrAbove()
+	void variableInitialization_playerYNotAbove0_True()
 	{
-		assertTrue(Maze.getExitX() < 0);
-		assertTrue(Maze.getExitY() < 0);
-		assertTrue(Maze.getPlayerX() < 0);
+		System.out.println(Maze.getPlayerY());
 		assertTrue(Maze.getPlayerY() < 0);
 	}
 	
 	@Test
-	void enteranceAndExitAreWithinMaze()
+	void variableInitialization_exitXNotAbove0_True()
+	{
+		System.out.println(Maze.getExitX());
+		assertTrue(Maze.getExitX() < 0);
+	}
+	
+	@Test
+	void variableInitialization_exitYNotAbove0_True()
+	{
+		System.out.println(Maze.getExitY());
+		assertTrue(Maze.getExitY() < 0);
+	}
+	
+	@Test
+	void setEnteranceExit_playerXNotBelowZeroOrAbove4_True()
+	{
+		assertTrue(Maze.getPlayerX() >= 0 && Maze.getPlayerX() < mazeColumns);
+	}
+	
+	@Test
+	void setEnteranceExit_playerYNotBelowZeroOrAbove4_True()
+	{
+		assertTrue(Maze.getPlayerY() >= 0 && Maze.getPlayerY() < mazeRows);
+	}
+	
+	@Test
+	void setEnteranceExit_exitXNotBelowZeroOrAbove4_True()
+	{
+		assertTrue(Maze.getExitX() >= 0 && Maze.getExitX() < mazeColumns);
+	}
+	
+	@Test
+	void setEnteranceExit_exitYNotBelowZeroOrAbove4_True()
+	{
+		assertTrue(Maze.getExitY() >= 0 && Maze.getExitY() < mazeRows);
+	}
+	
+	@Test
+	void setEnteranceExit_playerAndMazeAreNotInSameIndex_True()
 	{
 		Maze.setEnteranceExit(mazeRows, mazeColumns);
-		assertTrue(Maze.getExitX() >= 0 && Maze.getExitX() < mazeColumns);
-		assertTrue(Maze.getExitY() >= 0 && Maze.getExitY() < mazeRows);
-		assertTrue(Maze.getPlayerX() >= 0 && Maze.getPlayerX() < mazeColumns);
-		assertTrue(Maze.getPlayerY() >= 0 && Maze.getPlayerY() < mazeRows);
+		assertTrue(!(Maze.getPlayerX() == Maze.getExitX() && Maze.getPlayerY() == Maze.getExitY()));
 	}
 	
 	@Test
