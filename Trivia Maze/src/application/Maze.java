@@ -14,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -103,6 +102,12 @@ public class Maze extends Application
 			array = getMultipleChoice(connect, array);
 			array = getTrueFalse(connect, array);
 			
+			while(array.size() <= 40) // TODO For Demo Only! Remove later
+			{
+				array = getMultipleChoice(connect, array);
+				array = getTrueFalse(connect, array);
+			}
+			
 			Collections.shuffle(array);
 			
 			connect.close();
@@ -134,13 +139,13 @@ public class Maze extends Application
 				ArrayList<String> optionAra = new ArrayList<String>(Arrays.asList(options.split("\n")));
 				
 				int indexOfAnswer = 0;
-				for(String option : optionAra)
+				
+				for(int i = 0; i < optionAra.size(); i++)
 				{
-					if(!option.startsWith(answer))
-						indexOfAnswer++;
+					if(optionAra.get(i).startsWith(answer))
+						indexOfAnswer = i;
 					
-					else
-						break;
+					optionAra.set(i, optionAra.get(i).substring(3));
 				}
 				
 				MultipleChoiceQuestion mcQuestion = new MultipleChoiceQuestion(question, optionAra, indexOfAnswer);
@@ -281,12 +286,7 @@ public class Maze extends Application
 
 		boolean correct = true;
 		
-		if(chosenAnswer != -1)
-			correct = currentQuestion.getCorrectIndex() == chosenAnswer;
-		
-		else
-			swapDirection();
-		
+		correct = currentQuestion.getCorrectIndex() == chosenAnswer;		
 		updateMazeRooms(!correct);
 		
 		if(!correct)
@@ -295,7 +295,7 @@ public class Maze extends Application
 		return true;
 	}
 	
-	public static void movePlayer(Direction direction)
+	public static boolean movePlayer(Direction direction)
 	{
 		switch(direction)
 		{
@@ -315,6 +315,11 @@ public class Maze extends Application
 				setPlayerLocation(playerX - 1, playerY);
 				break;
 		}
+		
+		if(playerX == exitX && playerY == exitY)
+			return true;
+		
+		return false;
 	}
 	
 	private static void updateMazeRooms(boolean isLocked)
@@ -360,30 +365,6 @@ public class Maze extends Application
 					connectedRoom.setDoorLock(Direction.EAST, isLocked);
 					gameMaze[playerY][playerX - 1] = connectedRoom;
 				}
-				break;
-		}
-	}
-	
-	private static void swapDirection()
-	{
-		switch(currentDirection)
-		{
-			case NORTH:
-				currentDirection = Direction.SOUTH;
-				break;
-				
-			case SOUTH:
-				currentDirection = Direction.NORTH;
-				break;
-				
-			case EAST:
-
-				currentDirection = Direction.WEST;
-				break;
-				
-			case WEST:
-
-				currentDirection = Direction.EAST;
 				break;
 		}
 	}
