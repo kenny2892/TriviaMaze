@@ -156,13 +156,13 @@ public class Controller
 		switch(direction)
 		{
 		case NORTH:
-			return (playerY - 1 ) >= 0 && (playerY < 5) ? verticalArchWays[playerX - 1][playerY] : null;
+			return (playerY - 1 ) >= 0 && (playerY < 5) ? verticalArchWays[playerY - 1][playerX] : null;
 		case SOUTH:
-			return (playerY + 1 ) >= 0 && (playerY < 5) ? verticalArchWays[playerX][playerY] : null;
+			return (playerY + 1 ) >= 0 && (playerY < 5) ? verticalArchWays[playerY][playerX] : null;
 		case EAST:
-			return (playerX + 1 ) >= 0 && (playerX < 5) ? horizontalArchWays[playerX][playerY] : null;
+			return (playerX + 1 ) >= 0 && (playerX < 5) ? horizontalArchWays[playerY][playerX] : null;
 		case WEST:
-			return (playerX - 1 ) >= 0 && (playerX < 5) ? horizontalArchWays[playerX][playerY - 1] : null;
+			return (playerX - 1 ) >= 0 && (playerX < 5) ? horizontalArchWays[playerY][playerX - 1] : null;
 		default:
 			return null;
 		}
@@ -649,54 +649,90 @@ public class Controller
 	public void selectmcA()
 	{
 		if (Maze.checkAnswer(0))
+		{
 			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		else
+		{
 			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		backToMain();
 	}
 	
 	public void selectmcB()
 	{
 		if (Maze.checkAnswer(1))
+		{
 			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		else
+		{	
 			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		backToMain();
 	}
 	
 	public void selectmcC()
 	{
 		if (Maze.checkAnswer(2))
+		{
 			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		else
+		{
 			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		backToMain();
 	}
 	
 	public void selectmcD()
 	{
 		if (Maze.checkAnswer(3))
+		{
 			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		else
+		{
 			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		backToMain();
 	}
 	
 	public void selectmcE()
 	{
 		if (Maze.checkAnswer(4))
+		{
 			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		else
+		{
 			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		backToMain();
 	}
 	
 	public void selectmcF()
 	{
 		if (Maze.checkAnswer(5))
+		{
 			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		else
+		{
 			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
+			Maze.movePlayer(Maze.getCurrentDirection());
+		}
 		backToMain();
 	}
 }

@@ -292,7 +292,12 @@ public class Maze extends Application
 		if(!correct)
 			return correct;
 		
-		switch(currentDirection)
+		return true;
+	}
+	
+	public static void movePlayer(Direction direction)
+	{
+		switch(direction)
 		{
 			case NORTH:
 				setPlayerLocation(playerX, playerY - 1);
@@ -310,8 +315,6 @@ public class Maze extends Application
 				setPlayerLocation(playerX - 1, playerY);
 				break;
 		}
-		
-		return true;
 	}
 	
 	private static void updateMazeRooms(boolean isLocked)
