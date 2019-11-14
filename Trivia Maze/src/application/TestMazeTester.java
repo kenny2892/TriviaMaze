@@ -131,7 +131,7 @@ class TestMazeTester {
 	@Test
 	void testPlayerOutOfBoundsXAxis()
 	{
-		assertThrows()
+		
 	}
 
 }
