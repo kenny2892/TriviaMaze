@@ -40,7 +40,7 @@
             <Image url="@../resources/images/Help.png" />
          </image>
       </ImageView>
-      <Group fx:id="mapGroup" layoutX="407.0" layoutY="22.0" visible="false">
+      <Group fx:id="mapGroup" layoutX="407.0" layoutY="22.0">
          <children>
             <ImageView fx:id="mapImg" fitHeight="627.0" fitWidth="1114.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -135,6 +135,11 @@
                   <ImageView fx:id="doorway40" fitHeight="54.0" fitWidth="66.0" layoutX="460.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Group>
+            <ImageView fx:id="exitIcon" fitHeight="103.0" fitWidth="126.0" layoutX="936.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/images/Goal.png" />
+               </image>
+            </ImageView>
             <ImageView fx:id="playerIcon" fitHeight="150.0" fitWidth="200.0" layoutX="82.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/images/Player%20Arrow%20-%20A.png" />
@@ -337,5 +342,10 @@
             </TextArea>
          </children>
       </Group>
+      <Text fx:id="winnerText" fill="WHITE" layoutX="516.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WINNER!" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Arial" size="200.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

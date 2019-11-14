@@ -295,7 +295,7 @@ public class Maze extends Application
 		return true;
 	}
 	
-	public static void movePlayer(Direction direction)
+	public static boolean movePlayer(Direction direction)
 	{
 		switch(direction)
 		{
@@ -315,6 +315,11 @@ public class Maze extends Application
 				setPlayerLocation(playerX - 1, playerY);
 				break;
 		}
+		
+		if(playerX == exitX && playerY == exitY)
+			return true;
+		
+		return false;
 	}
 	
 	private static void updateMazeRooms(boolean isLocked)
