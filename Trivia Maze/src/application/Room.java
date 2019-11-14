@@ -81,18 +81,22 @@ public class Room
 		{
 			case NORTH:
 				northDoor.setLocked(isLocked);
+				northDoor.open();
 				break;
 
 			case EAST:
 				eastDoor.setLocked(isLocked);
+				eastDoor.open();
 				break;
 
 			case WEST:
 				westDoor.setLocked(isLocked);
+				westDoor.open();
 				break;
 
 			case SOUTH:
 				southDoor.setLocked(isLocked);
+				southDoor.open();
 				break;
 
 			default:

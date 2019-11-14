@@ -23,9 +23,6 @@ public abstract class Question
 		else if(correctIndex >= answers.size())
 			throw new IllegalArgumentException("The correctIndex parameter was greater than or equal to the length of the \"answers\" parameter.");
 		
-		else if(correctIndex <= 0 && type != QuestionType.NULL)
-			throw new IllegalArgumentException("The correctIndex parameter was less than or equal to 0 and this is not a NULL question.");
-		
 		this.type = type;
 		this.question = question;
 		this.answers = answers;
