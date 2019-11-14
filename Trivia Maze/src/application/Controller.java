@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 public class Controller
 {
@@ -31,6 +32,10 @@ public class Controller
 	@FXML private Rectangle settingsHitBox;
 	@FXML private Rectangle helpHitBox;
 	@FXML private Group mapGroup;
+	@FXML private Group nDoorGroup;
+	@FXML private Group sDoorGroup;
+	@FXML private Group eDoorGroup;
+	@FXML private Group wDoorGroup;
 	@FXML private ImageView nDoorImg;
 	@FXML private ImageView sDoorImg;
 	@FXML private ImageView wDoorImg;
@@ -50,34 +55,91 @@ public class Controller
 	@FXML private ColorPicker doorHighlightColorPicker;
 	@FXML private Group helpGroup;
 	@FXML private Group settingsGroup;
+	@FXML private ImageView playerIcon;
+	@FXML private Text mcQuestionText;
+	@FXML private Group mcGroupA;
+	@FXML private Text mcTextA;
+	@FXML private Group mcGroupB;
+	@FXML private Text mcTextB;
+	@FXML private Group mcGroupC;
+	@FXML private Text mcTextC;
+	@FXML private Group mcGroupD;
+	@FXML private Text mcTextD;
+	@FXML private Group mcGroupE;
+	@FXML private Text mcTextE;
+	@FXML private Group mcGroupF;
+	@FXML private Text mcTextF;
 
 	public void initialize()
 	{
 		setClippingMasks();
 		setColors();
+		startGame();
+		playerIcon(Maze.getPlayerX(), Maze.getPlayerY());
 		backToMain();
+	}
+
+	private void startGame()
+	{
+		Room curr = Maze.getCurrRoom();
+		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
+		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
+		setDoorStatus(curr, Direction.EAST, eDoorGroup, eDoorStatusImg);
+		setDoorStatus(curr, Direction.WEST, wDoorGroup, wDoorStatusImg);
+	}
+
+	private void setDoorStatus(Room curr, Direction direction, Group doorGroup, ImageView statusImg)
+	{
+		if (curr.isDoorLocked(direction) && !curr.isDoorOpened(direction))
+		{
+			doorGroup.setVisible(false);
+			return;
+		}
+
+		doorGroup.setVisible(true);
+
+		if (curr.isDoorOpened(direction))
+		{
+			URL imgURL = null;
+
+			if (curr.isDoorLocked(direction))
+				imgURL = this.getClass().getResource("/resources/images/Door X.png");
+
+			else
+				imgURL = this.getClass().getResource("/resources/images/Door Check.png");
+
+			String path = imgURL.toExternalForm();
+			Image pic = new Image(path);
+
+			statusImg.setImage(pic);
+		}
 	}
 
 	private void setClippingMasks()
 	{
-		File customizeFile = new File(this.getClass().getResource("/resources/images/Customize.png").getPath().replace("%20", " ").substring(1));
+		File customizeFile = new File(
+				this.getClass().getResource("/resources/images/Customize.png").getPath().replace("%20", " ").substring(1));
 
 		ImageView clip = new ImageView(new Image(customizeFile.toURI().toString()));
 		customizeImg.setClip(clip);
 
-		File saveFile = new File(this.getClass().getResource("/resources/images/Save.png").getPath().replace("%20", " ").substring(1));
+		File saveFile = new File(
+				this.getClass().getResource("/resources/images/Save.png").getPath().replace("%20", " ").substring(1));
 		clip = new ImageView(new Image(saveFile.toURI().toString()));
 		saveImg.setClip(clip);
 
-		File loadFile = new File(this.getClass().getResource("/resources/images/Load.png").getPath().replace("%20", " ").substring(1));
+		File loadFile = new File(
+				this.getClass().getResource("/resources/images/Load.png").getPath().replace("%20", " ").substring(1));
 		clip = new ImageView(new Image(loadFile.toURI().toString()));
 		loadImg.setClip(clip);
 
-		File settingFile = new File(this.getClass().getResource("/resources/images/Settings.png").getPath().replace("%20", " ").substring(1));
+		File settingFile = new File(
+				this.getClass().getResource("/resources/images/Settings.png").getPath().replace("%20", " ").substring(1));
 		clip = new ImageView(new Image(settingFile.toURI().toString()));
 		settingsImg.setClip(clip);
 
-		File helpFile = new File(this.getClass().getResource("/resources/images/Help.png").getPath().replace("%20", " ").substring(1));
+		File helpFile = new File(
+				this.getClass().getResource("/resources/images/Help.png").getPath().replace("%20", " ").substring(1));
 		clip = new ImageView(new Image(helpFile.toURI().toString()));
 		helpImg.setClip(clip);
 
@@ -89,7 +151,8 @@ public class Controller
 
 	private ImageView clipDoor()
 	{
-		File doorFile = new File(this.getClass().getResource("/resources/images/Door.png").getPath().replace("%20", " ").substring(1));
+		File doorFile = new File(
+				this.getClass().getResource("/resources/images/Door.png").getPath().replace("%20", " ").substring(1));
 		return new ImageView(new Image(doorFile.toURI().toString()));
 	}
 
@@ -97,7 +160,7 @@ public class Controller
 	{
 		buttonColorPicker.setValue(Color.web("EE793C"));
 		doorColorPicker.setValue(Color.WHITE);
-		
+
 		buttonHighlightColorPicker.setValue(Color.web("F7FE40"));
 		doorHighlightColorPicker.setValue(Color.web("F7FE40"));
 
@@ -159,13 +222,13 @@ public class Controller
 		customizationGroup.setVisible(true);
 		mapGroup.setVisible(false);
 	}
-	
+
 	public void backToMain()
 	{
 		customizationGroup.setVisible(false);
 		helpGroup.setVisible(false);
 		settingsGroup.setVisible(false);
-		
+
 		mapGroup.setVisible(true);
 	}
 
@@ -196,62 +259,153 @@ public class Controller
 	public void nDoorBtn()
 	{
 		System.out.println("North Door");
-		setDoorStatus(Direction.NORTH, true);
 	}
 
 	public void sDoorBtn()
 	{
 		System.out.println("South Door");
-		setDoorStatus(Direction.SOUTH, false);
 	}
 
 	public void eDoorBtn()
 	{
 		System.out.println("East Door");
-		setDoorStatus(Direction.EAST, false);
 	}
 
 	public void wDoorBtn()
 	{
 		System.out.println("West Door");
-		setDoorStatus(Direction.WEST, true);
 	}
-	
-	private void setDoorStatus(Direction direction, boolean isLocked)
+
+	private void playerIcon(int x, int y)
 	{
-		switch(direction)
+		String index = x + "_" + y;
+
+		switch(index)
 		{
-			case NORTH:
-				doorStatusDisplay(nDoorImg, isLocked);
+			case "0_0":
+				playerIcon.setLayoutX(312);
+				playerIcon.setLayoutY(83);
 				break;
 
-			case EAST:
-				doorStatusDisplay(eDoorImg, isLocked);
+			case "0_1":
+				playerIcon.setLayoutX(420);
+				playerIcon.setLayoutY(83);
 				break;
 
-			case WEST:
-				doorStatusDisplay(wDoorImg, isLocked);
+			case "0_2":
+				playerIcon.setLayoutX(530);
+				playerIcon.setLayoutY(83);
 				break;
 
-			case SOUTH:
-				doorStatusDisplay(sDoorImg, isLocked);
+			case "0_3":
+				playerIcon.setLayoutX(636);
+				playerIcon.setLayoutY(83);
+				break;
+
+			case "0_4":
+				playerIcon.setLayoutX(743);
+				playerIcon.setLayoutY(83);
+				break;
+				
+			case "1_0":
+				playerIcon.setLayoutX(302);
+				playerIcon.setLayoutY(178);
+				break;
+
+			case "1_1":
+				playerIcon.setLayoutX(416);
+				playerIcon.setLayoutY(178);
+				break;
+
+			case "1_2":
+				playerIcon.setLayoutX(530);
+				playerIcon.setLayoutY(178);
+				break;
+
+			case "1_3":
+				playerIcon.setLayoutX(643);
+				playerIcon.setLayoutY(178);
+				break;
+
+			case "1_4":
+				playerIcon.setLayoutX(754);
+				playerIcon.setLayoutY(178);
+				break;
+				
+			case "2_0":
+				playerIcon.setLayoutX(291);
+				playerIcon.setLayoutY(280);
+				break;
+
+			case "2_1":
+				playerIcon.setLayoutX(408);
+				playerIcon.setLayoutY(280);
+				break;
+
+			case "2_2":
+				playerIcon.setLayoutX(530);
+				playerIcon.setLayoutY(280);
+				break;
+
+			case "2_3":
+				playerIcon.setLayoutX(649);
+				playerIcon.setLayoutY(280);
+				break;
+
+			case "2_4":
+				playerIcon.setLayoutX(768);
+				playerIcon.setLayoutY(280);
+				break;
+				
+			case "3_0":
+				playerIcon.setLayoutX(279);
+				playerIcon.setLayoutY(390);
+				break;
+
+			case "3_1":
+				playerIcon.setLayoutX(404);
+				playerIcon.setLayoutY(390);
+				break;
+
+			case "3_2":
+				playerIcon.setLayoutX(530);
+				playerIcon.setLayoutY(390);
+				break;
+
+			case "3_3":
+				playerIcon.setLayoutX(656);
+				playerIcon.setLayoutY(390);
+				break;
+
+			case "3_4":
+				playerIcon.setLayoutX(783);
+				playerIcon.setLayoutY(390);
+				break;
+				
+			case "4_0":
+				playerIcon.setLayoutX(265);
+				playerIcon.setLayoutY(486);
+				break;
+
+			case "4_1":
+				playerIcon.setLayoutX(400);
+				playerIcon.setLayoutY(486);
+				break;
+
+			case "4_2":
+				playerIcon.setLayoutX(530);
+				playerIcon.setLayoutY(486);
+				break;
+
+			case "4_3":
+				playerIcon.setLayoutX(666);
+				playerIcon.setLayoutY(486);
+				break;
+
+			case "4_4":
+				playerIcon.setLayoutX(795);
+				playerIcon.setLayoutY(486);
 				break;
 		}
-	}
-	
-	private void doorStatusDisplay(ImageView view, boolean isLocked)
-	{
-		URL imgURL = null;
-		
-		if(isLocked)
-			imgURL = this.getClass().getResource("/resources/images/Door X.png");
-		
-		else 
-			imgURL = this.getClass().getResource("/resources/images/Door Check.png");
-			
-		String path = imgURL.toExternalForm();
-		Image pic = new Image(path);
-		
-		view.setImage(pic);
 	}
 }
