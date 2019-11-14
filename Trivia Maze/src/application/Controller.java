@@ -72,6 +72,8 @@ public class Controller
 	@FXML private Text mcTextE;
 	@FXML private Group mcGroupF;
 	@FXML private Text mcTextF;
+	@FXML private Group tfGroup;
+	@FXML private TextArea tfQuestionText;
 	@FXML private ImageView doorway1;
 	@FXML private ImageView doorway2;
 	@FXML private ImageView doorway3;
@@ -181,7 +183,6 @@ public class Controller
 	private void showDoors()
 	{
 		Room curr = Maze.getCurrRoom();
-		System.out.println(Maze.getPlayerX() + " " + Maze.getPlayerY());
 		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
 		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
 		setDoorStatus(curr, Direction.EAST, eDoorGroup, eDoorStatusImg);
@@ -323,6 +324,7 @@ public class Controller
 	public void customizeBtn()
 	{
 		System.out.println("Customize");
+		backToMain();
 		customizationGroup.setVisible(true);
 		mapGroup.setVisible(false);
 	}
@@ -333,6 +335,7 @@ public class Controller
 		helpGroup.setVisible(false);
 		settingsGroup.setVisible(false);
 		mcGroup.setVisible(false);
+		tfGroup.setVisible(false);
 
 		mapGroup.setVisible(true);
 		showDoors();
@@ -351,6 +354,7 @@ public class Controller
 	public void settingsBtn()
 	{
 		System.out.println("Settings");
+		backToMain();
 		settingsGroup.setVisible(true);
 		mapGroup.setVisible(false);
 	}
@@ -358,112 +362,52 @@ public class Controller
 	public void helpBtn()
 	{
 		System.out.println("Help");
+		backToMain();
 		helpGroup.setVisible(true);
 		mapGroup.setVisible(false);
 	}
 
 	public void nDoorBtn()
 	{
-		System.out.println("North Door");
-		
-		Room curr = Maze.getCurrRoom();
-		if(curr.isDoorLocked(Direction.NORTH))
-			return;
-		
-		else if(curr.isDoorOpened(Direction.NORTH))
-		{
-			Maze.checkAnswer(-1);
-			backToMain();
-			return;
-		}
-		
-		Question question;
-
-		do // For Testing Purposes
-		{
-			question = Maze.getQuestion(Direction.NORTH);
-		} while(question instanceof TrueFalseQuestion);
-
-		if (question instanceof MultipleChoiceQuestion)
-			showMcQuestion((MultipleChoiceQuestion) question);
+		doorBtn(Direction.NORTH);
 	}
 
 	public void sDoorBtn()
 	{
-		System.out.println("South Door");
-		
-		Room curr = Maze.getCurrRoom();
-		if(curr.isDoorLocked(Direction.SOUTH))
-			return;
-		
-		else if(curr.isDoorOpened(Direction.SOUTH))
-		{
-			Maze.checkAnswer(-1);
-			backToMain();
-			return;
-		}
-		
-		Question question;
-
-		do // For Testing Purposes
-		{
-			question = Maze.getQuestion(Direction.SOUTH);
-		} while(question instanceof TrueFalseQuestion);
-
-		if (question instanceof MultipleChoiceQuestion)
-			showMcQuestion((MultipleChoiceQuestion) question);
+		doorBtn(Direction.SOUTH);
 	}
 
 	public void eDoorBtn()
 	{
-		System.out.println("East Door");
-		
-		Room curr = Maze.getCurrRoom();
-		if(curr.isDoorLocked(Direction.EAST))
-			return;
-		
-		else if(curr.isDoorOpened(Direction.EAST))
-		{
-			Maze.checkAnswer(-1);
-			backToMain();
-			return;
-		}
-		
-		Question question;
-
-		do // For Testing Purposes
-		{
-			question = Maze.getQuestion(Direction.EAST);
-		} while(question instanceof TrueFalseQuestion);
-
-		if (question instanceof MultipleChoiceQuestion)
-			showMcQuestion((MultipleChoiceQuestion) question);
+		doorBtn(Direction.EAST);
 	}
 
 	public void wDoorBtn()
 	{
-		System.out.println("West Door");
-		
+		doorBtn(Direction.WEST);
+	}
+	
+	private void doorBtn(Direction direction)
+	{
 		Room curr = Maze.getCurrRoom();
-		if(curr.isDoorLocked(Direction.WEST))
+		if(curr.isDoorLocked(direction))
 			return;
 		
-		else if(curr.isDoorOpened(Direction.WEST))
+		else if(curr.isDoorOpened(direction))
 		{
-			Maze.checkAnswer(-1);
+			Maze.movePlayer(direction);
 			backToMain();
 			return;
 		}
 		
 		Question question;
-
-		do // For Testing Purposes
-		{
-			question = Maze.getQuestion(Direction.WEST);
-		} while(question instanceof TrueFalseQuestion);
+		question = Maze.getQuestion(direction);
 
 		if (question instanceof MultipleChoiceQuestion)
 			showMcQuestion((MultipleChoiceQuestion) question);
+		
+		else if(question instanceof TrueFalseQuestion)
+			showTfQuestion((TrueFalseQuestion) question);
 	}
 
 	private void playerIcon(int x, int y)
@@ -636,6 +580,14 @@ public class Controller
 		}
 	}
 	
+	private void showTfQuestion(TrueFalseQuestion question)
+	{
+		mapGroup.setVisible(false);
+		tfGroup.setVisible(true);
+		
+		tfQuestionText.setText(question.getQuestion());
+	}
+	
 	private void hideAllAnswers()
 	{
 		mcGroupA.setVisible(false);
@@ -648,82 +600,47 @@ public class Controller
 	
 	public void selectmcA()
 	{
-		if (Maze.checkAnswer(0))
-		{
-			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		else
-		{
-			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		backToMain();
+		selectAnswer(0);
 	}
 	
 	public void selectmcB()
 	{
-		if (Maze.checkAnswer(1))
-		{
-			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		else
-		{	
-			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		backToMain();
+		selectAnswer(1);
 	}
 	
 	public void selectmcC()
 	{
-		if (Maze.checkAnswer(2))
-		{
-			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		else
-		{
-			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		backToMain();
+		selectAnswer(2);
 	}
 	
 	public void selectmcD()
 	{
-		if (Maze.checkAnswer(3))
-		{
-			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		else
-		{
-			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		backToMain();
+		selectAnswer(3);
 	}
 	
 	public void selectmcE()
 	{
-		if (Maze.checkAnswer(4))
-		{
-			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		else
-		{
-			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
-			Maze.movePlayer(Maze.getCurrentDirection());
-		}
-		backToMain();
+		selectAnswer(4);
 	}
 	
 	public void selectmcF()
 	{
-		if (Maze.checkAnswer(5))
+		selectAnswer(5);
+	}
+	
+	public void selectTrue()
+	{
+		selectAnswer(0);
+	}
+	
+	public void selectFalse()
+	{
+		selectAnswer(1);
+	}
+	
+	private void selectAnswer(int answerIndex)
+	{
+		if (Maze.checkAnswer(answerIndex))
 		{
 			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
 			Maze.movePlayer(Maze.getCurrentDirection());
@@ -733,6 +650,7 @@ public class Controller
 			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
 			Maze.movePlayer(Maze.getCurrentDirection());
 		}
+		
 		backToMain();
 	}
 }

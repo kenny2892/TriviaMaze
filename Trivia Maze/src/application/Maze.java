@@ -14,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -28,7 +27,7 @@ public class Maze extends Application
 	private static Direction currentDirection;
 	private static Question currentQuestion;
 	
-	private static int exitX = -1;
+	private static int exitX = -1; // TODO EXIT
 	private static int exitY = -1;
 	
 	@Override
@@ -102,6 +101,12 @@ public class Maze extends Application
 			
 			array = getMultipleChoice(connect, array);
 			array = getTrueFalse(connect, array);
+			
+			while(array.size() <= 40) // TODO For Demo Only! Remove later
+			{
+				array = getMultipleChoice(connect, array);
+				array = getTrueFalse(connect, array);
+			}
 			
 			Collections.shuffle(array);
 			
@@ -281,12 +286,7 @@ public class Maze extends Application
 
 		boolean correct = true;
 		
-		if(chosenAnswer != -1)
-			correct = currentQuestion.getCorrectIndex() == chosenAnswer;
-		
-		else
-			swapDirection();
-		
+		correct = currentQuestion.getCorrectIndex() == chosenAnswer;		
 		updateMazeRooms(!correct);
 		
 		if(!correct)
@@ -360,30 +360,6 @@ public class Maze extends Application
 					connectedRoom.setDoorLock(Direction.EAST, isLocked);
 					gameMaze[playerY][playerX - 1] = connectedRoom;
 				}
-				break;
-		}
-	}
-	
-	private static void swapDirection()
-	{
-		switch(currentDirection)
-		{
-			case NORTH:
-				currentDirection = Direction.SOUTH;
-				break;
-				
-			case SOUTH:
-				currentDirection = Direction.NORTH;
-				break;
-				
-			case EAST:
-
-				currentDirection = Direction.WEST;
-				break;
-				
-			case WEST:
-
-				currentDirection = Direction.EAST;
 				break;
 		}
 	}
