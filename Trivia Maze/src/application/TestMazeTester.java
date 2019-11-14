@@ -19,7 +19,9 @@ class TestMazeTester {
 	{
 		mazeRows = 5;
 		mazeColumns = 5;
-		gameMaze = Maze.createMaze(mazeRows, mazeColumns);
+		Maze.createMaze(mazeRows, mazeColumns);
+		gameMaze = Maze.gameMaze;
+		Maze.setEnteranceExit(mazeRows, mazeColumns);
 	}
 
 	@AfterAll
@@ -103,68 +105,86 @@ class TestMazeTester {
 	}
 	
 	@Test
-	void variableInitialization_playerXNotAbove0_True()
-	{
-		System.out.println(Maze.getPlayerX());
-		assertTrue(Maze.getPlayerX() < 0);
-	}
-	
-	@Test
-	void variableInitialization_playerYNotAbove0_True()
-	{
-		System.out.println(Maze.getPlayerY());
-		assertTrue(Maze.getPlayerY() < 0);
-	}
-	
-	@Test
-	void variableInitialization_exitXNotAbove0_True()
-	{
-		System.out.println(Maze.getExitX());
-		assertTrue(Maze.getExitX() < 0);
-	}
-	
-	@Test
-	void variableInitialization_exitYNotAbove0_True()
-	{
-		System.out.println(Maze.getExitY());
-		assertTrue(Maze.getExitY() < 0);
-	}
-	
-	@Test
 	void setEnteranceExit_playerXNotBelowZeroOrAbove4_True()
 	{
-		assertTrue(Maze.getPlayerX() >= 0 && Maze.getPlayerX() < mazeColumns);
+		for(int runs = 25; runs >= 0; runs--)
+		{
+			Maze.setEnteranceExit(mazeRows, mazeColumns);
+			if(Maze.getPlayerX() < 0 && Maze.getPlayerX() >= mazeColumns)
+			{
+				assertTrue(Maze.getPlayerX() >= 0 && Maze.getPlayerX() < mazeColumns);
+			}
+		}
 	}
 	
 	@Test
 	void setEnteranceExit_playerYNotBelowZeroOrAbove4_True()
 	{
-		assertTrue(Maze.getPlayerY() >= 0 && Maze.getPlayerY() < mazeRows);
+		for(int runs = 25; runs >= 0; runs--)
+		{
+			Maze.setEnteranceExit(mazeRows, mazeColumns);
+			if(Maze.getPlayerX() < 0 && Maze.getPlayerX() >= mazeColumns)
+			{
+				assertTrue(Maze.getPlayerY() >= 0 && Maze.getPlayerY() < mazeRows);
+			}
+		}
 	}
 	
 	@Test
 	void setEnteranceExit_exitXNotBelowZeroOrAbove4_True()
 	{
-		assertTrue(Maze.getExitX() >= 0 && Maze.getExitX() < mazeColumns);
+		for(int runs = 25; runs >= 0; runs--)
+		{
+			Maze.setEnteranceExit(mazeRows, mazeColumns);
+			if(Maze.getPlayerX() < 0 && Maze.getPlayerX() >= mazeColumns)
+			{
+				assertTrue(Maze.getExitX() >= 0 && Maze.getExitX() < mazeColumns);
+			}
+		}
 	}
 	
 	@Test
 	void setEnteranceExit_exitYNotBelowZeroOrAbove4_True()
 	{
-		assertTrue(Maze.getExitY() >= 0 && Maze.getExitY() < mazeRows);
+		for(int runs = 25; runs >= 0; runs--)
+		{
+			Maze.setEnteranceExit(mazeRows, mazeColumns);
+			if(Maze.getPlayerX() < 0 && Maze.getPlayerX() >= mazeColumns)
+			{
+				assertTrue(Maze.getExitY() >= 0 && Maze.getExitY() < mazeRows);
+			}
+		}
 	}
 	
 	@Test
 	void setEnteranceExit_playerAndMazeAreNotInSameIndex_True()
 	{
-		Maze.setEnteranceExit(mazeRows, mazeColumns);
-		assertTrue(!(Maze.getPlayerX() == Maze.getExitX() && Maze.getPlayerY() == Maze.getExitY()));
+		for(int runs = 25; runs >= 0; runs--)
+		{
+			Maze.setEnteranceExit(mazeRows, mazeColumns);
+			if(Maze.getPlayerX() == Maze.getExitX() && Maze.getPlayerY() == Maze.getExitY())
+			{
+				assertTrue(!(Maze.getPlayerX() == Maze.getExitX() && Maze.getPlayerY() == Maze.getExitY()));			}
+		}
 	}
 	
+	// TODO test method Maze.createQuestionDatabase once enum implementation
+	
 	@Test
-	void testPlayerOutOfBoundsXAxis()
+	void setPlayerLocation_worksForAllMazeIndexes_True()
 	{
-		
+		for(int playerX = 0; playerX < mazeRows; playerX++)
+		{
+			for(int playerY = 0; playerY < mazeColumns; playerY++)
+			{
+				Maze.setPlayerLocation(playerX, playerY);
+				if(Maze.getPlayerX() != playerX || Maze.getPlayerY() != playerY)
+				{
+					assertEquals(playerX, Maze.getPlayerX());
+					assertEquals(playerY, Maze.getPlayerY());
+				}
+			}
+		}
 	}
 
 }
