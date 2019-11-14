@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -227,6 +228,11 @@ public class Maze extends Application
 		
 		playerX = x;
 		playerY = y;
+	}
+	
+	public static Direction getCurrentDirection()
+	{
+		return currentDirection;
 	}
 	
 	public static Room getCurrRoom()

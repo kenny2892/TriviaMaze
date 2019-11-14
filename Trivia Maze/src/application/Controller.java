@@ -72,7 +72,50 @@ public class Controller
 	@FXML private Text mcTextE;
 	@FXML private Group mcGroupF;
 	@FXML private Text mcTextF;
+	@FXML private ImageView doorway1;
+	@FXML private ImageView doorway2;
+	@FXML private ImageView doorway3;
+	@FXML private ImageView doorway4;
+	@FXML private ImageView doorway5;
+	@FXML private ImageView doorway6;
+	@FXML private ImageView doorway7;
+	@FXML private ImageView doorway8;
+	@FXML private ImageView doorway9;
+	@FXML private ImageView doorway10;
+	@FXML private ImageView doorway11;
+	@FXML private ImageView doorway12;
+	@FXML private ImageView doorway13;
+	@FXML private ImageView doorway14;
+	@FXML private ImageView doorway15;
+	@FXML private ImageView doorway16;
+	@FXML private ImageView doorway17;
+	@FXML private ImageView doorway18;
+	@FXML private ImageView doorway19;
+	@FXML private ImageView doorway20;
+	@FXML private ImageView doorway21;
+	@FXML private ImageView doorway22;
+	@FXML private ImageView doorway23;
+	@FXML private ImageView doorway24;
+	@FXML private ImageView doorway25;
+	@FXML private ImageView doorway26;
+	@FXML private ImageView doorway27;
+	@FXML private ImageView doorway28;
+	@FXML private ImageView doorway29;
+	@FXML private ImageView doorway30;
+	@FXML private ImageView doorway31;
+	@FXML private ImageView doorway32;
+	@FXML private ImageView doorway33;
+	@FXML private ImageView doorway34;
+	@FXML private ImageView doorway35;
+	@FXML private ImageView doorway36;
+	@FXML private ImageView doorway37;
+	@FXML private ImageView doorway38;
+	@FXML private ImageView doorway39;
+	@FXML private ImageView doorway40;
 
+	private static ImageView[][] horizontalArchWays;
+	private static ImageView[][] verticalArchWays;
+	
 	public void initialize()
 	{
 		mcQuestionText.setWrapText(true);
@@ -80,8 +123,61 @@ public class Controller
 		setClippingMasks();
 		setColors();
 		backToMain();
+		
+		placeArchWays();
 	}
 
+	
+	private void placeArchWays()
+	{
+		horizontalArchWays = new ImageView[][]
+		{
+			{ doorway1, doorway2, doorway3, doorway4 },
+			{ doorway10, doorway11, doorway13, doorway14 },
+			{ doorway20, doorway21, doorway22, doorway23 },
+			{ doorway28, doorway29, doorway30, doorway31},
+			{ doorway37, doorway38, doorway39, doorway40 }
+		};
+		
+		verticalArchWays = new ImageView[][]
+		{
+			{ doorway5, doorway6, doorway7, doorway8, doorway9 },
+			{ doorway15, doorway16, doorway17, doorway18, doorway19 },
+			{ doorway24, doorway25, doorway26, doorway27, doorway28 },
+			{ doorway32, doorway33, doorway34, doorway35, doorway36 }
+		};
+	}
+	
+	private ImageView getArchway(Direction direction)
+	{
+		int playerX = Maze.getPlayerX();
+		int playerY = Maze.getPlayerY();
+		
+		switch(direction)
+		{
+		case NORTH:
+			return (playerY - 1 ) >= 0 && (playerY < 5) ? verticalArchWays[playerX - 1][playerY] : null;
+		case SOUTH:
+			return (playerY + 1 ) >= 0 && (playerY < 5) ? verticalArchWays[playerX][playerY] : null;
+		case EAST:
+			return (playerX + 1 ) >= 0 && (playerX < 5) ? horizontalArchWays[playerX][playerY] : null;
+		case WEST:
+			return (playerX - 1 ) >= 0 && (playerX < 5) ? horizontalArchWays[playerX][playerY - 1] : null;
+		default:
+			return null;
+		}
+	}
+	
+	private void setArchwayToCheckMark(ImageView archway)
+	{
+		archway.setImage(new Image(this.getClass().getResource("/resources/images/Checkmark.png").toExternalForm()));
+	}
+	
+	private void setArchwayToXMark(ImageView archway)
+	{
+		archway.setImage(new Image(this.getClass().getResource("/resources/images/X.png").toExternalForm()));
+	}
+	
 	private void showDoors()
 	{
 		Room curr = Maze.getCurrRoom();
@@ -552,37 +648,55 @@ public class Controller
 	
 	public void selectmcA()
 	{
-		Maze.checkAnswer(0);
+		if (Maze.checkAnswer(0))
+			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+		else
+			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
 		backToMain();
 	}
 	
 	public void selectmcB()
 	{
-		Maze.checkAnswer(1);
+		if (Maze.checkAnswer(1))
+			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+		else
+			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
 		backToMain();
 	}
 	
 	public void selectmcC()
 	{
-		Maze.checkAnswer(2);
+		if (Maze.checkAnswer(2))
+			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+		else
+			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
 		backToMain();
 	}
 	
 	public void selectmcD()
 	{
-		Maze.checkAnswer(3);
+		if (Maze.checkAnswer(3))
+			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+		else
+			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
 		backToMain();
 	}
 	
 	public void selectmcE()
 	{
-		Maze.checkAnswer(4);
+		if (Maze.checkAnswer(4))
+			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+		else
+			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
 		backToMain();
 	}
 	
 	public void selectmcF()
 	{
-		Maze.checkAnswer(5);
+		if (Maze.checkAnswer(5))
+			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
+		else
+			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
 		backToMain();
 	}
 }

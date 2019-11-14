@@ -41,15 +41,15 @@ class TestMazeTester {
 	}
 
 	@Test
-	void mazeColumnLength()
+	void isMazeColumns_ofLengthaMazeColumns_mazeColumns()
 	{
-		assertEquals(5, gameMaze.length);
+		assertEquals(mazeColumns, gameMaze.length);
 	}
 	
 	@Test
 	void mazeRowLength()
 	{
-		assertEquals(5, gameMaze[0].length);
+		assertEquals(mazeRows, gameMaze[0].length);
 	}
 	
 	@Test
@@ -126,6 +126,12 @@ class TestMazeTester {
 		assertTrue(Maze.getExitY() >= 0 && Maze.getExitY() < mazeRows);
 		assertTrue(Maze.getPlayerX() >= 0 && Maze.getPlayerX() < mazeColumns);
 		assertTrue(Maze.getPlayerY() >= 0 && Maze.getPlayerY() < mazeRows);
+	}
+	
+	@Test
+	void testPlayerOutOfBoundsXAxis()
+	{
+		
 	}
 
 }
