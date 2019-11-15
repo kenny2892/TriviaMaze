@@ -4,10 +4,8 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Main extends Application
@@ -71,14 +69,6 @@ public class Main extends Application
 		
 		if(isMaximized)
 			stage.setMaximized(true);
-
-		Screen screen = Screen.getPrimary();
-		Rectangle2D bounds = screen.getVisualBounds();
-
-		stage.setX(bounds.getMinX());
-		stage.setY(bounds.getMinY());
-		stage.setWidth(bounds.getWidth());
-		stage.setHeight(bounds.getHeight());
 	}
 	
 	public static void changeScene(SceneType type)
