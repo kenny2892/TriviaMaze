@@ -1,14 +1,22 @@
-package application;
+package application.controllers;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
+import application.Direction;
+import application.Main;
+import application.Maze;
+import application.MultipleChoiceQuestion;
+import application.Player;
+import application.Question;
+import application.Room;
+import application.SceneType;
+import application.TrueFalseQuestion;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
@@ -21,7 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-public class Controller
+public class MapAndQuestionsController
 {
 	@FXML private ImageView customizeImg;
 	@FXML private ImageView saveImg;
@@ -50,30 +58,9 @@ public class Controller
 	@FXML private Rectangle sDoorHitBox;
 	@FXML private Rectangle wDoorHitBox;
 	@FXML private Rectangle eDoorHitBox;
-	@FXML private Group customizationGroup;
-	@FXML private ColorPicker buttonColorPicker;
-	@FXML private ColorPicker buttonHighlightColorPicker;
-	@FXML private ColorPicker doorColorPicker;
-	@FXML private ColorPicker doorHighlightColorPicker;
-	@FXML private Group helpGroup;
-	@FXML private Group settingsGroup;
 	@FXML private ImageView playerIcon;
-	@FXML private Group mcGroup;
-	@FXML private TextArea mcQuestionText;
-	@FXML private Group mcGroupA;
-	@FXML private Text mcTextA;
-	@FXML private Group mcGroupB;
-	@FXML private Text mcTextB;
-	@FXML private Group mcGroupC;
-	@FXML private Text mcTextC;
-	@FXML private Group mcGroupD;
-	@FXML private Text mcTextD;
-	@FXML private Group mcGroupE;
-	@FXML private Text mcTextE;
-	@FXML private Group mcGroupF;
-	@FXML private Text mcTextF;
-	@FXML private Group tfGroup;
-	@FXML private TextArea tfQuestionText;
+	@FXML private ImageView exitIcon;
+	
 	@FXML private ImageView doorway1;
 	@FXML private ImageView doorway2;
 	@FXML private ImageView doorway3;
@@ -114,19 +101,37 @@ public class Controller
 	@FXML private ImageView doorway38;
 	@FXML private ImageView doorway39;
 	@FXML private ImageView doorway40;
-	@FXML private Text winnerText;
-	@FXML private ImageView exitIcon;
 
+	@FXML private Group mcGroup;
+	@FXML private TextArea mcQuestionText;
+	@FXML private Group mcGroupA;
+	@FXML private Text mcTextA;
+	@FXML private Group mcGroupB;
+	@FXML private Text mcTextB;
+	@FXML private Group mcGroupC;
+	@FXML private Text mcTextC;
+	@FXML private Group mcGroupD;
+	@FXML private Text mcTextD;
+	@FXML private Group mcGroupE;
+	@FXML private Text mcTextE;
+	@FXML private Group mcGroupF;
+	@FXML private Text mcTextF;
+	@FXML private Group tfGroup;
+	@FXML private TextArea tfQuestionText;
+	
 	private static ImageView[][] horizontalArchWays;
 	private static ImageView[][] verticalArchWays;
 
 	public void initialize()
 	{
-		mcQuestionText.setWrapText(true);
-
 		setClippingMasks();
-		setColors();
-		backToMain();
+		buttonColors();
+		doorColors();
+		arrowType();
+
+		mapGroup.setVisible(true);
+		showDoors();
+		
 		exitIcon(Main.getMaze().getExitX(), Main.getMaze().getExitY());
 
 		placeArchWays();
@@ -152,7 +157,6 @@ public class Controller
 
 	private ImageView getArchway(Direction direction)
 	{
-		// Changed player to package
 		int playerX = Main.getPlayer().getPlayerX();
 		int playerY = Main.getPlayer().getPlayerY();
 
@@ -265,18 +269,6 @@ public class Controller
 		return new ImageView(new Image(doorFile.toURI().toString()));
 	}
 
-	private void setColors()
-	{
-		buttonColorPicker.setValue(Color.web("EE793C"));
-		doorColorPicker.setValue(Color.WHITE);
-
-		buttonHighlightColorPicker.setValue(Color.web("F7FE40"));
-		doorHighlightColorPicker.setValue(Color.web("F7FE40"));
-
-		buttonColors();
-		doorColors();
-	}
-
 	private void changeImageColor(ImageView imageToChange, Rectangle hitBox, Color mainColor, Color highlightColor)
 	{
 		ColorAdjust adjust = new ColorAdjust();
@@ -304,8 +296,8 @@ public class Controller
 
 	public void buttonColors()
 	{
-		Color mainColor = buttonColorPicker.getValue();
-		Color highlightColor = buttonHighlightColorPicker.getValue();
+		Color mainColor = CustomizeController.getBtnColor();
+		Color highlightColor = CustomizeController.getBtnHighlightColor();
 
 		changeImageColor(customizeImg, customizeHitBox, mainColor, highlightColor);
 		changeImageColor(saveImg, saveHitBox, mainColor, highlightColor);
@@ -316,34 +308,26 @@ public class Controller
 
 	public void doorColors()
 	{
-		Color mainColor = doorColorPicker.getValue();
-		Color highlightColor = doorHighlightColorPicker.getValue();
+		Color mainColor = CustomizeController.getDoorColor();
+		Color highlightColor = CustomizeController.getDoorHighlightColor();
 
 		changeImageColor(nDoorImg, nDoorHitBox, mainColor, highlightColor);
 		changeImageColor(sDoorImg, sDoorHitBox, mainColor, highlightColor);
 		changeImageColor(eDoorImg, eDoorHitBox, mainColor, highlightColor);
 		changeImageColor(wDoorImg, wDoorHitBox, mainColor, highlightColor);
 	}
+	
+	private void arrowType()
+	{
+		Image type = CustomizeController.getArrowType();
+		
+		if(type != null)
+			playerIcon.setImage(type);
+	}
 
 	public void customizeBtn()
 	{
-		System.out.println("Customize");
-		backToMain();
-		customizationGroup.setVisible(true);
-		mapGroup.setVisible(false);
-	}
-
-	public void backToMain()
-	{
-		customizationGroup.setVisible(false);
-		helpGroup.setVisible(false);
-		settingsGroup.setVisible(false);
-		mcGroup.setVisible(false);
-		tfGroup.setVisible(false);
-		winnerText.setVisible(false);
-
-		mapGroup.setVisible(true);
-		showDoors();
+		Main.changeScene(SceneType.CUSTOMIZE);
 	}
 
 	public void saveBtn()
@@ -358,18 +342,12 @@ public class Controller
 
 	public void settingsBtn()
 	{
-		System.out.println("Settings");
-		backToMain();
-		settingsGroup.setVisible(true);
-		mapGroup.setVisible(false);
+		Main.changeScene(SceneType.SETTINGS);
 	}
 
 	public void helpBtn()
 	{
-		System.out.println("Help");
-		backToMain();
-		helpGroup.setVisible(true);
-		mapGroup.setVisible(false);
+		Main.changeScene(SceneType.HELP);
 	}
 
 	public void nDoorBtn()
@@ -404,7 +382,7 @@ public class Controller
 		else if (curr.isDoorOpened(direction))
 		{
 			player.movePlayer(maze, direction);
-			backToMain();
+			showDoors();
 			return;
 		}
 
@@ -432,7 +410,7 @@ public class Controller
 				{ 265, 400, 530, 666, 795 } };
 
 		playerIcon.setLayoutX(xAxis[y][x]);
-		playerIcon.setLayoutY(yAxis[x]);
+		playerIcon.setLayoutY(yAxis[y]);
 	}
 
 	private void exitIcon(int x, int y)
@@ -455,9 +433,18 @@ public class Controller
 				{ 252, 385, 518, 652, 785 } };
 				
 		exitIcon.setLayoutX(xAxis[y][x]);
-		exitIcon.setLayoutY(yAxis[x]);
+		exitIcon.setLayoutY(yAxis[y]);
 		exitIcon.setFitWidth(width[y]);
 		exitIcon.setFitHeight(height[y]);
+	}
+
+	public void backToMain()
+	{
+		mcGroup.setVisible(false);
+		tfGroup.setVisible(false);
+
+		mapGroup.setVisible(true);
+		showDoors();
 	}
 
 	private void showMcQuestion(MultipleChoiceQuestion question)
@@ -566,9 +553,7 @@ public class Controller
 			if (player.movePlayer(maze, maze.getCurrentDirection()))
 			{
 				backToMain();
-				mapGroup.setVisible(false);
-				winnerText.setVisible(true);
-				return;
+				Main.changeScene(SceneType.WIN);
 			}
 		}
 
