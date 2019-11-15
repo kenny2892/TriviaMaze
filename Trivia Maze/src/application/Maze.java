@@ -71,7 +71,7 @@ public class Maze
 	
 	public Room getCurrRoom()
 	{
-		return this.gameMaze[this.player.getPlayerY()][this.player.getPlayerY()];
+		return this.gameMaze[this.player.getPlayerY()][this.player.getPlayerX()];
 	}
 	
 	public void setDirection(Direction newDirection)
@@ -169,7 +169,7 @@ public class Maze
 				break;
 				
 			case WEST:
-				setPlayerLocation(player.getPlayerX() - 1, player.getPlayerY() - 1);
+				setPlayerLocation(player.getPlayerX() - 1, player.getPlayerY());
 				break;
 		default:
 			throw new IllegalArgumentException("Passed value was NULL");
