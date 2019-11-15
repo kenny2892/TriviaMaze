@@ -10,17 +10,12 @@ import java.util.Collections;
 
 public class Database
 {
-	
+	private Question currentQuestion;
 	private ArrayList<Question> questions;
 	
 	public Database()
 	{
 		this.questions = createQuestionDatabase();
-	}
-	
-	public ArrayList<Question> getQuestions()
-	{
-		return this.questions;
 	}
 	
 	public ArrayList<Question> createQuestionDatabase() // TODO add switch and enum for different databases
@@ -135,4 +130,19 @@ public class Database
 		return array;
 	}
 
+	public boolean checkAnswer(int chosenAnswer)
+	{
+		if (currentQuestion == null)
+			return false;
+
+		return currentQuestion.getCorrectIndex() == chosenAnswer;
+	}
+	
+	public Question getQuestion()
+	{
+		currentQuestion = questions.get(0);
+		questions.remove(0);
+		
+		return currentQuestion;
+	}
 }

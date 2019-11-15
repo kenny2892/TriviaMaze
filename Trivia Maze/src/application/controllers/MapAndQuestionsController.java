@@ -1,14 +1,22 @@
-package application;
+package application.controllers;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
+import application.Direction;
+import application.Main;
+import application.Maze;
+import application.MultipleChoiceQuestion;
+import application.Player;
+import application.Question;
+import application.Room;
+import application.SceneType;
+import application.TrueFalseQuestion;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
@@ -21,7 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-public class Controller
+public class MapAndQuestionsController
 {
 	@FXML private ImageView customizeImg;
 	@FXML private ImageView saveImg;
@@ -50,30 +58,9 @@ public class Controller
 	@FXML private Rectangle sDoorHitBox;
 	@FXML private Rectangle wDoorHitBox;
 	@FXML private Rectangle eDoorHitBox;
-	@FXML private Group customizationGroup;
-	@FXML private ColorPicker buttonColorPicker;
-	@FXML private ColorPicker buttonHighlightColorPicker;
-	@FXML private ColorPicker doorColorPicker;
-	@FXML private ColorPicker doorHighlightColorPicker;
-	@FXML private Group helpGroup;
-	@FXML private Group settingsGroup;
 	@FXML private ImageView playerIcon;
-	@FXML private Group mcGroup;
-	@FXML private TextArea mcQuestionText;
-	@FXML private Group mcGroupA;
-	@FXML private Text mcTextA;
-	@FXML private Group mcGroupB;
-	@FXML private Text mcTextB;
-	@FXML private Group mcGroupC;
-	@FXML private Text mcTextC;
-	@FXML private Group mcGroupD;
-	@FXML private Text mcTextD;
-	@FXML private Group mcGroupE;
-	@FXML private Text mcTextE;
-	@FXML private Group mcGroupF;
-	@FXML private Text mcTextF;
-	@FXML private Group tfGroup;
-	@FXML private TextArea tfQuestionText;
+	@FXML private ImageView exitIcon;
+	
 	@FXML private ImageView doorway1;
 	@FXML private ImageView doorway2;
 	@FXML private ImageView doorway3;
@@ -114,22 +101,38 @@ public class Controller
 	@FXML private ImageView doorway38;
 	@FXML private ImageView doorway39;
 	@FXML private ImageView doorway40;
-	@FXML private Text winnerText;
-	@FXML private ImageView exitIcon;
 
+	@FXML private Group mcGroup;
+	@FXML private TextArea mcQuestionText;
+	@FXML private Group mcGroupA;
+	@FXML private Text mcTextA;
+	@FXML private Group mcGroupB;
+	@FXML private Text mcTextB;
+	@FXML private Group mcGroupC;
+	@FXML private Text mcTextC;
+	@FXML private Group mcGroupD;
+	@FXML private Text mcTextD;
+	@FXML private Group mcGroupE;
+	@FXML private Text mcTextE;
+	@FXML private Group mcGroupF;
+	@FXML private Text mcTextF;
+	@FXML private Group tfGroup;
+	@FXML private TextArea tfQuestionText;
+	
 	private static ImageView[][] horizontalArchWays;
 	private static ImageView[][] verticalArchWays;
-	private static Maze gameMaze;
 
 	public void initialize()
 	{
-		mcQuestionText.setWrapText(true);
-
-		gameMaze = new Maze(5, 5);
 		setClippingMasks();
-		setColors();
-		backToMain();
-		exitIcon(gameMaze.getExitX(), gameMaze.getExitY());
+		buttonColors();
+		doorColors();
+		arrowType();
+
+		mapGroup.setVisible(true);
+		showDoors();
+		
+		exitIcon(Main.getMaze().getExitX(), Main.getMaze().getExitY());
 
 		placeArchWays();
 	}
@@ -154,9 +157,8 @@ public class Controller
 
 	private ImageView getArchway(Direction direction)
 	{
-		// Changed player to package
-		int playerX = gameMaze.getPlayer().getPlayerX();
-		int playerY = gameMaze.getPlayer().getPlayerY();
+		int playerX = Main.getPlayer().getPlayerX();
+		int playerY = Main.getPlayer().getPlayerY();
 
 		switch(direction)
 		{
@@ -185,12 +187,15 @@ public class Controller
 
 	private void showDoors()
 	{
-		Room curr = gameMaze.getCurrRoom();
+		Maze maze = Main.getMaze();
+		Player player = Main.getPlayer();
+
+		Room curr = maze.getRoom(player.getPlayerX(), player.getPlayerY());
 		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
 		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
 		setDoorStatus(curr, Direction.EAST, eDoorGroup, eDoorStatusImg);
 		setDoorStatus(curr, Direction.WEST, wDoorGroup, wDoorStatusImg);
-		playerIcon(gameMaze.getPlayer().getPlayerX(), gameMaze.getPlayer().getPlayerY());
+		playerIcon(player.getPlayerX(), player.getPlayerY());
 	}
 
 	private void setDoorStatus(Room curr, Direction direction, Group doorGroup, ImageView statusImg)
@@ -264,18 +269,6 @@ public class Controller
 		return new ImageView(new Image(doorFile.toURI().toString()));
 	}
 
-	private void setColors()
-	{
-		buttonColorPicker.setValue(Color.web("EE793C"));
-		doorColorPicker.setValue(Color.WHITE);
-
-		buttonHighlightColorPicker.setValue(Color.web("F7FE40"));
-		doorHighlightColorPicker.setValue(Color.web("F7FE40"));
-
-		buttonColors();
-		doorColors();
-	}
-
 	private void changeImageColor(ImageView imageToChange, Rectangle hitBox, Color mainColor, Color highlightColor)
 	{
 		ColorAdjust adjust = new ColorAdjust();
@@ -303,8 +296,8 @@ public class Controller
 
 	public void buttonColors()
 	{
-		Color mainColor = buttonColorPicker.getValue();
-		Color highlightColor = buttonHighlightColorPicker.getValue();
+		Color mainColor = CustomizeController.getBtnColor();
+		Color highlightColor = CustomizeController.getBtnHighlightColor();
 
 		changeImageColor(customizeImg, customizeHitBox, mainColor, highlightColor);
 		changeImageColor(saveImg, saveHitBox, mainColor, highlightColor);
@@ -315,34 +308,26 @@ public class Controller
 
 	public void doorColors()
 	{
-		Color mainColor = doorColorPicker.getValue();
-		Color highlightColor = doorHighlightColorPicker.getValue();
+		Color mainColor = CustomizeController.getDoorColor();
+		Color highlightColor = CustomizeController.getDoorHighlightColor();
 
 		changeImageColor(nDoorImg, nDoorHitBox, mainColor, highlightColor);
 		changeImageColor(sDoorImg, sDoorHitBox, mainColor, highlightColor);
 		changeImageColor(eDoorImg, eDoorHitBox, mainColor, highlightColor);
 		changeImageColor(wDoorImg, wDoorHitBox, mainColor, highlightColor);
 	}
+	
+	private void arrowType()
+	{
+		Image type = CustomizeController.getArrowType();
+		
+		if(type != null)
+			playerIcon.setImage(type);
+	}
 
 	public void customizeBtn()
 	{
-		System.out.println("Customize");
-		backToMain();
-		customizationGroup.setVisible(true);
-		mapGroup.setVisible(false);
-	}
-
-	public void backToMain()
-	{
-		customizationGroup.setVisible(false);
-		helpGroup.setVisible(false);
-		settingsGroup.setVisible(false);
-		mcGroup.setVisible(false);
-		tfGroup.setVisible(false);
-		winnerText.setVisible(false);
-
-		mapGroup.setVisible(true);
-		showDoors();
+		Main.changeScene(SceneType.CUSTOMIZE);
 	}
 
 	public void saveBtn()
@@ -357,18 +342,12 @@ public class Controller
 
 	public void settingsBtn()
 	{
-		System.out.println("Settings");
-		backToMain();
-		settingsGroup.setVisible(true);
-		mapGroup.setVisible(false);
+		Main.changeScene(SceneType.SETTINGS);
 	}
 
 	public void helpBtn()
 	{
-		System.out.println("Help");
-		backToMain();
-		helpGroup.setVisible(true);
-		mapGroup.setVisible(false);
+		Main.changeScene(SceneType.HELP);
 	}
 
 	public void nDoorBtn()
@@ -393,19 +372,22 @@ public class Controller
 
 	private void doorBtn(Direction direction)
 	{
-		Room curr = gameMaze.getCurrRoom();
+		Maze maze = Main.getMaze();
+		Player player = Main.getPlayer();
+
+		Room curr = maze.getRoom(player.getPlayerX(), player.getPlayerY());
 		if (curr.isDoorLocked(direction))
 			return;
 
 		else if (curr.isDoorOpened(direction))
 		{
-			gameMaze.movePlayer(direction);
-			backToMain();
+			player.movePlayer(maze, direction);
+			showDoors();
 			return;
 		}
 
 		Question question;
-		question = gameMaze.getQuestion(direction);
+		question = Main.getQuestion(direction);
 
 		if (question instanceof MultipleChoiceQuestion)
 			showMcQuestion((MultipleChoiceQuestion) question);
@@ -416,318 +398,53 @@ public class Controller
 
 	private void playerIcon(int x, int y)
 	{
-		String index = y + "_" + x;
+		int[] yAxis = new int[]
+		{ 83, 178, 280, 390, 486 };
 
-		switch(index)
+		int[][] xAxis = new int[][]
 		{
-			case "0_0":
-				playerIcon.setLayoutX(312);
-				playerIcon.setLayoutY(83);
-				break;
+				{ 312, 420, 530, 636, 743 },
+				{ 302, 416, 530, 643, 754 },
+				{ 291, 408, 530, 649, 768 },
+				{ 279, 404, 530, 656, 783 },
+				{ 265, 400, 530, 666, 795 } };
 
-			case "0_1":
-				playerIcon.setLayoutX(420);
-				playerIcon.setLayoutY(83);
-				break;
-
-			case "0_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(83);
-				break;
-
-			case "0_3":
-				playerIcon.setLayoutX(636);
-				playerIcon.setLayoutY(83);
-				break;
-
-			case "0_4":
-				playerIcon.setLayoutX(743);
-				playerIcon.setLayoutY(83);
-				break;
-
-			case "1_0":
-				playerIcon.setLayoutX(302);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "1_1":
-				playerIcon.setLayoutX(416);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "1_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "1_3":
-				playerIcon.setLayoutX(643);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "1_4":
-				playerIcon.setLayoutX(754);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "2_0":
-				playerIcon.setLayoutX(291);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "2_1":
-				playerIcon.setLayoutX(408);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "2_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "2_3":
-				playerIcon.setLayoutX(649);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "2_4":
-				playerIcon.setLayoutX(768);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "3_0":
-				playerIcon.setLayoutX(279);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "3_1":
-				playerIcon.setLayoutX(404);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "3_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "3_3":
-				playerIcon.setLayoutX(656);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "3_4":
-				playerIcon.setLayoutX(783);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "4_0":
-				playerIcon.setLayoutX(265);
-				playerIcon.setLayoutY(486);
-				break;
-
-			case "4_1":
-				playerIcon.setLayoutX(400);
-				playerIcon.setLayoutY(486);
-				break;
-
-			case "4_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(486);
-				break;
-
-			case "4_3":
-				playerIcon.setLayoutX(666);
-				playerIcon.setLayoutY(486);
-				break;
-
-			case "4_4":
-				playerIcon.setLayoutX(795);
-				playerIcon.setLayoutY(486);
-				break;
-		}
+		playerIcon.setLayoutX(xAxis[y][x]);
+		playerIcon.setLayoutY(yAxis[y]);
 	}
 
 	private void exitIcon(int x, int y)
 	{
-		String index = y + "_" + x;
+		int[] width = new int[]
+		{ 74, 74, 85, 85, 126 };
 
-		switch(index)
+		int[] height = new int[]
+		{ 73, 73, 79, 79, 103 };
+		
+		int[] yAxis = new int[]
+		{ 173, 262, 356, 464, 572 };
+
+		int[][] xAxis = new int[][]
 		{
-			case "0_0":
-				exitIcon.setLayoutX(315);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
+				{ 315, 426, 534, 640, 748 },
+				{ 305, 408, 534, 646, 754 },
+				{ 293, 408, 530, 649, 768 },
+				{ 278, 404, 530, 656, 781 },
+				{ 252, 385, 518, 652, 785 } };
+				
+		exitIcon.setLayoutX(xAxis[y][x]);
+		exitIcon.setLayoutY(yAxis[y]);
+		exitIcon.setFitWidth(width[y]);
+		exitIcon.setFitHeight(height[y]);
+	}
 
-			case "0_1":
-				exitIcon.setLayoutX(426);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
+	public void backToMain()
+	{
+		mcGroup.setVisible(false);
+		tfGroup.setVisible(false);
 
-			case "0_2":
-				exitIcon.setLayoutX(534);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "0_3":
-				exitIcon.setLayoutX(640);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "0_4":
-				exitIcon.setLayoutX(748);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_0":
-				exitIcon.setLayoutX(305);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_1":
-				exitIcon.setLayoutX(419);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_2":
-				exitIcon.setLayoutX(534);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_3":
-				exitIcon.setLayoutX(646);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_4":
-				exitIcon.setLayoutX(754);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "2_0":
-				exitIcon.setLayoutX(293);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "2_1":
-				exitIcon.setLayoutX(408);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "2_2":
-				exitIcon.setLayoutX(530);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "2_3":
-				exitIcon.setLayoutX(649);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "2_4":
-				exitIcon.setLayoutX(768);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_0":
-				exitIcon.setLayoutX(278);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_1":
-				exitIcon.setLayoutX(404);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_2":
-				exitIcon.setLayoutX(530);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_3":
-				exitIcon.setLayoutX(656);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_4":
-				exitIcon.setLayoutX(781);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "4_0":
-				exitIcon.setLayoutX(252);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-
-			case "4_1":
-				exitIcon.setLayoutX(385);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-
-			case "4_2":
-				exitIcon.setLayoutX(518);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-
-			case "4_3":
-				exitIcon.setLayoutX(652);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-
-			case "4_4":
-				exitIcon.setLayoutX(785);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-		}
+		mapGroup.setVisible(true);
+		showDoors();
 	}
 
 	private void showMcQuestion(MultipleChoiceQuestion question)
@@ -827,20 +544,21 @@ public class Controller
 
 	private void selectAnswer(int answerIndex)
 	{
-		if (gameMaze.checkAnswer(answerIndex))
+		Maze maze = Main.getMaze();
+		Player player = Main.getPlayer();
+
+		if (Main.checkAnswer(answerIndex))
 		{
-			setArchwayToCheckMark(getArchway(gameMaze.getCurrentDirection()));
-			if(gameMaze.movePlayer(gameMaze.getCurrentDirection()))
+			setArchwayToCheckMark(getArchway(maze.getCurrentDirection()));
+			if (player.movePlayer(maze, maze.getCurrentDirection()))
 			{
 				backToMain();
-				mapGroup.setVisible(false);
-				winnerText.setVisible(true);
-				return;
+				Main.changeScene(SceneType.WIN);
 			}
 		}
-		
+
 		else
-			setArchwayToXMark(getArchway(gameMaze.getCurrentDirection()));
+			setArchwayToXMark(getArchway(maze.getCurrentDirection()));
 
 		backToMain();
 	}
