@@ -12,15 +12,13 @@ class TestMazeTester {
 	
 	private static int mazeRows;
 	private static int mazeColumns;
+	private static Player player;
 	private static Maze gameMaze;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception
 	{
-		mazeRows = 5;
-		mazeColumns = 5;
-		gameMaze = new Maze(5, 5);
-		gameMaze.setEnteranceExit(mazeRows, mazeColumns);
+		
 	}
 
 	@AfterAll
@@ -32,7 +30,17 @@ class TestMazeTester {
 	@BeforeEach
 	void setUp() throws Exception
 	{
+		mazeRows = 5;
+		mazeColumns = 5;
+		gameMaze = new Maze(mazeRows, mazeColumns);
+		player = new Player();
 		
+		gameMaze.setExit(mazeRows, mazeColumns);
+		
+		do
+		{
+			player.setSpawn(mazeRows, mazeColumns);
+		} while(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY());
 	}
 
 	@AfterEach
@@ -108,10 +116,9 @@ class TestMazeTester {
 	{
 		for(int runs = 25; runs >= 0; runs--)
 		{
-			gameMaze.setEnteranceExit(mazeRows, mazeColumns);
-			if(gameMaze.getPlayer().getPlayerX() < 0 && gameMaze.getPlayer().getPlayerX() >= mazeColumns)
+			if(player.getPlayerX() < 0 && player.getPlayerX() >= mazeColumns)
 			{
-				assertTrue(gameMaze.getPlayer().getPlayerX() >= 0 && gameMaze.getPlayer().getPlayerX() < mazeColumns);
+				assertTrue(player.getPlayerX() >= 0 && player.getPlayerX() < mazeColumns);
 			}
 		}
 	}
@@ -121,10 +128,9 @@ class TestMazeTester {
 	{
 		for(int runs = 25; runs >= 0; runs--)
 		{
-			gameMaze.setEnteranceExit(mazeRows, mazeColumns);
-			if(gameMaze.getPlayer().getPlayerX() < 0 && gameMaze.getPlayer().getPlayerX() >= mazeColumns)
+			if(player.getPlayerX() < 0 && player.getPlayerX() >= mazeColumns)
 			{
-				assertTrue(gameMaze.getPlayer().getPlayerY() >= 0 && gameMaze.getPlayer().getPlayerY() < mazeRows);
+				assertTrue(player.getPlayerY() >= 0 && player.getPlayerY() < mazeRows);
 			}
 		}
 	}
@@ -134,8 +140,7 @@ class TestMazeTester {
 	{
 		for(int runs = 25; runs >= 0; runs--)
 		{
-			gameMaze.setEnteranceExit(mazeRows, mazeColumns);
-			if(gameMaze.getPlayer().getPlayerX() < 0 && gameMaze.getPlayer().getPlayerX() >= mazeColumns)
+			if(player.getPlayerX() < 0 && player.getPlayerX() >= mazeColumns)
 			{
 				assertTrue(gameMaze.getExitX() >= 0 && gameMaze.getExitX() < mazeColumns);
 			}
@@ -147,8 +152,7 @@ class TestMazeTester {
 	{
 		for(int runs = 25; runs >= 0; runs--)
 		{
-			gameMaze.setEnteranceExit(mazeRows, mazeColumns);
-			if(gameMaze.getPlayer().getPlayerX() < 0 && gameMaze.getPlayer().getPlayerX() >= mazeColumns)
+			if(player.getPlayerX() < 0 && player.getPlayerX() >= mazeColumns)
 			{
 				assertTrue(gameMaze.getExitY() >= 0 && gameMaze.getExitY() < mazeRows);
 			}
@@ -160,10 +164,9 @@ class TestMazeTester {
 	{
 		for(int runs = 25; runs >= 0; runs--)
 		{
-			gameMaze.setEnteranceExit(mazeRows, mazeColumns);
-			if(gameMaze.getPlayer().getPlayerX() == gameMaze.getExitX() && gameMaze.getPlayer().getPlayerY() == gameMaze.getExitY())
+			if(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY())
 			{
-				assertTrue(!(gameMaze.getPlayer().getPlayerX() == gameMaze.getExitX() && gameMaze.getPlayer().getPlayerY() == gameMaze.getExitY()));			}
+				assertTrue(!(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY()));}
 		}
 	}
 	
@@ -176,11 +179,11 @@ class TestMazeTester {
 		{
 			for(int playerY = 0; playerY < mazeColumns; playerY++)
 			{
-				gameMaze.setPlayerLocation(playerX, playerY);
-				if(gameMaze.getPlayer().getPlayerX() != playerX || gameMaze.getPlayer().getPlayerY() != playerY)
+				player.setPlayerLocation(playerX, playerY);
+				if(player.getPlayerX() != playerX || player.getPlayerY() != playerY)
 				{
-					assertEquals(playerX, gameMaze.getPlayer().getPlayerX());
-					assertEquals(playerY, gameMaze.getPlayer().getPlayerY());
+					assertEquals(playerX, player.getPlayerX());
+					assertEquals(playerY, player.getPlayerY());
 				}
 			}
 		}

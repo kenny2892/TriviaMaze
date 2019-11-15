@@ -119,17 +119,15 @@ public class Controller
 
 	private static ImageView[][] horizontalArchWays;
 	private static ImageView[][] verticalArchWays;
-	private static Maze gameMaze;
 
 	public void initialize()
 	{
 		mcQuestionText.setWrapText(true);
-
-		gameMaze = new Maze(5, 5);
+		
 		setClippingMasks();
 		setColors();
 		backToMain();
-		exitIcon(gameMaze.getExitX(), gameMaze.getExitY());
+		exitIcon(Main.getMaze().getExitX(), Main.getMaze().getExitY());
 
 		placeArchWays();
 	}
@@ -155,8 +153,8 @@ public class Controller
 	private ImageView getArchway(Direction direction)
 	{
 		// Changed player to package
-		int playerX = gameMaze.getPlayer().getPlayerX();
-		int playerY = gameMaze.getPlayer().getPlayerY();
+		int playerX = Main.getPlayer().getPlayerX();
+		int playerY = Main.getPlayer().getPlayerY();
 
 		switch(direction)
 		{
@@ -185,12 +183,15 @@ public class Controller
 
 	private void showDoors()
 	{
-		Room curr = gameMaze.getCurrRoom();
+		Maze maze = Main.getMaze();
+		Player player = Main.getPlayer();
+		
+		Room curr = maze.getRoom(player.getPlayerX(), player.getPlayerY());
 		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
 		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
 		setDoorStatus(curr, Direction.EAST, eDoorGroup, eDoorStatusImg);
 		setDoorStatus(curr, Direction.WEST, wDoorGroup, wDoorStatusImg);
-		playerIcon(gameMaze.getPlayer().getPlayerX(), gameMaze.getPlayer().getPlayerY());
+		playerIcon(player.getPlayerX(), player.getPlayerY());
 	}
 
 	private void setDoorStatus(Room curr, Direction direction, Group doorGroup, ImageView statusImg)
@@ -393,19 +394,22 @@ public class Controller
 
 	private void doorBtn(Direction direction)
 	{
-		Room curr = gameMaze.getCurrRoom();
+		Maze maze = Main.getMaze();
+		Player player = Main.getPlayer();
+		
+		Room curr = maze.getRoom(player.getPlayerX(), player.getPlayerY());
 		if (curr.isDoorLocked(direction))
 			return;
 
 		else if (curr.isDoorOpened(direction))
 		{
-			gameMaze.movePlayer(direction);
+			player.movePlayer(maze, direction);
 			backToMain();
 			return;
 		}
 
 		Question question;
-		question = gameMaze.getQuestion(direction);
+		question = Main.getQuestion(direction);
 
 		if (question instanceof MultipleChoiceQuestion)
 			showMcQuestion((MultipleChoiceQuestion) question);
@@ -827,10 +831,13 @@ public class Controller
 
 	private void selectAnswer(int answerIndex)
 	{
-		if (gameMaze.checkAnswer(answerIndex))
+		Maze maze = Main.getMaze();
+		Player player = Main.getPlayer();
+		
+		if (Main.checkAnswer(answerIndex))
 		{
-			setArchwayToCheckMark(getArchway(gameMaze.getCurrentDirection()));
-			if(gameMaze.movePlayer(gameMaze.getCurrentDirection()))
+			setArchwayToCheckMark(getArchway(maze.getCurrentDirection()));
+			if(player.movePlayer(maze, maze.getCurrentDirection()))
 			{
 				backToMain();
 				mapGroup.setVisible(false);
@@ -840,7 +847,7 @@ public class Controller
 		}
 		
 		else
-			setArchwayToXMark(getArchway(gameMaze.getCurrentDirection()));
+			setArchwayToXMark(getArchway(maze.getCurrentDirection()));
 
 		backToMain();
 	}
