@@ -1,9 +1,15 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Maze
 {
 	private Room[][] gameMaze;
 	private Player player;
+	private Question currentQuestion;
+	private Direction currentDirection;
+	private Database database;
 	private int mazeRows;
 	private int mazeColumns;
 	private int exitX;
@@ -13,10 +19,13 @@ public class Maze
 	{
 		this.gameMaze = createMaze(mazeRows, mazeColumns);
 		this.player = new Player();
+		this.currentDirection = Direction.NULL;
+		this.database = new Database();
 		this.mazeRows = mazeRows;
 		this.mazeColumns = mazeColumns;
 		this.exitX = -1;
 		this.exitY = -1;
+		setEnteranceExit(mazeRows, mazeColumns);
 	}
 	
 	public int getExitX()
@@ -49,9 +58,25 @@ public class Maze
 		return this.player;
 	}
 	
+	public Question getQuestion()
+	{
+		return this.currentQuestion;
+	}
+	
+	public Direction getCurrentDirection()
+	{
+		return currentDirection;
+	}
+	
+	
 	public Room getCurrRoom()
 	{
 		return this.gameMaze[this.player.getPlayerY()][this.player.getPlayerY()];
+	}
+	
+	public void setDirection(Direction newDirection)
+	{
+		this.currentDirection = newDirection;
 	}
 	
 	public void setExitX(int exitX) {
@@ -70,6 +95,42 @@ public class Maze
 		}
 		this.exitY = exitY;
 	}
+	
+	public void setPlayerLocation(int newPlayerX, int newPlayerY)
+	{
+		player.setPlayerX(newPlayerX);
+		player.setPlayerY(newPlayerY);
+	}
+	
+	public void setEnteranceExit(final int mazeRows, final int mazeColumns)
+	{
+		Random rnjesus = new Random();
+		this.setExitX(rnjesus.nextInt(mazeColumns));
+		this.setExitY(rnjesus.nextInt(mazeRows));
+		
+		do
+		{
+			setPlayerLocation(rnjesus.nextInt(mazeColumns), rnjesus.nextInt(mazeRows));
+		} while (player.getPlayerX() == exitX && player.getPlayerY() == exitY);
+
+	}
+	
+	public Question getQuestion(Direction direction)
+	{
+		if(direction == null)
+			return null;
+		
+		ArrayList<Question> questions = database.getQuestions();
+		
+		Question toUse = questions.get(0);
+		questions.remove(0);
+		
+		currentDirection = direction;
+		currentQuestion = toUse;
+		
+		return toUse;
+	}
+	
 	
 	public Room[][] createMaze(int rows, int cols)
 	{
@@ -120,17 +181,77 @@ public class Maze
 		return false;
 	}
 	
-	public void setPlayerLocation(int newPlayerX, int newPlayerY)
+	public boolean checkAnswer(int chosenAnswer)
 	{
-		player.setPlayerX(newPlayerX);
-		player.setPlayerY(newPlayerY);
+		if(currentQuestion == null)
+			return false;
+
+		boolean correct = true;
+		
+		correct = currentQuestion.getCorrectIndex() == chosenAnswer;		
+		updateMazeRooms(!correct);
+		
+		if(!correct)
+			return correct;
+		
+		return true;
 	}
 	
-	private class Player
+	private void updateMazeRooms(boolean isLocked)
+	{
+		int playerX = player.getPlayerX();
+		int playerY = player.getPlayerY();
+		Room currentRoom = getCurrRoom();
+		currentRoom.setDoorLock(currentDirection, isLocked);
+		gameMaze[playerY][playerX] = currentRoom;
+		
+		Room connectedRoom = null;
+		switch(currentDirection)
+		{
+			case NORTH:
+				if(playerY - 1 >= 0)
+				{
+					connectedRoom = gameMaze[playerY - 1][playerX];
+					connectedRoom.setDoorLock(Direction.SOUTH, isLocked);
+					gameMaze[playerY - 1][playerX] = connectedRoom;
+				}
+				break;
+				
+			case SOUTH:
+				if(playerY + 1 < gameMaze[0].length)
+				{
+					connectedRoom = gameMaze[playerY + 1][playerX];
+					connectedRoom.setDoorLock(Direction.NORTH, isLocked);
+					gameMaze[playerY + 1][playerX] = connectedRoom;
+				}
+				break;
+				
+			case EAST:
+				if(playerX + 1 < gameMaze.length)
+				{
+					connectedRoom = gameMaze[playerY][playerX + 1];
+					connectedRoom.setDoorLock(Direction.WEST, isLocked);
+					gameMaze[playerY][playerX + 1] = connectedRoom;
+				}
+				break;
+				
+			case WEST:
+				if(playerX - 1 >= 0)
+				{
+					connectedRoom = gameMaze[playerY][playerX - 1];
+					connectedRoom.setDoorLock(Direction.EAST, isLocked);
+					gameMaze[playerY][playerX - 1] = connectedRoom;
+				}
+				break;
+		default:
+			break;
+		}
+	}
+	
+	class Player
 	{
 		private int playerX;
 		private int playerY;
-		private Direction currentDirection;
 		
 		public Player()
 		{
@@ -147,12 +268,7 @@ public class Maze
 		{
 			return this.playerY;
 		}
-		
-		public Direction getCurrentDirection()
-		{
-			return currentDirection;
-		}
-		
+
 		public void setPlayerX(int playerX)
 		{
 			if(playerX < 0 || playerX > gameMaze.length)
@@ -169,11 +285,6 @@ public class Maze
 				throw new IllegalArgumentException("Passed Y value is out of the bounds of the maze.");
 			}
 			this.playerY = playerY;
-		}
-		
-		public void setDirection(Direction newDirection)
-		{
-			this.currentDirection = newDirection;
 		}
 
 	}

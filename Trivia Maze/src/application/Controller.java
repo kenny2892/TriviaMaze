@@ -119,15 +119,17 @@ public class Controller
 
 	private static ImageView[][] horizontalArchWays;
 	private static ImageView[][] verticalArchWays;
+	private static Maze gameMaze;
 
 	public void initialize()
 	{
 		mcQuestionText.setWrapText(true);
 
+		gameMaze = new Maze(5, 5);
 		setClippingMasks();
 		setColors();
 		backToMain();
-		exitIcon(Maze.getExitX(), Maze.getExitY());
+		exitIcon(gameMaze.getExitX(), gameMaze.getExitY());
 
 		placeArchWays();
 	}
@@ -152,8 +154,9 @@ public class Controller
 
 	private ImageView getArchway(Direction direction)
 	{
-		int playerX = Maze.getPlayerX();
-		int playerY = Maze.getPlayerY();
+		// Changed player to package
+		int playerX = gameMaze.getPlayer().getPlayerX();
+		int playerY = gameMaze.getPlayer().getPlayerY();
 
 		switch(direction)
 		{
@@ -182,12 +185,12 @@ public class Controller
 
 	private void showDoors()
 	{
-		Room curr = Maze.getCurrRoom();
+		Room curr = gameMaze.getCurrRoom();
 		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
 		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
 		setDoorStatus(curr, Direction.EAST, eDoorGroup, eDoorStatusImg);
 		setDoorStatus(curr, Direction.WEST, wDoorGroup, wDoorStatusImg);
-		playerIcon(Maze.getPlayerX(), Maze.getPlayerY());
+		playerIcon(gameMaze.getPlayer().getPlayerX(), gameMaze.getPlayer().getPlayerY());
 	}
 
 	private void setDoorStatus(Room curr, Direction direction, Group doorGroup, ImageView statusImg)
@@ -390,19 +393,19 @@ public class Controller
 
 	private void doorBtn(Direction direction)
 	{
-		Room curr = Maze.getCurrRoom();
+		Room curr = gameMaze.getCurrRoom();
 		if (curr.isDoorLocked(direction))
 			return;
 
 		else if (curr.isDoorOpened(direction))
 		{
-			Maze.movePlayer(direction);
+			gameMaze.movePlayer(direction);
 			backToMain();
 			return;
 		}
 
 		Question question;
-		question = Maze.getQuestion(direction);
+		question = gameMaze.getQuestion(direction);
 
 		if (question instanceof MultipleChoiceQuestion)
 			showMcQuestion((MultipleChoiceQuestion) question);
@@ -824,10 +827,10 @@ public class Controller
 
 	private void selectAnswer(int answerIndex)
 	{
-		if (Maze.checkAnswer(answerIndex))
+		if (gameMaze.checkAnswer(answerIndex))
 		{
-			setArchwayToCheckMark(getArchway(Maze.getCurrentDirection()));
-			if(Maze.movePlayer(Maze.getCurrentDirection()))
+			setArchwayToCheckMark(getArchway(gameMaze.getCurrentDirection()));
+			if(gameMaze.movePlayer(gameMaze.getCurrentDirection()))
 			{
 				backToMain();
 				mapGroup.setVisible(false);
@@ -837,7 +840,7 @@ public class Controller
 		}
 		
 		else
-			setArchwayToXMark(getArchway(Maze.getCurrentDirection()));
+			setArchwayToXMark(getArchway(gameMaze.getCurrentDirection()));
 
 		backToMain();
 	}
