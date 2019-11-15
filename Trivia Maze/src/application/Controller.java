@@ -123,7 +123,7 @@ public class Controller
 	public void initialize()
 	{
 		mcQuestionText.setWrapText(true);
-		
+
 		setClippingMasks();
 		setColors();
 		backToMain();
@@ -185,7 +185,7 @@ public class Controller
 	{
 		Maze maze = Main.getMaze();
 		Player player = Main.getPlayer();
-		
+
 		Room curr = maze.getRoom(player.getPlayerX(), player.getPlayerY());
 		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
 		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
@@ -396,7 +396,7 @@ public class Controller
 	{
 		Maze maze = Main.getMaze();
 		Player player = Main.getPlayer();
-		
+
 		Room curr = maze.getRoom(player.getPlayerX(), player.getPlayerY());
 		if (curr.isDoorLocked(direction))
 			return;
@@ -420,318 +420,44 @@ public class Controller
 
 	private void playerIcon(int x, int y)
 	{
-		String index = y + "_" + x;
+		int[] yAxis = new int[]
+		{ 83, 178, 280, 390, 486 };
 
-		switch(index)
+		int[][] xAxis = new int[][]
 		{
-			case "0_0":
-				playerIcon.setLayoutX(312);
-				playerIcon.setLayoutY(83);
-				break;
+				{ 312, 420, 530, 636, 743 },
+				{ 302, 416, 530, 643, 754 },
+				{ 291, 408, 530, 649, 768 },
+				{ 279, 404, 530, 656, 783 },
+				{ 265, 400, 530, 666, 795 } };
 
-			case "0_1":
-				playerIcon.setLayoutX(420);
-				playerIcon.setLayoutY(83);
-				break;
-
-			case "0_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(83);
-				break;
-
-			case "0_3":
-				playerIcon.setLayoutX(636);
-				playerIcon.setLayoutY(83);
-				break;
-
-			case "0_4":
-				playerIcon.setLayoutX(743);
-				playerIcon.setLayoutY(83);
-				break;
-
-			case "1_0":
-				playerIcon.setLayoutX(302);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "1_1":
-				playerIcon.setLayoutX(416);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "1_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "1_3":
-				playerIcon.setLayoutX(643);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "1_4":
-				playerIcon.setLayoutX(754);
-				playerIcon.setLayoutY(178);
-				break;
-
-			case "2_0":
-				playerIcon.setLayoutX(291);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "2_1":
-				playerIcon.setLayoutX(408);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "2_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "2_3":
-				playerIcon.setLayoutX(649);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "2_4":
-				playerIcon.setLayoutX(768);
-				playerIcon.setLayoutY(280);
-				break;
-
-			case "3_0":
-				playerIcon.setLayoutX(279);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "3_1":
-				playerIcon.setLayoutX(404);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "3_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "3_3":
-				playerIcon.setLayoutX(656);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "3_4":
-				playerIcon.setLayoutX(783);
-				playerIcon.setLayoutY(390);
-				break;
-
-			case "4_0":
-				playerIcon.setLayoutX(265);
-				playerIcon.setLayoutY(486);
-				break;
-
-			case "4_1":
-				playerIcon.setLayoutX(400);
-				playerIcon.setLayoutY(486);
-				break;
-
-			case "4_2":
-				playerIcon.setLayoutX(530);
-				playerIcon.setLayoutY(486);
-				break;
-
-			case "4_3":
-				playerIcon.setLayoutX(666);
-				playerIcon.setLayoutY(486);
-				break;
-
-			case "4_4":
-				playerIcon.setLayoutX(795);
-				playerIcon.setLayoutY(486);
-				break;
-		}
+		playerIcon.setLayoutX(xAxis[y][x]);
+		playerIcon.setLayoutY(yAxis[x]);
 	}
 
 	private void exitIcon(int x, int y)
 	{
-		String index = y + "_" + x;
+		int[] width = new int[]
+		{ 74, 74, 85, 85, 126 };
 
-		switch(index)
+		int[] height = new int[]
+		{ 73, 73, 79, 79, 103 };
+		
+		int[] yAxis = new int[]
+		{ 173, 262, 356, 464, 572 };
+
+		int[][] xAxis = new int[][]
 		{
-			case "0_0":
-				exitIcon.setLayoutX(315);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "0_1":
-				exitIcon.setLayoutX(426);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "0_2":
-				exitIcon.setLayoutX(534);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "0_3":
-				exitIcon.setLayoutX(640);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "0_4":
-				exitIcon.setLayoutX(748);
-				exitIcon.setLayoutY(173);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_0":
-				exitIcon.setLayoutX(305);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_1":
-				exitIcon.setLayoutX(419);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_2":
-				exitIcon.setLayoutX(534);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_3":
-				exitIcon.setLayoutX(646);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "1_4":
-				exitIcon.setLayoutX(754);
-				exitIcon.setLayoutY(262);
-				exitIcon.setFitWidth(74);
-				exitIcon.setFitHeight(73);
-				break;
-
-			case "2_0":
-				exitIcon.setLayoutX(293);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "2_1":
-				exitIcon.setLayoutX(408);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "2_2":
-				exitIcon.setLayoutX(530);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "2_3":
-				exitIcon.setLayoutX(649);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "2_4":
-				exitIcon.setLayoutX(768);
-				exitIcon.setLayoutY(356);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_0":
-				exitIcon.setLayoutX(278);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_1":
-				exitIcon.setLayoutX(404);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_2":
-				exitIcon.setLayoutX(530);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_3":
-				exitIcon.setLayoutX(656);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "3_4":
-				exitIcon.setLayoutX(781);
-				exitIcon.setLayoutY(464);
-				exitIcon.setFitWidth(85);
-				exitIcon.setFitHeight(79);
-				break;
-
-			case "4_0":
-				exitIcon.setLayoutX(252);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-
-			case "4_1":
-				exitIcon.setLayoutX(385);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-
-			case "4_2":
-				exitIcon.setLayoutX(518);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-
-			case "4_3":
-				exitIcon.setLayoutX(652);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-
-			case "4_4":
-				exitIcon.setLayoutX(785);
-				exitIcon.setLayoutY(572);
-				exitIcon.setFitWidth(126);
-				exitIcon.setFitHeight(103);
-				break;
-		}
+				{ 315, 426, 534, 640, 748 },
+				{ 305, 408, 534, 646, 754 },
+				{ 293, 408, 530, 649, 768 },
+				{ 278, 404, 530, 656, 781 },
+				{ 252, 385, 518, 652, 785 } };
+				
+		exitIcon.setLayoutX(xAxis[y][x]);
+		exitIcon.setLayoutY(yAxis[x]);
+		exitIcon.setFitWidth(width[y]);
+		exitIcon.setFitHeight(height[y]);
 	}
 
 	private void showMcQuestion(MultipleChoiceQuestion question)
@@ -833,11 +559,11 @@ public class Controller
 	{
 		Maze maze = Main.getMaze();
 		Player player = Main.getPlayer();
-		
+
 		if (Main.checkAnswer(answerIndex))
 		{
 			setArchwayToCheckMark(getArchway(maze.getCurrentDirection()));
-			if(player.movePlayer(maze, maze.getCurrentDirection()))
+			if (player.movePlayer(maze, maze.getCurrentDirection()))
 			{
 				backToMain();
 				mapGroup.setVisible(false);
@@ -845,7 +571,7 @@ public class Controller
 				return;
 			}
 		}
-		
+
 		else
 			setArchwayToXMark(getArchway(maze.getCurrentDirection()));
 
