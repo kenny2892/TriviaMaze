@@ -102,12 +102,12 @@ public class Maze
 		return this.exitY;
 	}
 
-	public int getmazeRows()
+	public int getMazeRows()
 	{
 		return this.mazeRows;
 	}
 
-	public int getMazeColulumns()
+	public int getMazeColumns()
 	{
 		return this.mazeColumns;
 	}

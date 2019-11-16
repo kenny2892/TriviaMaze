@@ -1,4 +1,4 @@
-package application;
+package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,6 +7,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import application.Direction;
+import application.Maze;
+import application.Player;
+import application.Room;
 
 class TestMazeTester {
 	
