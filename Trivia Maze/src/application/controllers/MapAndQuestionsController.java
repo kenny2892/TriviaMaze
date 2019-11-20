@@ -61,6 +61,7 @@ public class MapAndQuestionsController
 	@FXML private ImageView playerIcon;
 	@FXML private ImageView exitIcon;
 	
+	@FXML Group doorStatusGroup;
 	@FXML private ImageView doorway1;
 	@FXML private ImageView doorway2;
 	@FXML private ImageView doorway3;
@@ -119,15 +120,12 @@ public class MapAndQuestionsController
 	@FXML private Group tfGroup;
 	@FXML private TextArea tfQuestionText;
 	
-	private static ImageView[][] horizontalArchWays;
-	private static ImageView[][] verticalArchWays;
+	private static double[][][] horizontalArchWays;
+	private static double[][][] verticalArchWays;
 
 	public void initialize()
 	{
 		setClippingMasks();
-		buttonColors();
-		doorColors();
-		arrowType();
 
 		mapGroup.setVisible(true);
 		showDoors();
@@ -139,50 +137,73 @@ public class MapAndQuestionsController
 
 	private void placeArchWays()
 	{
-		horizontalArchWays = new ImageView[][]
+		horizontalArchWays = new double[][][]
 		{
-				{ doorway1, doorway2, doorway3, doorway4 },
-				{ doorway10, doorway11, doorway12, doorway13 },
-				{ doorway19, doorway20, doorway21, doorway22 },
-				{ doorway28, doorway29, doorway30, doorway31 },
-				{ doorway37, doorway38, doorway39, doorway40 } };
+				{ {96, 0}, {206, 0}, {314, 0}, {424, 0} },
+				{ {96, 102}, {206, 102}, {314, 102}, {434, 102} },
+				{ {81, 197}, {206, 197}, {314, 197}, {448, 197} },
+				{ {71, 303}, {196, 303}, {321, 303}, {445, 303} },
+				{ {59, 425}, {192, 425}, {327, 425}, {460, 425} } };
 
-		verticalArchWays = new ImageView[][]
+		verticalArchWays = new double[][][]
 		{
-				{ doorway5, doorway6, doorway7, doorway8, doorway9 },
-				{ doorway14, doorway15, doorway16, doorway17, doorway18 },
-				{ doorway23, doorway24, doorway25, doorway26, doorway27 },
-				{ doorway32, doorway33, doorway34, doorway35, doorway36 } };
+				{ {40, 56}, {150, 56}, {261, 56}, {376, 56}, {485, 56} },
+				{ {28, 147}, {147, 147}, {261, 147}, {379, 147}, {501, 147} },
+				{ {16, 249}, {140, 249}, {261, 249}, {388, 249}, {515, 249} },
+				{ {0, 363}, {134, 363}, {261, 363}, {400, 363}, {529, 363} } };
 	}
 
-	private ImageView getArchway(Direction direction)
+	private void setArchway(boolean isLocked, Direction direction)
 	{
-		int playerX = Main.getPlayer().getPlayerX();
-		int playerY = Main.getPlayer().getPlayerY();
+		ImageView doorway = new ImageView();
+		
+		if(!isLocked)
+			doorway.setImage(new Image(this.getClass().getResource("/resources/images/X.png").toExternalForm()));
+		
+		else
+			doorway.setImage(new Image(this.getClass().getResource("/resources/images/Checkmark.png").toExternalForm()));
 
+		doorway.setFitWidth(66);
+		doorway.setFitHeight(54);
+		
+		int x = Main.getPlayer().getPlayerX();
+		int y = Main.getPlayer().getPlayerY();
+		double[] coords = new double[] { 0, 0 };
+		
 		switch(direction)
 		{
 			case NORTH:
-				return (playerY - 1) >= 0 && (playerY < 5) ? verticalArchWays[playerY - 1][playerX] : null;
+				if((y - 1) >= 0 && (y < 5))
+					coords = verticalArchWays[y - 1][x];
+				
+				break;
+				
 			case SOUTH:
-				return (playerY + 1) >= 0 && (playerY < 5) ? verticalArchWays[playerY][playerX] : null;
+				if((y + 1) >= 0 && (y < 5))
+					coords = verticalArchWays[y][x];
+				
+				break;
+
 			case EAST:
-				return (playerX + 1) >= 0 && (playerX < 5) ? horizontalArchWays[playerY][playerX] : null;
+				if((x + 1) >= 0 && (x < 5))
+					coords = horizontalArchWays[y][x];
+				
+				break;
+
 			case WEST:
-				return (playerX - 1) >= 0 && (playerX < 5) ? horizontalArchWays[playerY][playerX - 1] : null;
+				if((x - 1) >= 0 && (x < 5))
+					coords = horizontalArchWays[y][x - 1];
+				
+				break;
+				
 			default:
-				return null;
+				return;
 		}
-	}
-
-	private void setArchwayToCheckMark(ImageView archway)
-	{
-		archway.setImage(new Image(this.getClass().getResource("/resources/images/Checkmark.png").toExternalForm()));
-	}
-
-	private void setArchwayToXMark(ImageView archway)
-	{
-		archway.setImage(new Image(this.getClass().getResource("/resources/images/X.png").toExternalForm()));
+		
+		doorway.setLayoutX(coords[0]);
+		doorway.setLayoutY(coords[1]);
+		
+		doorStatusGroup.getChildren().add(doorway);
 	}
 
 	private void showDoors()
@@ -268,6 +289,13 @@ public class MapAndQuestionsController
 				this.getClass().getResource("/resources/images/Door.png").getPath().replace("%20", " ").substring(1));
 		return new ImageView(new Image(doorFile.toURI().toString()));
 	}
+	
+	public void update()
+	{
+		buttonColors();
+		doorColors();
+		arrowType();
+	}
 
 	private void changeImageColor(ImageView imageToChange, Rectangle hitBox, Color mainColor, Color highlightColor)
 	{
@@ -296,25 +324,25 @@ public class MapAndQuestionsController
 
 	public void buttonColors()
 	{
-		Color mainColor = CustomizeController.getBtnColor();
-		Color highlightColor = CustomizeController.getBtnHighlightColor();
+		Color btnColor = CustomizeController.getBtnColor();
+		Color btnHighlightColor = CustomizeController.getBtnHighlightColor();
 
-		changeImageColor(customizeImg, customizeHitBox, mainColor, highlightColor);
-		changeImageColor(saveImg, saveHitBox, mainColor, highlightColor);
-		changeImageColor(loadImg, loadHitBox, mainColor, highlightColor);
-		changeImageColor(settingsImg, settingsHitBox, mainColor, highlightColor);
-		changeImageColor(helpImg, helpHitBox, mainColor, highlightColor);
+		changeImageColor(customizeImg, customizeHitBox, btnColor, btnHighlightColor);
+		changeImageColor(saveImg, saveHitBox, btnColor, btnHighlightColor);
+		changeImageColor(loadImg, loadHitBox, btnColor, btnHighlightColor);
+		changeImageColor(settingsImg, settingsHitBox, btnColor, btnHighlightColor);
+		changeImageColor(helpImg, helpHitBox, btnColor, btnHighlightColor);
 	}
 
 	public void doorColors()
 	{
-		Color mainColor = CustomizeController.getDoorColor();
-		Color highlightColor = CustomizeController.getDoorHighlightColor();
+		Color doorColor = CustomizeController.getDoorColor();
+		Color doorHighlightColor = CustomizeController.getDoorHighlightColor();
 
-		changeImageColor(nDoorImg, nDoorHitBox, mainColor, highlightColor);
-		changeImageColor(sDoorImg, sDoorHitBox, mainColor, highlightColor);
-		changeImageColor(eDoorImg, eDoorHitBox, mainColor, highlightColor);
-		changeImageColor(wDoorImg, wDoorHitBox, mainColor, highlightColor);
+		changeImageColor(nDoorImg, nDoorHitBox, doorColor, doorHighlightColor);
+		changeImageColor(sDoorImg, sDoorHitBox, doorColor, doorHighlightColor);
+		changeImageColor(eDoorImg, eDoorHitBox, doorColor, doorHighlightColor);
+		changeImageColor(wDoorImg, wDoorHitBox, doorColor, doorHighlightColor);
 	}
 	
 	private void arrowType()
@@ -549,7 +577,7 @@ public class MapAndQuestionsController
 
 		if (Main.checkAnswer(answerIndex))
 		{
-			setArchwayToCheckMark(getArchway(maze.getCurrentDirection()));
+			setArchway(false, maze.getCurrentDirection());
 			if (player.movePlayer(maze, maze.getCurrentDirection()))
 			{
 				backToMain();
@@ -558,7 +586,7 @@ public class MapAndQuestionsController
 		}
 
 		else
-			setArchwayToXMark(getArchway(maze.getCurrentDirection()));
+			setArchway(true, maze.getCurrentDirection());
 
 		backToMain();
 	}
