@@ -41,6 +41,7 @@ public class MapAndQuestionsController
 	@FXML private Rectangle loadHitBox;
 	@FXML private Rectangle settingsHitBox;
 	@FXML private Rectangle helpHitBox;
+	@FXML Group doorStatusGroup;
 	@FXML private Group mapGroup;
 	@FXML private Group nDoorGroup;
 	@FXML private Group sDoorGroup;
@@ -60,48 +61,6 @@ public class MapAndQuestionsController
 	@FXML private Rectangle eDoorHitBox;
 	@FXML private ImageView playerIcon;
 	@FXML private ImageView exitIcon;
-	
-	@FXML Group doorStatusGroup;
-	@FXML private ImageView doorway1;
-	@FXML private ImageView doorway2;
-	@FXML private ImageView doorway3;
-	@FXML private ImageView doorway4;
-	@FXML private ImageView doorway5;
-	@FXML private ImageView doorway6;
-	@FXML private ImageView doorway7;
-	@FXML private ImageView doorway8;
-	@FXML private ImageView doorway9;
-	@FXML private ImageView doorway10;
-	@FXML private ImageView doorway11;
-	@FXML private ImageView doorway12;
-	@FXML private ImageView doorway13;
-	@FXML private ImageView doorway14;
-	@FXML private ImageView doorway15;
-	@FXML private ImageView doorway16;
-	@FXML private ImageView doorway17;
-	@FXML private ImageView doorway18;
-	@FXML private ImageView doorway19;
-	@FXML private ImageView doorway20;
-	@FXML private ImageView doorway21;
-	@FXML private ImageView doorway22;
-	@FXML private ImageView doorway23;
-	@FXML private ImageView doorway24;
-	@FXML private ImageView doorway25;
-	@FXML private ImageView doorway26;
-	@FXML private ImageView doorway27;
-	@FXML private ImageView doorway28;
-	@FXML private ImageView doorway29;
-	@FXML private ImageView doorway30;
-	@FXML private ImageView doorway31;
-	@FXML private ImageView doorway32;
-	@FXML private ImageView doorway33;
-	@FXML private ImageView doorway34;
-	@FXML private ImageView doorway35;
-	@FXML private ImageView doorway36;
-	@FXML private ImageView doorway37;
-	@FXML private ImageView doorway38;
-	@FXML private ImageView doorway39;
-	@FXML private ImageView doorway40;
 
 	@FXML private Group mcGroup;
 	@FXML private TextArea mcQuestionText;
@@ -157,7 +116,7 @@ public class MapAndQuestionsController
 	{
 		ImageView doorway = new ImageView();
 		
-		if(!isLocked)
+		if(isLocked)
 			doorway.setImage(new Image(this.getClass().getResource("/resources/images/X.png").toExternalForm()));
 		
 		else
