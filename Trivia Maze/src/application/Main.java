@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 
+import application.controllers.MapAndQuestionsController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,24 +16,15 @@ public class Main extends Application
 	private static Player player;
 	private static Database database;
 	private static Stage stage;
-	private static boolean isMaximized = true;
 
+	private static Scene map, customize, help, settings, win;
+	private static MapAndQuestionsController controller;
+	
 	@Override
 	public void start(Stage primaryStage)
 	{
-		try
-		{
-			Parent root = FXMLLoader.load(getClass().getResource("/application/views/MapAndQuestions.fxml"));
-			Scene scene = new Scene(root);
-			stage = primaryStage;
-			
-			setStage(scene);
-		}
-
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		stage = primaryStage;
+		changeScene(SceneType.MAP);
 	}
 
 	public static void main(String[] args)
@@ -60,50 +52,61 @@ public class Main extends Application
 		if(stage == null || scene == null)
 			return;
 		
-		else if(stage.getScene() != null)
-			isMaximized = stage.isMaximized();
-		
 		stage.setScene(scene);		
 		stage.sizeToScene();
+		stage.setResizable(false);
+		stage.setMaximized(true);
 		stage.show();
-		
-		if(isMaximized)
-			stage.setMaximized(true);
 	}
 	
 	public static void changeScene(SceneType type)
 	{
 		try
 		{
-			Parent root = null;
-
 			switch(type)
 			{
 				case MAP:
-					root = FXMLLoader.load(Main.class.getResource("/application/views/MapAndQuestions.fxml"));
+					if(map == null || controller == null)
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/MapAndQuestions.fxml"));
+						Parent root = loader.load();
+						map = new Scene(root);
+						controller = loader.getController();
+					}
+					
+					setStage(map);
+					controller.update();
 					break;
 
 				case CUSTOMIZE:
-					root = FXMLLoader.load(Main.class.getResource("/application/views/Customize.fxml"));
+					if(customize == null)
+						customize = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Customize.fxml")));
+					
+					setStage(customize);
 					break;
 
 				case SETTINGS:
-					root = FXMLLoader.load(Main.class.getResource("/application/views/Settings.fxml"));
+					if(settings == null)
+						settings = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Settings.fxml")));
+					
+					setStage(settings);
 					break;
 
 				case HELP:
-					root = FXMLLoader.load(Main.class.getResource("/application/views/Settings.fxml"));
+					if(help == null)
+						help = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Help.fxml")));
+					
+					setStage(help);
 					break;
 
 				case WIN:
-					root = FXMLLoader.load(Main.class.getResource("/application/views/Win.fxml"));
-					break;
+					if(win == null)
+						win = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Win.fxml")));
 					
-				default:
-					return;
+					setStage(win);
+					break;
 			}
-
-			setStage(new Scene(root));
 		}
 
 		catch(IOException e)

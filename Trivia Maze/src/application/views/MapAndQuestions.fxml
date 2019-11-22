@@ -90,50 +90,7 @@
                   <Rectangle fx:id="eDoorHitBox" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="150.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="104.0" />
                </children>
             </Group>
-            <Group fx:id="doorStatusGroup" layoutX="280.0" layoutY="169.0">
-               <children>
-                  <ImageView fx:id="doorway1" fitHeight="54.0" fitWidth="66.0" layoutX="96.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway2" fitHeight="54.0" fitWidth="66.0" layoutX="206.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway3" fitHeight="54.0" fitWidth="66.0" layoutX="314.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway4" fitHeight="54.0" fitWidth="66.0" layoutX="424.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway5" fitHeight="54.0" fitWidth="66.0" layoutX="40.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway6" fitHeight="54.0" fitWidth="66.0" layoutX="150.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway7" fitHeight="54.0" fitWidth="66.0" layoutX="261.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway8" fitHeight="54.0" fitWidth="66.0" layoutX="376.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway9" fitHeight="54.0" fitWidth="66.0" layoutX="485.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway10" fitHeight="54.0" fitWidth="66.0" layoutX="96.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway11" fitHeight="54.0" fitWidth="66.0" layoutX="206.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway12" fitHeight="54.0" fitWidth="66.0" layoutX="314.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway13" fitHeight="54.0" fitWidth="66.0" layoutX="434.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway14" fitHeight="54.0" fitWidth="66.0" layoutX="28.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway15" fitHeight="54.0" fitWidth="66.0" layoutX="147.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway16" fitHeight="54.0" fitWidth="66.0" layoutX="261.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway17" fitHeight="54.0" fitWidth="66.0" layoutX="379.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway18" fitHeight="54.0" fitWidth="66.0" layoutX="501.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway19" fitHeight="54.0" fitWidth="66.0" layoutX="81.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway20" fitHeight="54.0" fitWidth="66.0" layoutX="206.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway21" fitHeight="54.0" fitWidth="66.0" layoutX="314.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway22" fitHeight="54.0" fitWidth="66.0" layoutX="448.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway23" fitHeight="54.0" fitWidth="66.0" layoutX="16.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway24" fitHeight="54.0" fitWidth="66.0" layoutX="140.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway25" fitHeight="54.0" fitWidth="66.0" layoutX="261.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway26" fitHeight="54.0" fitWidth="66.0" layoutX="388.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway27" fitHeight="54.0" fitWidth="66.0" layoutX="515.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway28" fitHeight="54.0" fitWidth="66.0" layoutX="71.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway29" fitHeight="54.0" fitWidth="66.0" layoutX="196.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway30" fitHeight="54.0" fitWidth="66.0" layoutX="321.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway31" fitHeight="54.0" fitWidth="66.0" layoutX="445.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway32" fitHeight="54.0" fitWidth="66.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway33" fitHeight="54.0" fitWidth="66.0" layoutX="134.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway34" fitHeight="54.0" fitWidth="66.0" layoutX="261.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway35" fitHeight="54.0" fitWidth="66.0" layoutX="400.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway36" fitHeight="54.0" fitWidth="66.0" layoutX="529.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway37" fitHeight="54.0" fitWidth="66.0" layoutX="59.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway38" fitHeight="54.0" fitWidth="66.0" layoutX="192.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway39" fitHeight="54.0" fitWidth="66.0" layoutX="327.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="doorway40" fitHeight="54.0" fitWidth="66.0" layoutX="460.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </Group>
+            <Group fx:id="doorStatusGroup" layoutX="280.0" layoutY="169.0" />
             <ImageView fx:id="exitIcon" fitHeight="103.0" fitWidth="126.0" layoutX="936.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../resources/images/Goal.png" />
