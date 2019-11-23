@@ -41,7 +41,7 @@ public class MapAndQuestionsController
 	@FXML private Rectangle loadHitBox;
 	@FXML private Rectangle settingsHitBox;
 	@FXML private Rectangle helpHitBox;
-	@FXML Group doorStatusGroup;
+	@FXML private Group doorStatusGroup;
 	@FXML private Group mapGroup;
 	@FXML private Group nDoorGroup;
 	@FXML private Group sDoorGroup;
