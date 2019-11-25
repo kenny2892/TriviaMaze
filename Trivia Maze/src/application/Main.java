@@ -5,6 +5,7 @@ import java.io.IOException;
 import application.controllers.MapController;
 import application.controllers.MultipleChoiceQuestionController;
 import application.controllers.TrueFalseQuestionController;
+import application.controllers.VideoQuestionController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,10 +21,11 @@ public class Main extends Application
 	private static Stage stage;
 
 	private static SceneType currentScene;
-	private static Scene map, customize, help, settings, win, trueFalse, mcQuestions;
+	private static Scene map, customize, help, settings, win, trueFalse, mcQuestions, videoQuestions;
 	private static MapController mapController;
 	private static MultipleChoiceQuestionController mcController;
 	private static TrueFalseQuestionController tfController;
+	private static VideoQuestionController videoController;
 	
 	@Override
 	public void start(Stage primaryStage)
@@ -59,7 +61,7 @@ public class Main extends Application
 		
 		stage.setScene(scene);		
 		stage.sizeToScene();
-//		stage.setResizable(false);
+		stage.setResizable(false);
 		stage.setMaximized(true);
 		stage.show();
 	}
@@ -150,6 +152,16 @@ public class Main extends Application
 					break;
 					
 				case VIDEO:
+					if(videoQuestions == null)
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/VideoQuestion.fxml"));
+						Parent root = loader.load();
+						videoQuestions = new Scene(root);
+						videoController = loader.getController();
+					}
+					
+					setStage(videoQuestions);
 					currentScene = SceneType.VIDEO;
 					break;
 			}
@@ -200,9 +212,15 @@ public class Main extends Application
 				break;
 				
 			case SOUND:
+				
 				break;
 				
 			case VIDEO:
+				if(question instanceof VideoQuestion)
+				{
+					changeScene(SceneType.VIDEO);
+					videoController.setQuestion((VideoQuestion) question);
+				}
 				break;
 		}
 	}
