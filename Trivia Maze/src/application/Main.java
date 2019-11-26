@@ -2,7 +2,10 @@ package application;
 
 import java.io.IOException;
 
-import application.controllers.MapAndQuestionsController;
+import application.controllers.MapController;
+import application.controllers.MultipleChoiceQuestionController;
+import application.controllers.TrueFalseQuestionController;
+import application.controllers.VideoQuestionController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,8 +20,12 @@ public class Main extends Application
 	private static Database database;
 	private static Stage stage;
 
-	private static Scene map, customize, help, settings, win;
-	private static MapAndQuestionsController controller;
+	private static SceneType currentScene;
+	private static Scene map, customize, help, settings, win, trueFalse, mcQuestions, videoQuestions;
+	private static MapController mapController;
+	private static MultipleChoiceQuestionController mcController;
+	private static TrueFalseQuestionController tfController;
+	private static VideoQuestionController videoController;
 	
 	@Override
 	public void start(Stage primaryStage)
@@ -66,17 +73,18 @@ public class Main extends Application
 			switch(type)
 			{
 				case MAP:
-					if(map == null || controller == null)
+					if(map == null || mapController == null)
 					{
 						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(Main.class.getResource("/application/views/MapAndQuestions.fxml"));
+						loader.setLocation(Main.class.getResource("/application/views/Map.fxml"));
 						Parent root = loader.load();
 						map = new Scene(root);
-						controller = loader.getController();
+						mapController = loader.getController();
 					}
 					
 					setStage(map);
-					controller.update();
+					mapController.update();
+					currentScene = SceneType.MAP;
 					break;
 
 				case CUSTOMIZE:
@@ -84,6 +92,7 @@ public class Main extends Application
 						customize = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Customize.fxml")));
 					
 					setStage(customize);
+					currentScene = SceneType.CUSTOMIZE;
 					break;
 
 				case SETTINGS:
@@ -91,6 +100,7 @@ public class Main extends Application
 						settings = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Settings.fxml")));
 					
 					setStage(settings);
+					currentScene = SceneType.SETTINGS;
 					break;
 
 				case HELP:
@@ -98,6 +108,7 @@ public class Main extends Application
 						help = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Help.fxml")));
 					
 					setStage(help);
+					currentScene = SceneType.HELP;
 					break;
 
 				case WIN:
@@ -105,6 +116,53 @@ public class Main extends Application
 						win = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Win.fxml")));
 					
 					setStage(win);
+					currentScene = SceneType.WIN;
+					break;
+
+				case TRUE_FALSE:
+					if(trueFalse == null)
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/TrueFalseQuestion.fxml"));
+						Parent root = loader.load();
+						trueFalse = new Scene(root);
+						tfController = loader.getController();
+					}
+					
+					setStage(trueFalse);
+					currentScene = SceneType.TRUE_FALSE;
+					break;
+
+				case MULTIPLE_CHOICE:
+					if(mcQuestions == null)
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/MultipleChoiceQuestion.fxml"));
+						Parent root = loader.load();
+						mcQuestions = new Scene(root);
+						mcController = loader.getController();
+					}
+					
+					setStage(mcQuestions);
+					currentScene = SceneType.MULTIPLE_CHOICE;
+					break;
+					
+				case SOUND:
+					currentScene = SceneType.SOUND;
+					break;
+					
+				case VIDEO:
+					if(videoQuestions == null)
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/VideoQuestion.fxml"));
+						Parent root = loader.load();
+						videoQuestions = new Scene(root);
+						videoController = loader.getController();
+					}
+					
+					setStage(videoQuestions);
+					currentScene = SceneType.VIDEO;
 					break;
 			}
 		}
@@ -114,23 +172,57 @@ public class Main extends Application
 			e.printStackTrace();
 		}
 	}
-
-	public static boolean checkAnswer(int chosenAnswer)
+	
+	public static void checkAnswer(int chosenAnswer)
 	{
 		boolean correct = database.checkAnswer(chosenAnswer);
 		gameMaze.updateMazeRooms(player.getPlayerX(), player.getPlayerY(), !correct);
-
-		return correct;
+		
+		mapController.updateMaze(correct);
+		
+		if(currentScene != SceneType.WIN)
+			changeScene(SceneType.MAP);
 	}
-
-	public static Question getQuestion(Direction direction)
+	
+	public static void showQuestion(Direction direction)
 	{
 		if (direction == null)
-			return null;
+			return;
 
 		gameMaze.setDirection(direction);
-
-		return database.getQuestion();
+		
+		Question question = database.getQuestion();
+		
+		switch(question.getQuestionsType())
+		{
+			case MULTIPLE_CHOICE:
+				if(question instanceof MultipleChoiceQuestion)
+				{
+					changeScene(SceneType.MULTIPLE_CHOICE);
+					mcController.setQuestion((MultipleChoiceQuestion) question);
+				}
+				break;			
+			
+			case TRUE_FALSE:
+				if(question instanceof TrueFalseQuestion)
+				{
+					changeScene(SceneType.TRUE_FALSE);
+					tfController.setQuestion((TrueFalseQuestion) question);
+				}
+				break;
+				
+			case SOUND:
+				
+				break;
+				
+			case VIDEO:
+				if(question instanceof VideoQuestion)
+				{
+					changeScene(SceneType.VIDEO);
+					videoController.setQuestion((VideoQuestion) question);
+				}
+				break;
+		}
 	}
 
 	public static Maze getMaze()
