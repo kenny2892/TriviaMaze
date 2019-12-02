@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.SoundQuestionController">
+   <children>
+      <Rectangle fx:id="bgRectangle" height="1080.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1920.0" />
+      <Rectangle fill="WHITE" height="109.0" layoutX="309.0" layoutY="409.0" stroke="BLACK" strokeType="INSIDE" width="1318.0" />
+      <MediaView fx:id="mp3View" fitHeight="720.0" fitWidth="1280.0" layoutX="326.0" layoutY="72.0" />
+      <Pane fx:id="soundControlPane" layoutX="323.0" layoutY="393.0">
+         <children>
+            <Rectangle height="61.0" layoutX="3.0" layoutY="46.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="1280.0" />
+            <ProgressBar fx:id="timeProgressBar" layoutX="3.0" layoutY="32.0" prefHeight="18.0" prefWidth="1280.0" progress="0.0" stylesheets="@Video.css" />
+            <Slider fx:id="timeSlider" layoutX="3.0" prefHeight="82.0" prefWidth="1280.0" stylesheets="@Video.css" />
+            <Slider fx:id="volumeSlider" layoutX="355.0" layoutY="71.0" />
+            <ImageView fitHeight="47.0" fitWidth="53.0" layoutX="34.0" layoutY="54.0" onMouseClicked="#skipBack" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/images/Skip%20Back.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="47.0" fitWidth="53.0" layoutX="194.0" layoutY="54.0" onMouseClicked="#skipForward" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/images/Skip%20Forward.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="playBtn" fitHeight="47.0" fitWidth="53.0" layoutX="123.0" layoutY="54.0" onMouseClicked="#playOrPause" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/images/Play.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="volumeBtn" fitHeight="47.0" fitWidth="76.0" layoutX="278.0" layoutY="55.0" onMouseClicked="#mute" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/images/Volume.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

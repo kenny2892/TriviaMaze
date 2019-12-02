@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class VideoQuestion extends Question
 {
-	String fileName;
+	private String fileName;
 	
 	public VideoQuestion(String question, ArrayList<String> answers, int correctIndex, String fileName)
 	{

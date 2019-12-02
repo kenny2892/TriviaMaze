@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import application.controllers.MapController;
 import application.controllers.MultipleChoiceQuestionController;
+import application.controllers.SoundQuestionController;
 import application.controllers.TrueFalseQuestionController;
 import application.controllers.VideoQuestionController;
 import javafx.application.Application;
@@ -21,11 +22,12 @@ public class Main extends Application
 	private static Stage stage;
 
 	private static SceneType currentScene;
-	private static Scene map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions;
+	private static Scene map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions;
 	private static MapController mapController;
 	private static MultipleChoiceQuestionController mcController;
 	private static TrueFalseQuestionController tfController;
 	private static VideoQuestionController videoController;
+	private static SoundQuestionController soundController;
 	
 	@Override
 	public void start(Stage primaryStage)
@@ -61,7 +63,7 @@ public class Main extends Application
 		
 		stage.setScene(scene);		
 		stage.sizeToScene();
-//		stage.setResizable(false);
+		stage.setResizable(false);
 		stage.setMaximized(true);
 		stage.show();
 	}
@@ -156,6 +158,16 @@ public class Main extends Application
 					break;
 					
 				case SOUND:
+					if(soundQuestions == null)
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/SoundQuestion.fxml"));
+						Parent root = loader.load();
+						soundQuestions = new Scene(root);
+						soundController = loader.getController();
+					}
+					
+					setStage(soundQuestions);
 					currentScene = SceneType.SOUND;
 					break;
 					
@@ -226,7 +238,11 @@ public class Main extends Application
 				break;
 				
 			case SOUND:
-				
+				if(question instanceof SoundQuestion)
+				{
+					changeScene(SceneType.SOUND);
+					soundController.setQuestion((SoundQuestion) question);
+				}
 				break;
 				
 			case VIDEO:
