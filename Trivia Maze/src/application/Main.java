@@ -21,7 +21,7 @@ public class Main extends Application
 	private static Stage stage;
 
 	private static SceneType currentScene;
-	private static Scene map, customize, help, settings, win, trueFalse, mcQuestions, videoQuestions;
+	private static Scene map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions;
 	private static MapController mapController;
 	private static MultipleChoiceQuestionController mcController;
 	private static TrueFalseQuestionController tfController;
@@ -61,7 +61,7 @@ public class Main extends Application
 		
 		stage.setScene(scene);		
 		stage.sizeToScene();
-		stage.setResizable(false);
+//		stage.setResizable(false);
 		stage.setMaximized(true);
 		stage.show();
 	}
@@ -117,6 +117,14 @@ public class Main extends Application
 					
 					setStage(win);
 					currentScene = SceneType.WIN;
+					break;
+
+				case LOSE:
+					if(lose == null)
+						lose = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Lose.fxml")));
+					
+					setStage(lose);
+					currentScene = SceneType.LOSE;
 					break;
 
 				case TRUE_FALSE:
@@ -176,7 +184,13 @@ public class Main extends Application
 	public static void checkAnswer(int chosenAnswer)
 	{
 		boolean correct = database.checkAnswer(chosenAnswer);
-		gameMaze.updateMazeRooms(player.getPlayerX(), player.getPlayerY(), !correct);
+		boolean canComplete = gameMaze.updateMazeRooms(player.getPlayerX(), player.getPlayerY(), !correct);
+		
+		if(!canComplete)
+		{
+			changeScene(SceneType.LOSE);
+			return;
+		}
 		
 		mapController.updateMaze(correct);
 		
