@@ -1,8 +1,9 @@
 package application;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Question
+public abstract class Question implements Serializable
 {
 	private QuestionType type;
 	private String question;

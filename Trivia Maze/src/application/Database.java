@@ -1,5 +1,6 @@
 package application;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class Database
+public class Database implements Serializable
 {
 	private Question currentQuestion;
 	private ArrayList<Question> questions;
