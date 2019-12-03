@@ -101,8 +101,6 @@ public class SoundQuestionController
 			}
 		});
 		
-		soundControlPane.setVisible(false);
-		
 		setUpText(question);
 	}
 	

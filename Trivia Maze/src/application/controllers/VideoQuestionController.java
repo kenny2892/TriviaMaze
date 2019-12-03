@@ -101,8 +101,6 @@ public class VideoQuestionController
 			}
 		});
 		
-		videoControlPane.setVisible(false);
-		
 		setUpText(question);
 	}
 	
