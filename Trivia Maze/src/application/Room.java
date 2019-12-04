@@ -1,6 +1,8 @@
 package application;
 
-public class Room
+import java.io.Serializable;
+
+public class Room implements Serializable
 {
 	private Door northDoor, southDoor, eastDoor, westDoor;
 

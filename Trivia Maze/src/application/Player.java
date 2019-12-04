@@ -1,8 +1,9 @@
 package application;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Player
+public class Player implements Serializable
 {
 	private int playerX;
 	private int playerY;

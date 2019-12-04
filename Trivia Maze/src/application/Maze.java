@@ -1,8 +1,9 @@
 package application;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Maze
+public class Maze implements Serializable
 {
 	private Room[][] gameMaze;
 	private Direction currentDirection;

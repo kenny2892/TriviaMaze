@@ -3,12 +3,14 @@ package application.controllers;
 import java.io.File;
 import java.net.URL;
 
+import application.ArchwayStatus;
 import application.Direction;
 import application.Main;
 import application.Maze;
 import application.Player;
 import application.Room;
 import application.SceneType;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
@@ -110,25 +112,57 @@ public class MapController
 		{
 			case NORTH:
 				if((y - 1) >= 0 && (y < 5))
+				{
 					coords = verticalArchWays[y - 1][x];
+
+					if(isLocked)
+						Main.setVerticalArchway(y, x, ArchwayStatus.LOCKED);
+					
+					else
+						Main.setVerticalArchway(y, x, ArchwayStatus.UNLOCKED);
+				}
 				
 				break;
 				
 			case SOUTH:
 				if((y + 1) >= 0 && (y < 5))
+				{
 					coords = verticalArchWays[y][x];
+
+					if(isLocked)
+						Main.setVerticalArchway(y, x, ArchwayStatus.LOCKED);
+					
+					else
+						Main.setVerticalArchway(y, x, ArchwayStatus.UNLOCKED);
+				}
 				
 				break;
 
 			case EAST:
 				if((x + 1) >= 0 && (x < 5))
+				{
 					coords = horizontalArchWays[y][x];
+
+					if(isLocked)
+						Main.setHorizontalArchway(y, x, ArchwayStatus.LOCKED);
+					
+					else
+						Main.setHorizontalArchway(y, x, ArchwayStatus.UNLOCKED);
+				}
 				
 				break;
 
 			case WEST:
 				if((x - 1) >= 0 && (x < 5))
+				{
 					coords = horizontalArchWays[y][x - 1];
+
+					if(isLocked)
+						Main.setHorizontalArchway(y, x, ArchwayStatus.LOCKED);
+					
+					else
+						Main.setHorizontalArchway(y, x, ArchwayStatus.UNLOCKED);
+				}
 				
 				break;
 				
@@ -296,12 +330,12 @@ public class MapController
 
 	public void saveBtn()
 	{
-		System.out.println("Save");
+		Main.save();
 	}
 
 	public void loadBtn()
 	{
-		System.out.println("Load");
+		Main.load();
 	}
 
 	public void settingsBtn()
@@ -414,5 +448,54 @@ public class MapController
 			setArchway(true, maze.getCurrentDirection());
 		
 		showDoors();
+	}
+	
+	public void loadMaze()
+	{
+		Maze maze = Main.getMaze();
+		Player player = Main.getPlayer();
+		
+		playerIcon(player.getPlayerX(), player.getPlayerY());
+		exitIcon(maze.getExitX(), maze.getExitY());
+		
+		Platform.runLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				doorStatusGroup.getChildren().clear();
+				loadArchways(Main.getHorizontalArchways(), horizontalArchWays);
+				loadArchways(Main.getVerticalArchways(), verticalArchWays);
+				
+				showDoors();
+			}
+		});
+	}
+	
+	private void loadArchways(ArchwayStatus[][] archways, double[][][] coordinates)
+	{
+		for(int row = 0; row < archways.length; row++)
+		{
+			for(int col = 0; col < archways[0].length; col++)
+			{
+				ImageView doorway = new ImageView();
+				
+				if(archways[row][col] == ArchwayStatus.UNOPENED)
+					continue;
+				
+				else if(archways[row][col] == ArchwayStatus.LOCKED)
+					doorway.setImage(new Image(this.getClass().getResource("/resources/images/X.png").toExternalForm()));
+				
+				else if(archways[row][col] == ArchwayStatus.UNLOCKED)
+					doorway.setImage(new Image(this.getClass().getResource("/resources/images/Checkmark.png").toExternalForm()));
+				
+				double[] coords = coordinates[row][col];
+				
+				doorway.setFitWidth(66);
+				doorway.setFitHeight(54);				
+				doorway.setLayoutX(coords[0]);
+				doorway.setLayoutY(coords[1]);
+			}
+		}
 	}
 }
