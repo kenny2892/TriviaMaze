@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class VideoQuestion extends Question
 {
+	private static final long serialVersionUID = -5899766019568275257L;
 	private String fileName;
 	
 	public VideoQuestion(String question, ArrayList<String> answers, int correctIndex, String fileName)

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Room implements Serializable
 {
+	private static final long serialVersionUID = -1692660932359362367L;
 	private Door northDoor, southDoor, eastDoor, westDoor;
 
 	public Room(Door northDoor, Door southDoor, Door eastDoor, Door westDoor)

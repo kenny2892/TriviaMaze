@@ -1,23 +1,29 @@
 package application;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import application.controllers.MapController;
 import application.controllers.MultipleChoiceQuestionController;
+import application.controllers.SettingsController;
 import application.controllers.SoundQuestionController;
 import application.controllers.TrueFalseQuestionController;
 import application.controllers.VideoQuestionController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -29,12 +35,14 @@ public class Main extends Application
 	private static Player player;
 	private static Database database;
 	private static ArchwayStatus[][] horizontalArchways, verticalArchways;
+	private static KeyBindings keyBindings;
 	private static File saveLoadDir;
 	
 	private static Stage stage;
 	private static SceneType currentScene;
-	private static Scene map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions;
+	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions;
 	private static MapController mapController;
+	private static SettingsController settingsController;
 	private static MultipleChoiceQuestionController mcController;
 	private static TrueFalseQuestionController tfController;
 	private static VideoQuestionController videoController;
@@ -44,23 +52,29 @@ public class Main extends Application
 	public void start(Stage primaryStage)
 	{
 		stage = primaryStage;
-		changeScene(SceneType.MAP);
+		changeScene(SceneType.START);
 	}
 
 	public static void main(String[] args)
 	{
-		setUp();
 		launch(args);
 	}
 
-	public static void setUp()
+	public static void setUp(DatabaseType type)
 	{
+		if(type == null)
+			throw new IllegalArgumentException("Null Database Type");
+		
+		else if(gameMaze != null)
+			return;
+		
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
-		database = new Database();
+		database = new Database(type);
+		keyBindings = new KeyBindings();
 		
-		horizontalArchways = new ArchwayStatus[5][5];
-		verticalArchways = new ArchwayStatus[5][5];
+		horizontalArchways = new ArchwayStatus[5][4];
+		verticalArchways = new ArchwayStatus[4][5];
 		
 		for(ArchwayStatus[] archways : horizontalArchways)
 			Arrays.fill(archways, ArchwayStatus.UNOPENED);
@@ -77,6 +91,8 @@ public class Main extends Application
 		{
 			player.setSpawn(ROWS, COLS);
 		} while(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY());
+		
+		changeScene(SceneType.MAP);
 	}
 
 	private static void setStage(Scene scene)
@@ -105,7 +121,12 @@ public class Main extends Application
 						Parent root = loader.load();
 						map = new Scene(root);
 						mapController = loader.getController();
+						
+						keyBindMap();
 					}
+					
+					if(settingsController != null)
+						keyBindings = settingsController.getKeyBindings();
 					
 					setStage(map);
 					mapController.update();
@@ -122,8 +143,15 @@ public class Main extends Application
 
 				case SETTINGS:
 					if(settings == null)
-						settings = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Settings.fxml")));
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/Settings.fxml"));
+						Parent root = loader.load();
+						settings = new Scene(root);
+						settingsController = loader.getController();
+					}
 					
+					settingsController.update();
 					setStage(settings);
 					currentScene = SceneType.SETTINGS;
 					break;
@@ -206,6 +234,14 @@ public class Main extends Application
 					
 					setStage(videoQuestions);
 					currentScene = SceneType.VIDEO;
+					break;
+					
+				case START:
+					if(start == null)
+						start = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Start.fxml")));
+					
+					setStage(start);
+					currentScene = SceneType.START;
 					break;
 			}
 		}
@@ -448,5 +484,63 @@ public class Main extends Application
 		}
 		
 		return false;
+	}
+	
+	private static void keyBindMap()
+	{
+		if(map == null)
+			return;
+		
+		map.setOnKeyPressed(new EventHandler<KeyEvent>()
+		{
+			@Override
+			public void handle(KeyEvent event)
+			{
+				if(event.getCode().equals(keyBindings.getCustomize()))
+					mapController.customizeBtn();
+				
+				else if(event.getCode().equals(keyBindings.getSave()))
+					mapController.saveBtn();
+				
+				else if(event.getCode().equals(keyBindings.getLoad()))
+					mapController.saveBtn();
+				
+				else if(event.getCode().equals(keyBindings.getSettings()))
+					mapController.settingsBtn();
+				
+				else if(event.getCode().equals(keyBindings.getHelp()))
+					mapController.helpBtn();
+				
+				else if(event.getCode().equals(keyBindings.getNorth()))
+					mapController.nDoorBtn();
+				
+				else if(event.getCode().equals(keyBindings.getSouth()))
+					mapController.sDoorBtn();
+				
+				else if(event.getCode().equals(keyBindings.getWest()))
+					mapController.wDoorBtn();
+				
+				else if(event.getCode().equals(keyBindings.getEast()))
+					mapController.eDoorBtn();
+			}
+		});
+	}
+	
+	public static void openGitHub()
+	{
+		try
+		{
+			Desktop.getDesktop().browse(new URL("https://github.com/kenny2892/TriviaMaze").toURI());
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(URISyntaxException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

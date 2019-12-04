@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Player implements Serializable
 {
+	private static final long serialVersionUID = -3878147226103757777L;
 	private int playerX;
 	private int playerY;
 

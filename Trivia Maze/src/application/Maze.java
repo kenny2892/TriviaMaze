@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Maze implements Serializable
 {
+	private static final long serialVersionUID = 9201369801085494420L;
 	private Room[][] gameMaze;
 	private Direction currentDirection;
 	private int mazeRows;

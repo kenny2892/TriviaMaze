@@ -7,23 +7,22 @@ import application.MultipleChoiceQuestion;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
-import javafx.scene.text.Text;
 
 public class MultipleChoiceQuestionController
 {
 	@FXML private TextArea mcQuestionText;
 	@FXML private Group mcGroupA;
-	@FXML private Text mcTextA;
+	@FXML private TextArea mcTextA;
 	@FXML private Group mcGroupB;
-	@FXML private Text mcTextB;
+	@FXML private TextArea mcTextB;
 	@FXML private Group mcGroupC;
-	@FXML private Text mcTextC;
+	@FXML private TextArea mcTextC;
 	@FXML private Group mcGroupD;
-	@FXML private Text mcTextD;
+	@FXML private TextArea mcTextD;
 	@FXML private Group mcGroupE;
-	@FXML private Text mcTextE;
+	@FXML private TextArea mcTextE;
 	@FXML private Group mcGroupF;
-	@FXML private Text mcTextF;
+	@FXML private TextArea mcTextF;
 	
 	public void setQuestion(MultipleChoiceQuestion question)
 	{
