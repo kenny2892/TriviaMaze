@@ -14,6 +14,7 @@ import java.util.Arrays;
 
 import application.controllers.MapController;
 import application.controllers.MultipleChoiceQuestionController;
+import application.controllers.SettingsController;
 import application.controllers.SoundQuestionController;
 import application.controllers.TrueFalseQuestionController;
 import application.controllers.VideoQuestionController;
@@ -34,12 +35,14 @@ public class Main extends Application
 	private static Player player;
 	private static Database database;
 	private static ArchwayStatus[][] horizontalArchways, verticalArchways;
+	private static KeyBindings keyBindings;
 	private static File saveLoadDir;
 	
 	private static Stage stage;
 	private static SceneType currentScene;
 	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions;
 	private static MapController mapController;
+	private static SettingsController settingsController;
 	private static MultipleChoiceQuestionController mcController;
 	private static TrueFalseQuestionController tfController;
 	private static VideoQuestionController videoController;
@@ -68,6 +71,7 @@ public class Main extends Application
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
 		database = new Database(type);
+		keyBindings = new KeyBindings();
 		
 		horizontalArchways = new ArchwayStatus[5][4];
 		verticalArchways = new ArchwayStatus[4][5];
@@ -121,6 +125,9 @@ public class Main extends Application
 						keyBindMap();
 					}
 					
+					if(settingsController != null)
+						keyBindings = settingsController.getKeyBindings();
+					
 					setStage(map);
 					mapController.update();
 					currentScene = SceneType.MAP;
@@ -136,8 +143,15 @@ public class Main extends Application
 
 				case SETTINGS:
 					if(settings == null)
-						settings = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Settings.fxml")));
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/Settings.fxml"));
+						Parent root = loader.load();
+						settings = new Scene(root);
+						settingsController = loader.getController();
+					}
 					
+					settingsController.update();
 					setStage(settings);
 					currentScene = SceneType.SETTINGS;
 					break;
@@ -482,47 +496,32 @@ public class Main extends Application
 			@Override
 			public void handle(KeyEvent event)
 			{
-				switch(event.getCode())
-				{
-					case Q:
-						mapController.customizeBtn();
-						break;
-						
-					case W:
-						mapController.saveBtn();
-						break;
-						
-					case E:
-						mapController.loadBtn();
-						break;
-						
-					case R:
-						mapController.settingsBtn();
-						break;
-						
-					case T:
-						mapController.helpBtn();
-						break;
-						
-					case UP:
-						mapController.nDoorBtn();
-						break;
-						
-					case DOWN:
-						mapController.sDoorBtn();
-						break;
-						
-					case LEFT:
-						mapController.wDoorBtn();
-						break;
-						
-					case RIGHT:
-						mapController.eDoorBtn();
-						break;
-						
-					default:
-						break;
-				}
+				if(event.getCode().equals(keyBindings.getCustomize()))
+					mapController.customizeBtn();
+				
+				else if(event.getCode().equals(keyBindings.getSave()))
+					mapController.saveBtn();
+				
+				else if(event.getCode().equals(keyBindings.getLoad()))
+					mapController.saveBtn();
+				
+				else if(event.getCode().equals(keyBindings.getSettings()))
+					mapController.settingsBtn();
+				
+				else if(event.getCode().equals(keyBindings.getHelp()))
+					mapController.helpBtn();
+				
+				else if(event.getCode().equals(keyBindings.getNorth()))
+					mapController.nDoorBtn();
+				
+				else if(event.getCode().equals(keyBindings.getSouth()))
+					mapController.sDoorBtn();
+				
+				else if(event.getCode().equals(keyBindings.getWest()))
+					mapController.wDoorBtn();
+				
+				else if(event.getCode().equals(keyBindings.getEast()))
+					mapController.eDoorBtn();
 			}
 		});
 	}
