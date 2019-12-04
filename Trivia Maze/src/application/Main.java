@@ -1,11 +1,14 @@
 package application;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,7 +36,7 @@ public class Main extends Application
 	
 	private static Stage stage;
 	private static SceneType currentScene;
-	private static Scene map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions;
+	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions;
 	private static MapController mapController;
 	private static MultipleChoiceQuestionController mcController;
 	private static TrueFalseQuestionController tfController;
@@ -44,20 +47,25 @@ public class Main extends Application
 	public void start(Stage primaryStage)
 	{
 		stage = primaryStage;
-		changeScene(SceneType.MAP);
+		changeScene(SceneType.START);
 	}
 
 	public static void main(String[] args)
 	{
-		setUp();
 		launch(args);
 	}
 
-	public static void setUp()
+	public static void setUp(DatabaseType type)
 	{
+		if(type == null)
+			throw new IllegalArgumentException("Null Database Type");
+		
+		else if(gameMaze != null)
+			return;
+		
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
-		database = new Database();
+		database = new Database(type);
 		
 		horizontalArchways = new ArchwayStatus[5][5];
 		verticalArchways = new ArchwayStatus[5][5];
@@ -77,6 +85,8 @@ public class Main extends Application
 		{
 			player.setSpawn(ROWS, COLS);
 		} while(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY());
+		
+		changeScene(SceneType.MAP);
 	}
 
 	private static void setStage(Scene scene)
@@ -206,6 +216,14 @@ public class Main extends Application
 					
 					setStage(videoQuestions);
 					currentScene = SceneType.VIDEO;
+					break;
+					
+				case START:
+					if(start == null)
+						start = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Start.fxml")));
+					
+					setStage(start);
+					currentScene = SceneType.START;
 					break;
 			}
 		}
@@ -448,5 +466,23 @@ public class Main extends Application
 		}
 		
 		return false;
+	}
+	
+	public static void openGitHub()
+	{
+		try
+		{
+			Desktop.getDesktop().browse(new URL("https://github.com/kenny2892/TriviaMaze").toURI());
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(URISyntaxException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
