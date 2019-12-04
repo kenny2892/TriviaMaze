@@ -1,8 +1,9 @@
 package application;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Maze
+public class Maze implements Serializable
 {
 	private Room[][] gameMaze;
 	private Direction currentDirection;
@@ -43,7 +44,7 @@ public class Maze
 		return maze;
 	}
 
-	public void updateMazeRooms(int x, int y, boolean isLocked)
+	public boolean updateMazeRooms(int x, int y, boolean isLocked)
 	{
 		Room currentRoom = getRoom(x, y);
 		currentRoom.setDoorLock(currentDirection, isLocked);
@@ -87,10 +88,73 @@ public class Maze
 					gameMaze[y][x - 1] = connectedRoom;
 				}
 				break;
+				
 			default:
 				break;
 		}
-	}	
+		
+		return checkMaze(y, x, new int[5][5]);
+	}
+	
+	private boolean checkMaze(int playerY, int playerX, int[][] traveledRooms)
+	{
+		boolean result = false;
+		
+		if(isValidCoord(playerY, playerX, traveledRooms))
+		{
+			if(playerY == exitY && playerX == exitX)
+				return true;
+			
+			Room curr = gameMaze[playerY][playerX];
+			traveledRooms[playerY][playerX] = 1;
+			
+			if(!result)
+			{
+				if(curr.isDoorLocked(Direction.SOUTH))
+					result = false;
+				
+				else
+					result = checkMaze(playerY + 1, playerX, traveledRooms);
+			}
+			
+			if(!result)
+			{
+				if(curr.isDoorLocked(Direction.NORTH))
+					result = false;
+				
+				else
+					result = checkMaze(playerY - 1, playerX, traveledRooms);
+			}
+			
+			if(!result)
+			{
+				if(curr.isDoorLocked(Direction.EAST))
+					result = false;
+				
+				else
+					result = checkMaze(playerY, playerX + 1, traveledRooms);
+			}
+			
+			if(!result)
+			{
+				if(curr.isDoorLocked(Direction.WEST))
+					result = false;
+				
+				else
+					result = checkMaze(playerY, playerX - 1, traveledRooms);
+			}
+		}
+		
+		return result;
+	}
+	
+	private boolean isValidCoord(int row, int col, int[][] traveledRooms)
+	{
+		if(gameMaze != null && row < gameMaze.length && col < gameMaze[0].length &&  row > -1 && col > -1 && traveledRooms[row][col] == 0)
+			return true;
+		
+		return false;
+	}
 
 	public int getExitX()
 	{

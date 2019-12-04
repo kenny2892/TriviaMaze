@@ -2,22 +2,19 @@ package application.controllers;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 
+import application.ArchwayStatus;
 import application.Direction;
 import application.Main;
 import application.Maze;
-import application.MultipleChoiceQuestion;
 import application.Player;
-import application.Question;
 import application.Room;
 import application.SceneType;
-import application.TrueFalseQuestion;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
-import javafx.scene.control.TextArea;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
@@ -27,9 +24,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 
-public class MapAndQuestionsController
+public class MapController
 {
 	@FXML private ImageView customizeImg;
 	@FXML private ImageView saveImg;
@@ -41,7 +37,7 @@ public class MapAndQuestionsController
 	@FXML private Rectangle loadHitBox;
 	@FXML private Rectangle settingsHitBox;
 	@FXML private Rectangle helpHitBox;
-	@FXML Group doorStatusGroup;
+	@FXML private Group doorStatusGroup;
 	@FXML private Group mapGroup;
 	@FXML private Group nDoorGroup;
 	@FXML private Group sDoorGroup;
@@ -61,23 +57,6 @@ public class MapAndQuestionsController
 	@FXML private Rectangle eDoorHitBox;
 	@FXML private ImageView playerIcon;
 	@FXML private ImageView exitIcon;
-
-	@FXML private Group mcGroup;
-	@FXML private TextArea mcQuestionText;
-	@FXML private Group mcGroupA;
-	@FXML private Text mcTextA;
-	@FXML private Group mcGroupB;
-	@FXML private Text mcTextB;
-	@FXML private Group mcGroupC;
-	@FXML private Text mcTextC;
-	@FXML private Group mcGroupD;
-	@FXML private Text mcTextD;
-	@FXML private Group mcGroupE;
-	@FXML private Text mcTextE;
-	@FXML private Group mcGroupF;
-	@FXML private Text mcTextF;
-	@FXML private Group tfGroup;
-	@FXML private TextArea tfQuestionText;
 	
 	private static double[][][] horizontalArchWays;
 	private static double[][][] verticalArchWays;
@@ -133,25 +112,57 @@ public class MapAndQuestionsController
 		{
 			case NORTH:
 				if((y - 1) >= 0 && (y < 5))
+				{
 					coords = verticalArchWays[y - 1][x];
+
+					if(isLocked)
+						Main.setVerticalArchway(y, x, ArchwayStatus.LOCKED);
+					
+					else
+						Main.setVerticalArchway(y, x, ArchwayStatus.UNLOCKED);
+				}
 				
 				break;
 				
 			case SOUTH:
 				if((y + 1) >= 0 && (y < 5))
+				{
 					coords = verticalArchWays[y][x];
+
+					if(isLocked)
+						Main.setVerticalArchway(y, x, ArchwayStatus.LOCKED);
+					
+					else
+						Main.setVerticalArchway(y, x, ArchwayStatus.UNLOCKED);
+				}
 				
 				break;
 
 			case EAST:
 				if((x + 1) >= 0 && (x < 5))
+				{
 					coords = horizontalArchWays[y][x];
+
+					if(isLocked)
+						Main.setHorizontalArchway(y, x, ArchwayStatus.LOCKED);
+					
+					else
+						Main.setHorizontalArchway(y, x, ArchwayStatus.UNLOCKED);
+				}
 				
 				break;
 
 			case WEST:
 				if((x - 1) >= 0 && (x < 5))
+				{
 					coords = horizontalArchWays[y][x - 1];
+
+					if(isLocked)
+						Main.setHorizontalArchway(y, x, ArchwayStatus.LOCKED);
+					
+					else
+						Main.setHorizontalArchway(y, x, ArchwayStatus.UNLOCKED);
+				}
 				
 				break;
 				
@@ -319,12 +330,12 @@ public class MapAndQuestionsController
 
 	public void saveBtn()
 	{
-		System.out.println("Save");
+		Main.save();
 	}
 
 	public void loadBtn()
 	{
-		System.out.println("Load");
+		Main.load();
 	}
 
 	public void settingsBtn()
@@ -373,14 +384,7 @@ public class MapAndQuestionsController
 			return;
 		}
 
-		Question question;
-		question = Main.getQuestion(direction);
-
-		if (question instanceof MultipleChoiceQuestion)
-			showMcQuestion((MultipleChoiceQuestion) question);
-
-		else if (question instanceof TrueFalseQuestion)
-			showTfQuestion((TrueFalseQuestion) question);
+		Main.showQuestion(direction);
 	}
 
 	private void playerIcon(int x, int y)
@@ -424,129 +428,74 @@ public class MapAndQuestionsController
 		exitIcon.setFitWidth(width[y]);
 		exitIcon.setFitHeight(height[y]);
 	}
-
-	public void backToMain()
-	{
-		mcGroup.setVisible(false);
-		tfGroup.setVisible(false);
-
-		mapGroup.setVisible(true);
-		showDoors();
-	}
-
-	private void showMcQuestion(MultipleChoiceQuestion question)
-	{
-		mapGroup.setVisible(false);
-		mcGroup.setVisible(true);
-		mcQuestionText.setText(question.getQuestion());
-		ArrayList<String> answers = question.getAnswers();
-
-		hideAllAnswers();
-
-		switch(answers.size())
-		{
-			case 6:
-				mcGroupF.setVisible(true);
-				mcTextF.setText(answers.get(5));
-
-			case 5:
-				mcGroupE.setVisible(true);
-				mcTextE.setText(answers.get(4));
-
-			case 4:
-				mcGroupD.setVisible(true);
-				mcTextD.setText(answers.get(3));
-
-			case 3:
-				mcGroupC.setVisible(true);
-				mcTextC.setText(answers.get(2));
-
-			case 2:
-				mcGroupB.setVisible(true);
-				mcTextB.setText(answers.get(1));
-
-			case 1:
-				mcGroupA.setVisible(true);
-				mcTextA.setText(answers.get(0));
-		}
-	}
-
-	private void showTfQuestion(TrueFalseQuestion question)
-	{
-		mapGroup.setVisible(false);
-		tfGroup.setVisible(true);
-
-		tfQuestionText.setText(question.getQuestion());
-	}
-
-	private void hideAllAnswers()
-	{
-		mcGroupA.setVisible(false);
-		mcGroupB.setVisible(false);
-		mcGroupC.setVisible(false);
-		mcGroupD.setVisible(false);
-		mcGroupE.setVisible(false);
-		mcGroupF.setVisible(false);
-	}
-
-	public void selectmcA()
-	{
-		selectAnswer(0);
-	}
-
-	public void selectmcB()
-	{
-		selectAnswer(1);
-	}
-
-	public void selectmcC()
-	{
-		selectAnswer(2);
-	}
-
-	public void selectmcD()
-	{
-		selectAnswer(3);
-	}
-
-	public void selectmcE()
-	{
-		selectAnswer(4);
-	}
-
-	public void selectmcF()
-	{
-		selectAnswer(5);
-	}
-
-	public void selectTrue()
-	{
-		selectAnswer(0);
-	}
-
-	public void selectFalse()
-	{
-		selectAnswer(1);
-	}
-
-	private void selectAnswer(int answerIndex)
+	
+	public void updateMaze(boolean correct)
 	{
 		Maze maze = Main.getMaze();
 		Player player = Main.getPlayer();
-
-		if (Main.checkAnswer(answerIndex))
+		
+		if(correct)
 		{
 			setArchway(false, maze.getCurrentDirection());
 			if (player.movePlayer(maze, maze.getCurrentDirection()))
 			{
-				backToMain();
+				showDoors();
 				Main.changeScene(SceneType.WIN);
 			}
 		}
-
+		
 		else
 			setArchway(true, maze.getCurrentDirection());
-
-		backToMain();
+		
+		showDoors();
+	}
+	
+	public void loadMaze()
+	{
+		Maze maze = Main.getMaze();
+		Player player = Main.getPlayer();
+		
+		playerIcon(player.getPlayerX(), player.getPlayerY());
+		exitIcon(maze.getExitX(), maze.getExitY());
+		
+		Platform.runLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				doorStatusGroup.getChildren().clear();
+				loadArchways(Main.getHorizontalArchways(), horizontalArchWays);
+				loadArchways(Main.getVerticalArchways(), verticalArchWays);
+				
+				showDoors();
+			}
+		});
+	}
+	
+	private void loadArchways(ArchwayStatus[][] archways, double[][][] coordinates)
+	{
+		for(int row = 0; row < archways.length; row++)
+		{
+			for(int col = 0; col < archways[0].length; col++)
+			{
+				ImageView doorway = new ImageView();
+				
+				if(archways[row][col] == ArchwayStatus.UNOPENED)
+					continue;
+				
+				else if(archways[row][col] == ArchwayStatus.LOCKED)
+					doorway.setImage(new Image(this.getClass().getResource("/resources/images/X.png").toExternalForm()));
+				
+				else if(archways[row][col] == ArchwayStatus.UNLOCKED)
+					doorway.setImage(new Image(this.getClass().getResource("/resources/images/Checkmark.png").toExternalForm()));
+				
+				double[] coords = coordinates[row][col];
+				
+				doorway.setFitWidth(66);
+				doorway.setFitHeight(54);				
+				doorway.setLayoutX(coords[0]);
+				doorway.setLayoutY(coords[1]);
+			}
+		}
 	}
 }

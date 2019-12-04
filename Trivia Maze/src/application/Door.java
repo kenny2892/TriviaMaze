@@ -1,6 +1,8 @@
 package application;
 
-public class Door
+import java.io.Serializable;
+
+public class Door implements Serializable
 {
 	private boolean isLocked;
 	private boolean opened;
