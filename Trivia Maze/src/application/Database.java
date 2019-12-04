@@ -11,6 +11,7 @@ import java.util.Collections;
 
 public class Database implements Serializable
 {
+	private static final long serialVersionUID = 5947245570442525353L;
 	private Question currentQuestion;
 	private ArrayList<Question> questions;
 	

@@ -116,10 +116,10 @@ public class MapController
 					coords = verticalArchWays[y - 1][x];
 
 					if(isLocked)
-						Main.setVerticalArchway(y, x, ArchwayStatus.LOCKED);
+						Main.setVerticalArchway(y - 1, x, ArchwayStatus.LOCKED);
 					
 					else
-						Main.setVerticalArchway(y, x, ArchwayStatus.UNLOCKED);
+						Main.setVerticalArchway(y - 1, x, ArchwayStatus.UNLOCKED);
 				}
 				
 				break;
@@ -158,10 +158,10 @@ public class MapController
 					coords = horizontalArchWays[y][x - 1];
 
 					if(isLocked)
-						Main.setHorizontalArchway(y, x, ArchwayStatus.LOCKED);
+						Main.setHorizontalArchway(y, x - 1, ArchwayStatus.LOCKED);
 					
 					else
-						Main.setHorizontalArchway(y, x, ArchwayStatus.UNLOCKED);
+						Main.setHorizontalArchway(y, x - 1, ArchwayStatus.UNLOCKED);
 				}
 				
 				break;
@@ -350,22 +350,26 @@ public class MapController
 
 	public void nDoorBtn()
 	{
-		doorBtn(Direction.NORTH);
+		if(nDoorGroup.isVisible())
+			doorBtn(Direction.NORTH);
 	}
 
 	public void sDoorBtn()
 	{
-		doorBtn(Direction.SOUTH);
+		if(sDoorGroup.isVisible())
+			doorBtn(Direction.SOUTH);
 	}
 
 	public void eDoorBtn()
 	{
-		doorBtn(Direction.EAST);
+		if(eDoorGroup.isVisible())
+			doorBtn(Direction.EAST);
 	}
 
 	public void wDoorBtn()
 	{
-		doorBtn(Direction.WEST);
+		if(wDoorGroup.isVisible())
+			doorBtn(Direction.WEST);
 	}
 
 	private void doorBtn(Direction direction)
@@ -495,6 +499,8 @@ public class MapController
 				doorway.setFitHeight(54);				
 				doorway.setLayoutX(coords[0]);
 				doorway.setLayoutY(coords[1]);
+				
+				doorStatusGroup.getChildren().add(doorway);
 			}
 		}
 	}

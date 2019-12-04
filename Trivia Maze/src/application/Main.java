@@ -18,9 +18,11 @@ import application.controllers.SoundQuestionController;
 import application.controllers.TrueFalseQuestionController;
 import application.controllers.VideoQuestionController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -67,8 +69,8 @@ public class Main extends Application
 		player = new Player();
 		database = new Database(type);
 		
-		horizontalArchways = new ArchwayStatus[5][5];
-		verticalArchways = new ArchwayStatus[5][5];
+		horizontalArchways = new ArchwayStatus[5][4];
+		verticalArchways = new ArchwayStatus[4][5];
 		
 		for(ArchwayStatus[] archways : horizontalArchways)
 			Arrays.fill(archways, ArchwayStatus.UNOPENED);
@@ -115,6 +117,8 @@ public class Main extends Application
 						Parent root = loader.load();
 						map = new Scene(root);
 						mapController = loader.getController();
+						
+						keyBindMap();
 					}
 					
 					setStage(map);
@@ -466,6 +470,61 @@ public class Main extends Application
 		}
 		
 		return false;
+	}
+	
+	private static void keyBindMap()
+	{
+		if(map == null)
+			return;
+		
+		map.setOnKeyPressed(new EventHandler<KeyEvent>()
+		{
+			@Override
+			public void handle(KeyEvent event)
+			{
+				switch(event.getCode())
+				{
+					case Q:
+						mapController.customizeBtn();
+						break;
+						
+					case W:
+						mapController.saveBtn();
+						break;
+						
+					case E:
+						mapController.loadBtn();
+						break;
+						
+					case R:
+						mapController.settingsBtn();
+						break;
+						
+					case T:
+						mapController.helpBtn();
+						break;
+						
+					case UP:
+						mapController.nDoorBtn();
+						break;
+						
+					case DOWN:
+						mapController.sDoorBtn();
+						break;
+						
+					case LEFT:
+						mapController.wDoorBtn();
+						break;
+						
+					case RIGHT:
+						mapController.eDoorBtn();
+						break;
+						
+					default:
+						break;
+				}
+			}
+		});
 	}
 	
 	public static void openGitHub()
