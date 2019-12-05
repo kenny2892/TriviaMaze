@@ -7,6 +7,7 @@ import application.MultipleChoiceQuestion;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
+import javafx.scene.shape.Rectangle;
 
 public class MultipleChoiceQuestionController
 {
@@ -23,6 +24,7 @@ public class MultipleChoiceQuestionController
 	@FXML private TextArea mcTextE;
 	@FXML private Group mcGroupF;
 	@FXML private TextArea mcTextF;
+	@FXML private Rectangle correctAnswer;
 	
 	public void setQuestion(MultipleChoiceQuestion question)
 	{
@@ -57,6 +59,48 @@ public class MultipleChoiceQuestionController
 				mcGroupA.setVisible(true);
 				mcTextA.setText(answers.get(0));
 		}
+		
+		int[] correctX = new int[] {212, 1018};
+		int[] correctY = new int[] {385, 558, 720};
+		
+		switch(question.getCorrectIndex())
+		{
+			case 0:
+				correctAnswer.setLayoutX(correctX[0]);
+				correctAnswer.setLayoutY(correctY[0]);
+				break;
+
+			case 1:
+				correctAnswer.setLayoutX(correctX[1]);
+				correctAnswer.setLayoutY(correctY[0]);
+				break;
+
+			case 2:
+				correctAnswer.setLayoutX(correctX[0]);
+				correctAnswer.setLayoutY(correctY[1]);
+				break;
+
+			case 3:
+				correctAnswer.setLayoutX(correctX[1]);
+				correctAnswer.setLayoutY(correctY[1]);
+				break;
+
+			case 4:
+				correctAnswer.setLayoutX(correctX[0]);
+				correctAnswer.setLayoutY(correctY[2]);
+				break;
+
+			case 5:
+				correctAnswer.setLayoutX(correctX[1]);
+				correctAnswer.setLayoutY(correctY[2]);
+				break;
+		}
+		
+		if(Main.isCheatAnswer())
+			correctAnswer.setVisible(true);
+		
+		else
+			correctAnswer.setVisible(false);
 	}
 
 	private void hideAllAnswers()
