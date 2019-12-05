@@ -1,3 +1,5 @@
+// Cheat Code is: / + UP Arrow + UP Arrow + Down Arrow + Down Arrow + Left Arrow + Right Arrow + Left Arrow + Right Arrow + B + A
+
 package application;
 
 import java.awt.Desktop;
@@ -34,9 +36,14 @@ public class Main extends Application
 	private static Maze gameMaze;
 	private static Player player;
 	private static Database database;
+	private static DatabaseType dataType;
 	private static ArchwayStatus[][] horizontalArchways, verticalArchways;
 	private static KeyBindings keyBindings;
 	private static File saveLoadDir;
+	private static boolean cheatMode;
+	private static boolean cheatDoor;
+	private static boolean cheatAnswer;
+	private static String enteredCheatCode;
 	
 	private static Stage stage;
 	private static SceneType currentScene;
@@ -65,13 +72,19 @@ public class Main extends Application
 		if(type == null)
 			throw new IllegalArgumentException("Null Database Type");
 		
-		else if(gameMaze != null)
+		else if (stage == null || gameMaze == null)
 			return;
 		
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
 		database = new Database(type);
+		dataType = type;
 		keyBindings = new KeyBindings();
+		
+		cheatMode = false;
+		cheatDoor = false;
+		cheatAnswer = false;
+		enteredCheatCode = "";
 		
 		horizontalArchways = new ArchwayStatus[5][4];
 		verticalArchways = new ArchwayStatus[4][5];
@@ -97,7 +110,7 @@ public class Main extends Application
 
 	private static void setStage(Scene scene)
 	{
-		if(stage == null || scene == null)
+		if(stage == null || scene == null || gameMaze == null)
 			return;
 		
 		stage.setScene(scene);		
@@ -109,6 +122,9 @@ public class Main extends Application
 	
 	public static void changeScene(SceneType type)
 	{
+		if (stage == null || gameMaze == null)
+			return;
+		
 		try
 		{
 			switch(type)
@@ -254,6 +270,9 @@ public class Main extends Application
 	
 	public static void checkAnswer(int chosenAnswer)
 	{
+		if (stage == null || gameMaze == null)
+			return;
+		
 		boolean correct = database.checkAnswer(chosenAnswer);
 		boolean canComplete = gameMaze.updateMazeRooms(player.getPlayerX(), player.getPlayerY(), !correct);
 		
@@ -269,9 +288,21 @@ public class Main extends Application
 			changeScene(SceneType.MAP);
 	}
 	
+	public static void cheatModeMove(Direction direction)
+	{
+		if (stage == null || gameMaze == null)
+			return;
+		
+		if(cheatDoor)
+		{
+			gameMaze.setDirection(direction);
+			gameMaze.updateMazeRooms(player.getPlayerX(), player.getPlayerY(), false);
+		}
+	}
+	
 	public static void showQuestion(Direction direction)
 	{
-		if (direction == null)
+		if (stage == null || gameMaze == null || direction == null)
 			return;
 
 		gameMaze.setDirection(direction);
@@ -324,6 +355,42 @@ public class Main extends Application
 		return player;
 	}
 	
+	public static boolean isCheatMode()
+	{
+		return cheatMode;
+	}
+	
+	public static boolean isCheatDoor()
+	{
+		if(cheatMode)
+			return cheatDoor;
+		
+		return false;
+	}
+	
+	public static boolean isCheatAnswer()
+	{
+		if(cheatMode)
+			return cheatAnswer;
+		
+		return false;
+	}
+	
+	public static void setCheatMode(boolean cheat)
+	{
+		cheatMode = cheat;
+	}
+	
+	public static void setCheatDoor(boolean cheat)
+	{
+		cheatDoor = cheat;
+	}
+	
+	public static void setCheatAnswer(boolean cheat)
+	{
+		cheatAnswer = cheat;
+	}
+	
 	public static ArchwayStatus[][] getHorizontalArchways()
 	{
 		return horizontalArchways;
@@ -336,7 +403,10 @@ public class Main extends Application
 	
 	public static void setHorizontalArchway(int y, int x, ArchwayStatus status)
 	{
-		if(status == null)
+		if (stage == null || gameMaze == null)
+			return;
+		
+		else if(status == null)
 			throw new IllegalArgumentException("Null Archway Status");
 		
 		else if(y >= ROWS || y < 0)
@@ -350,7 +420,10 @@ public class Main extends Application
 	
 	public static void setVerticalArchway(int y, int x, ArchwayStatus status)
 	{
-		if(status == null)
+		if (stage == null || gameMaze == null)
+			return;
+		
+		else if(status == null)
 			throw new IllegalArgumentException("Null Archway Status");
 		
 		else if(y >= ROWS || y < 0)
@@ -364,7 +437,7 @@ public class Main extends Application
 	
 	public static boolean save()
 	{
-		if (stage == null)
+		if (stage == null || gameMaze == null)
 			return false;
 
 		File fileToSaveTo = null;
@@ -420,7 +493,7 @@ public class Main extends Application
 	
 	public static boolean load()
 	{
-		if (stage == null)
+		if (stage == null || gameMaze == null)
 			return false;
 
 		File fileToLoad = null;
@@ -488,7 +561,7 @@ public class Main extends Application
 	
 	private static void keyBindMap()
 	{
-		if(map == null)
+		if (stage == null || gameMaze == null || map == null)
 			return;
 		
 		map.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -496,6 +569,22 @@ public class Main extends Application
 			@Override
 			public void handle(KeyEvent event)
 			{
+				String cheatCode = keyBindings.getCheatIdentifier() + "UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTBA";
+				enteredCheatCode += event.getCode().toString();
+
+				if(cheatCode.startsWith(enteredCheatCode))
+				{
+					if(cheatCode.compareTo(enteredCheatCode) == 0)
+					{
+						cheatMode = true;
+						mapController.update();
+					}
+					return;
+				}
+				
+				else
+					enteredCheatCode = "";
+				
 				if(event.getCode().equals(keyBindings.getCustomize()))
 					mapController.customizeBtn();
 				
@@ -524,6 +613,14 @@ public class Main extends Application
 					mapController.eDoorBtn();
 			}
 		});
+	}
+	
+	public static void reloadQuestions()
+	{
+		if (stage == null || gameMaze == null)
+			return;
+		
+		database = new Database(dataType);
 	}
 	
 	public static void openGitHub()

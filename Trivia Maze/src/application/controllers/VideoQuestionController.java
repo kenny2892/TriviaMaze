@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.media.MediaView;
 
@@ -45,6 +46,7 @@ public class VideoQuestionController
 	@FXML private Text mcTextE;
 	@FXML private Group mcGroupF;
 	@FXML private Text mcTextF;
+	@FXML private Rectangle correctAnswer;
 	
 	@FXML private MediaView mp4View;
 	private MediaPlayer mp4Player;
@@ -136,6 +138,48 @@ public class VideoQuestionController
 				mcGroupA.setVisible(true);
 				mcTextA.setText(answers.get(0));
 		}
+		
+		int[] correctX = new int[] {297, 842, 1379};
+		int[] correctY = new int[] {899, 983};
+		
+		switch(question.getCorrectIndex())
+		{
+			case 0:
+				correctAnswer.setLayoutX(correctX[0]);
+				correctAnswer.setLayoutY(correctY[0]);
+				break;
+
+			case 1:
+				correctAnswer.setLayoutX(correctX[1]);
+				correctAnswer.setLayoutY(correctY[0]);
+				break;
+
+			case 2:
+				correctAnswer.setLayoutX(correctX[2]);
+				correctAnswer.setLayoutY(correctY[0]);
+				break;
+
+			case 3:
+				correctAnswer.setLayoutX(correctX[0]);
+				correctAnswer.setLayoutY(correctY[1]);
+				break;
+
+			case 4:
+				correctAnswer.setLayoutX(correctX[1]);
+				correctAnswer.setLayoutY(correctY[1]);
+				break;
+
+			case 5:
+				correctAnswer.setLayoutX(correctX[2]);
+				correctAnswer.setLayoutY(correctY[1]);
+				break;
+		}
+		
+		if(Main.isCheatAnswer())
+			correctAnswer.setVisible(true);
+		
+		else
+			correctAnswer.setVisible(false);
 	}
 
 	private void hideAllAnswers()

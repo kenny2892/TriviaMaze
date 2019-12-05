@@ -112,5 +112,10 @@
          </font>
       </TextArea>
       <Line endX="1389.0" layoutX="289.0" layoutY="406.0" startX="-100.0" stroke="WHITE" strokeWidth="3.0" />
+      <Text fx:id="invalidInput" fill="RED" layoutX="828.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid Input" visible="false">
+         <font>
+            <Font name="Arial" size="49.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

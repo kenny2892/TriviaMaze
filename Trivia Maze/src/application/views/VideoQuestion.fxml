@@ -17,6 +17,7 @@
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.VideoQuestionController">
    <children>
       <Rectangle fx:id="bgRectangle" height="1080.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1920.0" />
+      <Rectangle fx:id="correctAnswer" arcHeight="5.0" arcWidth="5.0" fill="#1fff57" height="85.0" layoutX="1380.0" layoutY="983.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="95.0" />
       <Rectangle fill="WHITE" height="755.0" layoutX="309.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="1318.0" />
       <MediaView fx:id="mp4View" fitHeight="720.0" fitWidth="1280.0" layoutX="326.0" layoutY="36.0" />
       <Rectangle fill="WHITE" height="755.0" layoutX="309.0" layoutY="19.0" onMouseEntered="#enterPlayer" onMouseExited="#exitPlayer" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="1318.0" />
