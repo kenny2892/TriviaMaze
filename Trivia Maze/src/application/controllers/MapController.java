@@ -539,7 +539,7 @@ public class MapController
 	
 	public void reloadQuestions()
 	{
-		
+		Main.reloadQuestions();
 	}
 	
 	public void editDatabase()
