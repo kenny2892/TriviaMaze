@@ -11,30 +11,31 @@ import java.util.Collections;
 
 public class Database implements Serializable
 {
+	private static final long serialVersionUID = 5947245570442525353L;
 	private Question currentQuestion;
 	private ArrayList<Question> questions;
 	
-	public Database()
+	public Database(DatabaseType type)
 	{
-		this.questions = createQuestionDatabase();
+		if(type == null)
+			throw new IllegalArgumentException("Null Database Type");
+		
+		this.questions = createQuestionDatabase(type);
 	}
 	
-	public ArrayList<Question> createQuestionDatabase() // TODO add switch and enum for different databases
+	public ArrayList<Question> createQuestionDatabase(DatabaseType type)
 	{
+		if(type == null)
+			throw new IllegalArgumentException("Null Database Type");
+		
 		ArrayList<Question> array = new ArrayList<Question>();
 		
 		try
 		{
-			Connection connect = JavaDatabaseConnection.dbConnector();
+			Connection connect = DatabaseConnection.dbConnector(type);
 			
 			array = getMultipleChoice(connect, array);
 			array = getTrueFalse(connect, array);
-			
-			while(array.size() <= 40) // TODO For Demo Only! Remove later
-			{
-				array = getMultipleChoice(connect, array);
-				array = getTrueFalse(connect, array);
-			}
 			
 			Collections.shuffle(array);
 			
@@ -70,7 +71,7 @@ public class Database implements Serializable
 				
 				for(int i = 0; i < optionAra.size(); i++)
 				{
-					if(optionAra.get(i).startsWith(answer))
+					if(optionAra.get(i).startsWith(answer.toLowerCase()))
 						indexOfAnswer = i;
 					
 					optionAra.set(i, optionAra.get(i).substring(3));

@@ -28,11 +28,11 @@
                   <Font name="Arial" size="57.0" />
                </font>
             </Button>
-            <Text fx:id="mcTextA" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            <TextArea fx:id="mcTextA" editable="false" layoutX="120.0" prefHeight="105.0" prefWidth="672.0" stylesheets="@MC.css" text="Text" wrapText="true">
                <font>
-                  <Font name="Arial" size="48.0" />
+                  <Font name="Arial" size="34.0" />
                </font>
-            </Text>
+            </TextArea>
          </children>
       </Group>
       <Group fx:id="mcGroupB" layoutX="1030.0" layoutY="395.0">
@@ -42,11 +42,11 @@
                   <Font name="Arial" size="57.0" />
                </font>
             </Button>
-            <Text fx:id="mcTextB" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            <TextArea fx:id="mcTextB" editable="false" layoutX="118.0" prefHeight="105.0" prefWidth="672.0" stylesheets="@MC.css" text="Text" wrapText="true">
                <font>
-                  <Font name="Arial" size="48.0" />
+                  <Font name="Arial" size="34.0" />
                </font>
-            </Text>
+            </TextArea>
          </children>
       </Group>
       <Group fx:id="mcGroupC" layoutX="223.0" layoutY="568.0">
@@ -56,11 +56,11 @@
                   <Font name="Arial" size="57.0" />
                </font>
             </Button>
-            <Text fx:id="mcTextC" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            <TextArea fx:id="mcTextC" editable="false" layoutX="119.0" prefHeight="105.0" prefWidth="672.0" stylesheets="@MC.css" text="Text" wrapText="true">
                <font>
-                  <Font name="Arial" size="48.0" />
+                  <Font name="Arial" size="34.0" />
                </font>
-            </Text>
+            </TextArea>
          </children>
       </Group>
       <Group fx:id="mcGroupD" layoutX="1030.0" layoutY="568.0">
@@ -70,11 +70,11 @@
                   <Font name="Arial" size="57.0" />
                </font>
             </Button>
-            <Text fx:id="mcTextD" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            <TextArea fx:id="mcTextD" editable="false" layoutX="121.0" prefHeight="105.0" prefWidth="672.0" stylesheets="@MC.css" text="Text" wrapText="true">
                <font>
-                  <Font name="Arial" size="48.0" />
+                  <Font name="Arial" size="34.0" />
                </font>
-            </Text>
+            </TextArea>
          </children>
       </Group>
       <Group fx:id="mcGroupE" layoutX="223.0" layoutY="730.0">
@@ -84,11 +84,11 @@
                   <Font name="Arial" size="57.0" />
                </font>
             </Button>
-            <Text fx:id="mcTextE" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            <TextArea fx:id="mcTextE" editable="false" layoutX="118.0" prefHeight="105.0" prefWidth="672.0" stylesheets="@MC.css" text="Text" wrapText="true">
                <font>
-                  <Font name="Arial" size="48.0" />
+                  <Font name="Arial" size="34.0" />
                </font>
-            </Text>
+            </TextArea>
          </children>
       </Group>
       <Group fx:id="mcGroupF" layoutX="1030.0" layoutY="730.0">
@@ -98,11 +98,11 @@
                   <Font name="Arial" size="57.0" />
                </font>
             </Button>
-            <Text fx:id="mcTextF" fill="WHITE" layoutX="129.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            <TextArea fx:id="mcTextF" editable="false" layoutX="116.0" prefHeight="105.0" prefWidth="672.0" stylesheets="@MC.css" text="Text" wrapText="true">
                <font>
-                  <Font name="Arial" size="48.0" />
+                  <Font name="Arial" size="34.0" />
                </font>
-            </Text>
+            </TextArea>
          </children>
       </Group>
    </children>
