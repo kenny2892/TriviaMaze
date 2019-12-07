@@ -3,13 +3,13 @@ package application.controllers;
 import java.io.File;
 import java.net.URL;
 
-import application.ArchwayStatus;
-import application.Direction;
 import application.Main;
 import application.Maze;
 import application.Player;
 import application.Room;
-import application.SceneType;
+import application.enums.ArchwayStatus;
+import application.enums.Direction;
+import application.enums.SceneType;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -544,6 +544,6 @@ public class MapController
 	
 	public void editDatabase()
 	{
-		
+		Main.changeScene(SceneType.EDIT_DATABASE);
 	}
 }

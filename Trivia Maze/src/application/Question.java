@@ -3,6 +3,8 @@ package application;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import application.enums.QuestionType;
+
 public abstract class Question implements Serializable
 {
 	private static final long serialVersionUID = -4243606643126312760L;

@@ -3,6 +3,8 @@ package application;
 import java.io.Serializable;
 import java.util.Random;
 
+import application.enums.Direction;
+
 public class Player implements Serializable
 {
 	private static final long serialVersionUID = -3878147226103757777L;

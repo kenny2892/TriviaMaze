@@ -2,6 +2,8 @@ package application;
 
 import java.io.Serializable;
 
+import application.enums.Direction;
+
 public class Room implements Serializable
 {
 	private static final long serialVersionUID = -1692660932359362367L;

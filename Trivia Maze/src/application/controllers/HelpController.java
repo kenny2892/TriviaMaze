@@ -1,7 +1,7 @@
 package application.controllers;
 
 import application.Main;
-import application.SceneType;
+import application.enums.SceneType;
 
 public class HelpController
 {
