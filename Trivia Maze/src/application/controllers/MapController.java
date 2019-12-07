@@ -544,6 +544,6 @@ public class MapController
 	
 	public void editDatabase()
 	{
-		
+		Main.changeScene(SceneType.EDIT_DATABASE);
 	}
 }
