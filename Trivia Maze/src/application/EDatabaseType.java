@@ -1,6 +1,6 @@
 package application;
 
-public enum DatabaseType
+public enum EDatabaseType
 {
 	Java, Anime, Video_Games
 }

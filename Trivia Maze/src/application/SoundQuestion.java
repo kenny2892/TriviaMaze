@@ -9,7 +9,7 @@ public class SoundQuestion extends Question
 	
 	public SoundQuestion(String question, ArrayList<String> answers, int correctIndex, String fileName)
 	{
-		super(QuestionType.SOUND, question, answers, correctIndex);
+		super(EQuestionType.SOUND, question, answers, correctIndex);
 		
 		if(fileName == null)
 			throw new IllegalArgumentException("fileName is null.");

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class DatabaseConnection
 {
-	public static Connection dbConnector(DatabaseType type)
+	public static Connection dbConnector(EDatabaseType type)
 	{
 		if(type == null)
 			throw new IllegalArgumentException("Null Database Type");

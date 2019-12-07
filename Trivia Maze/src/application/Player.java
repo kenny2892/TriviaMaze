@@ -21,7 +21,7 @@ public class Player implements Serializable
 		setPlayerLocation(rnjesus.nextInt(mazeColumns), rnjesus.nextInt(mazeRows));
 	}
 
-	public boolean movePlayer(Maze maze, Direction direction)
+	public boolean movePlayer(Maze maze, EDirection direction)
 	{
 		switch(direction)
 		{

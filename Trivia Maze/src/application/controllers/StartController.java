@@ -1,23 +1,23 @@
 package application.controllers;
 
-import application.DatabaseType;
+import application.EDatabaseType;
 import application.Main;
 
 public class StartController
 {
 	public void javaDatabase()
 	{
-		Main.setUp(DatabaseType.Java);
+		Main.setUp(EDatabaseType.Java);
 	}
 	
 	public void animeDatabase()
 	{
-		Main.setUp(DatabaseType.Anime);
+		Main.setUp(EDatabaseType.Anime);
 	}
 	
 	public void videoGamesDatabase()
 	{
-		Main.setUp(DatabaseType.Video_Games);
+		Main.setUp(EDatabaseType.Video_Games);
 	}
 	
 	public void openGitHub()

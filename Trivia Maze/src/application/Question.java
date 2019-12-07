@@ -6,12 +6,12 @@ import java.util.ArrayList;
 public abstract class Question implements Serializable
 {
 	private static final long serialVersionUID = -4243606643126312760L;
-	private QuestionType type;
+	private EQuestionType type;
 	private String question;
 	private ArrayList<String> answers;
 	private int correctIndex;
 
-	public Question(QuestionType type, String question, ArrayList<String> answers, int correctIndex)
+	public Question(EQuestionType type, String question, ArrayList<String> answers, int correctIndex)
 	{
 		if(type == null)
 			throw new IllegalArgumentException("The type parameter was passed as null.");
@@ -31,7 +31,7 @@ public abstract class Question implements Serializable
 		this.correctIndex = correctIndex;
 	}
 
-	public QuestionType getQuestionsType()
+	public EQuestionType getQuestionsType()
 	{
 		return this.type;
 	}

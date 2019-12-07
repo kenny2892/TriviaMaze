@@ -1,6 +1,6 @@
 package application;
 
-public enum QuestionType
+public enum EQuestionType
 {
 	MULTIPLE_CHOICE, TRUE_FALSE, SOUND, VIDEO
 }

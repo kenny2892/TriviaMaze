@@ -3,13 +3,13 @@ package application.controllers;
 import java.io.File;
 import java.net.URL;
 
-import application.ArchwayStatus;
-import application.Direction;
+import application.EArchwayStatus;
+import application.EDirection;
 import application.Main;
 import application.Maze;
 import application.Player;
 import application.Room;
-import application.SceneType;
+import application.ESceneType;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -96,7 +96,7 @@ public class MapController
 				{ {0, 363}, {134, 363}, {261, 363}, {400, 363}, {529, 363} } };
 	}
 
-	private void setArchway(boolean isLocked, Direction direction)
+	private void setArchway(boolean isLocked, EDirection direction)
 	{
 		ImageView doorway = new ImageView();
 		
@@ -121,10 +121,10 @@ public class MapController
 					coords = verticalArchWays[y - 1][x];
 
 					if(isLocked)
-						Main.setVerticalArchway(y - 1, x, ArchwayStatus.LOCKED);
+						Main.setVerticalArchway(y - 1, x, EArchwayStatus.LOCKED);
 					
 					else
-						Main.setVerticalArchway(y - 1, x, ArchwayStatus.UNLOCKED);
+						Main.setVerticalArchway(y - 1, x, EArchwayStatus.UNLOCKED);
 				}
 				
 				break;
@@ -135,10 +135,10 @@ public class MapController
 					coords = verticalArchWays[y][x];
 
 					if(isLocked)
-						Main.setVerticalArchway(y, x, ArchwayStatus.LOCKED);
+						Main.setVerticalArchway(y, x, EArchwayStatus.LOCKED);
 					
 					else
-						Main.setVerticalArchway(y, x, ArchwayStatus.UNLOCKED);
+						Main.setVerticalArchway(y, x, EArchwayStatus.UNLOCKED);
 				}
 				
 				break;
@@ -149,10 +149,10 @@ public class MapController
 					coords = horizontalArchWays[y][x];
 
 					if(isLocked)
-						Main.setHorizontalArchway(y, x, ArchwayStatus.LOCKED);
+						Main.setHorizontalArchway(y, x, EArchwayStatus.LOCKED);
 					
 					else
-						Main.setHorizontalArchway(y, x, ArchwayStatus.UNLOCKED);
+						Main.setHorizontalArchway(y, x, EArchwayStatus.UNLOCKED);
 				}
 				
 				break;
@@ -163,10 +163,10 @@ public class MapController
 					coords = horizontalArchWays[y][x - 1];
 
 					if(isLocked)
-						Main.setHorizontalArchway(y, x - 1, ArchwayStatus.LOCKED);
+						Main.setHorizontalArchway(y, x - 1, EArchwayStatus.LOCKED);
 					
 					else
-						Main.setHorizontalArchway(y, x - 1, ArchwayStatus.UNLOCKED);
+						Main.setHorizontalArchway(y, x - 1, EArchwayStatus.UNLOCKED);
 				}
 				
 				break;
@@ -187,14 +187,14 @@ public class MapController
 		Player player = Main.getPlayer();
 
 		Room curr = maze.getRoom(player.getPlayerX(), player.getPlayerY());
-		setDoorStatus(curr, Direction.NORTH, nDoorGroup, nDoorStatusImg);
-		setDoorStatus(curr, Direction.SOUTH, sDoorGroup, sDoorStatusImg);
-		setDoorStatus(curr, Direction.EAST, eDoorGroup, eDoorStatusImg);
-		setDoorStatus(curr, Direction.WEST, wDoorGroup, wDoorStatusImg);
+		setDoorStatus(curr, EDirection.NORTH, nDoorGroup, nDoorStatusImg);
+		setDoorStatus(curr, EDirection.SOUTH, sDoorGroup, sDoorStatusImg);
+		setDoorStatus(curr, EDirection.EAST, eDoorGroup, eDoorStatusImg);
+		setDoorStatus(curr, EDirection.WEST, wDoorGroup, wDoorStatusImg);
 		playerIcon(player.getPlayerX(), player.getPlayerY());
 	}
 
-	private void setDoorStatus(Room curr, Direction direction, Group doorGroup, ImageView statusImg)
+	private void setDoorStatus(Room curr, EDirection direction, Group doorGroup, ImageView statusImg)
 	{
 		if (curr.isDoorLocked(direction) && !curr.isDoorOpened(direction))
 		{
@@ -334,7 +334,7 @@ public class MapController
 
 	public void customizeBtn()
 	{
-		Main.changeScene(SceneType.CUSTOMIZE);
+		Main.changeScene(ESceneType.CUSTOMIZE);
 	}
 
 	public void saveBtn()
@@ -349,39 +349,39 @@ public class MapController
 
 	public void settingsBtn()
 	{
-		Main.changeScene(SceneType.SETTINGS);
+		Main.changeScene(ESceneType.SETTINGS);
 	}
 
 	public void helpBtn()
 	{
-		Main.changeScene(SceneType.HELP);
+		Main.changeScene(ESceneType.HELP);
 	}
 
 	public void nDoorBtn()
 	{
 		if(nDoorGroup.isVisible())
-			doorBtn(Direction.NORTH);
+			doorBtn(EDirection.NORTH);
 	}
 
 	public void sDoorBtn()
 	{
 		if(sDoorGroup.isVisible())
-			doorBtn(Direction.SOUTH);
+			doorBtn(EDirection.SOUTH);
 	}
 
 	public void eDoorBtn()
 	{
 		if(eDoorGroup.isVisible())
-			doorBtn(Direction.EAST);
+			doorBtn(EDirection.EAST);
 	}
 
 	public void wDoorBtn()
 	{
 		if(wDoorGroup.isVisible())
-			doorBtn(Direction.WEST);
+			doorBtn(EDirection.WEST);
 	}
 
-	private void doorBtn(Direction direction)
+	private void doorBtn(EDirection direction)
 	{
 		Maze maze = Main.getMaze();
 		Player player = Main.getPlayer();
@@ -460,7 +460,7 @@ public class MapController
 			if (player.movePlayer(maze, maze.getCurrentDirection()))
 			{
 				showDoors();
-				Main.changeScene(SceneType.WIN);
+				Main.changeScene(ESceneType.WIN);
 			}
 		}
 		
@@ -492,7 +492,7 @@ public class MapController
 		});
 	}
 	
-	private void loadArchways(ArchwayStatus[][] archways, double[][][] coordinates)
+	private void loadArchways(EArchwayStatus[][] archways, double[][][] coordinates)
 	{
 		for(int row = 0; row < archways.length; row++)
 		{
@@ -500,13 +500,13 @@ public class MapController
 			{
 				ImageView doorway = new ImageView();
 				
-				if(archways[row][col] == ArchwayStatus.UNOPENED)
+				if(archways[row][col] == EArchwayStatus.UNOPENED)
 					continue;
 				
-				else if(archways[row][col] == ArchwayStatus.LOCKED)
+				else if(archways[row][col] == EArchwayStatus.LOCKED)
 					doorway.setImage(new Image(this.getClass().getResource("/resources/images/X.png").toExternalForm()));
 				
-				else if(archways[row][col] == ArchwayStatus.UNLOCKED)
+				else if(archways[row][col] == EArchwayStatus.UNLOCKED)
 					doorway.setImage(new Image(this.getClass().getResource("/resources/images/Checkmark.png").toExternalForm()));
 				
 				double[] coords = coordinates[row][col];

@@ -1,6 +1,6 @@
 package application;
 
-public enum ArchwayStatus
+public enum EArchwayStatus
 {
 	LOCKED, UNLOCKED, UNOPENED
 }

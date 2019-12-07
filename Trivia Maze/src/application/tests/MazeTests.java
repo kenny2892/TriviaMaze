@@ -1,4 +1,4 @@
-package tests;
+package application.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,12 +8,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import application.Direction;
+import application.EDirection;
 import application.Maze;
 import application.Player;
 import application.Room;
 
-class TestMazeTester {
+class MazeTests {
 	
 	private static int mazeRows;
 	private static int mazeColumns;
@@ -102,10 +102,10 @@ class TestMazeTester {
 				
 				if
 				(
-					!(currentRoom.isDoorLocked(Direction.NORTH) == northDoorIndex < 0) ||
-					!(currentRoom.isDoorLocked(Direction.SOUTH) == southDoorIndex >= gameMaze.getMaze()[0].length) ||
-					!(currentRoom.isDoorLocked(Direction.EAST) == eastDoorIndex >= gameMaze.getMaze().length) ||
-					!(currentRoom.isDoorLocked(Direction.WEST) == westDoorIndex < 0)
+					!(currentRoom.isDoorLocked(EDirection.NORTH) == northDoorIndex < 0) ||
+					!(currentRoom.isDoorLocked(EDirection.SOUTH) == southDoorIndex >= gameMaze.getMaze()[0].length) ||
+					!(currentRoom.isDoorLocked(EDirection.EAST) == eastDoorIndex >= gameMaze.getMaze().length) ||
+					!(currentRoom.isDoorLocked(EDirection.WEST) == westDoorIndex < 0)
 				)
 				{
 					eachRoomHasFourDoors = false;

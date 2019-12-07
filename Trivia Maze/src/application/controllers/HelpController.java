@@ -1,12 +1,12 @@
 package application.controllers;
 
 import application.Main;
-import application.SceneType;
+import application.ESceneType;
 
 public class HelpController
 {
 	public void backToMap()
 	{
-		Main.changeScene(SceneType.MAP);
+		Main.changeScene(ESceneType.MAP);
 	}
 }

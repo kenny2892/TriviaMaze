@@ -2,7 +2,7 @@ package application.controllers;
 
 import application.KeyBindings;
 import application.Main;
-import application.SceneType;
+import application.ESceneType;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -208,6 +208,6 @@ public class SettingsController
 	
 	public void backToMap()
 	{
-		Main.changeScene(SceneType.MAP);
+		Main.changeScene(ESceneType.MAP);
 	}
 }

@@ -27,7 +27,7 @@ public class Room implements Serializable
 		this.westDoor = westDoor;
 	}
 
-	public boolean isDoorLocked(Direction direction)
+	public boolean isDoorLocked(EDirection direction)
 	{
 		if(direction == null)
 			throw new IllegalArgumentException("Passed in direction is null.");
@@ -51,7 +51,7 @@ public class Room implements Serializable
 		}
 	}
 
-	public boolean isDoorOpened(Direction direction)
+	public boolean isDoorOpened(EDirection direction)
 	{
 		if(direction == null)
 			throw new IllegalArgumentException("Passed in direction is null.");
@@ -75,7 +75,7 @@ public class Room implements Serializable
 		}
 	}
 
-	public boolean setDoorLock(Direction direction, boolean isLocked)
+	public boolean setDoorLock(EDirection direction, boolean isLocked)
 	{
 		if(direction == null)
 			throw new IllegalArgumentException("Passed in direction is null.");

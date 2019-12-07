@@ -1,6 +1,6 @@
 package application;
 
-public enum Direction
+public enum EDirection
 {
 	NORTH, EAST, SOUTH, WEST, NULL
 }

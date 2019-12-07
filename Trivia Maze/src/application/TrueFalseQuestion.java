@@ -8,6 +8,6 @@ public class TrueFalseQuestion extends Question
 
 	public TrueFalseQuestion(String question, ArrayList<String> answers, int correctIndex)
 	{
-		super(QuestionType.TRUE_FALSE, question, answers, correctIndex);
+		super(EQuestionType.TRUE_FALSE, question, answers, correctIndex);
 	}
 }
