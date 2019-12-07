@@ -30,15 +30,10 @@ public final class Database implements Serializable {
 
 	public Question getQuestion() {
 		 if(questions.size() <= 0) {
-			 throw new
-			 NullPointerException("Questions ArrayList is empty");
+			 throw new NullPointerException("Questions ArrayList is empty");
 		 }
-		currentQuestion = questions.get(0);
-
-		
-		
 		 
-
+		currentQuestion = questions.get(0);
 		questions.remove(0);
 
 		return currentQuestion;

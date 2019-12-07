@@ -47,29 +47,66 @@ class DatabaseTests {
 	}
 	
 	@Test
-	void getQuestion_eachQuestionIsNotNull_TRUE()
+	void getQuestion_eachQuestionOfJavaIsNotNull_TRUE()
 	{
 		Database sut = Database.getInstanceOfDatabase();
 		sut.createQuestions(EDatabaseType.Java);
+		@SuppressWarnings("unused")
 		Question test;
+		boolean trigger = false;
 
 			try
 			{
-				while((test = sut.getQuestion()) != null)
-				{
-				
-				if(test == null)
-				{
-					assertFalse(test != null);
-				}
-				}
+				while((test = sut.getQuestion()) != null);
 			}
-			catch (Exception e)
+			catch (NullPointerException e)
 			{
-				
+				trigger = true;
 			}
 
-		assertTrue(true);
+		assertTrue(trigger);
+	}
+	
+	@Test
+	void getQuestion_eachQuestionOfAnimeIsNotNull_TRUE()
+	{
+		Database sut = Database.getInstanceOfDatabase();
+		sut.createQuestions(EDatabaseType.Anime);
+		@SuppressWarnings("unused")
+		Question test;
+		boolean trigger = false;
+
+			try
+			{
+				while((test = sut.getQuestion()) != null);
+			}
+			catch (NullPointerException e)
+			{
+				trigger = true;
+			}
+
+		assertTrue(trigger);
+	}
+	
+	@Test
+	void getQuestion_eachQuestionOfVideoGamesIsNotNull_TRUE()
+	{
+		Database sut = Database.getInstanceOfDatabase();
+		sut.createQuestions(EDatabaseType.Video_Games);
+		@SuppressWarnings("unused")
+		Question test;
+		boolean trigger = false;
+
+			try
+			{
+				while((test = sut.getQuestion()) != null);
+			}
+			catch (NullPointerException e)
+			{
+				trigger = true;
+			}
+
+		assertTrue(trigger);
 	}
 
 }
