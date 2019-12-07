@@ -10,6 +10,12 @@
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.TrueFalseQuestionController">
    <children>
       <Rectangle fx:id="bgRectangle" height="1080.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1920.0" />
+      <Rectangle fx:id="correctAnswer" arcHeight="5.0" arcWidth="5.0" fill="#1fff57" height="130.0" layoutX="1130.0" layoutY="537.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="271.0" />
+      <TextArea fx:id="tfQuestionText" layoutX="517.0" layoutY="348.0" prefHeight="128.0" prefWidth="885.0" wrapText="true">
+         <font>
+            <Font name="Arial" size="32.0" />
+         </font>
+      </TextArea>
       <Button layoutX="517.0" layoutY="545.0" mnemonicParsing="false" onAction="#selectTrue" prefHeight="44.0" prefWidth="253.0" text="True">
          <font>
             <Font name="Arial" size="62.0" />
@@ -25,10 +31,5 @@
             <Font name="Arial" size="96.0" />
          </font>
       </Label>
-      <TextArea fx:id="tfQuestionText" layoutX="517.0" layoutY="348.0" prefHeight="128.0" prefWidth="885.0" wrapText="true">
-         <font>
-            <Font name="Arial" size="32.0" />
-         </font>
-      </TextArea>
    </children>
 </AnchorPane>

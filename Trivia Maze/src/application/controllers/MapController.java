@@ -15,6 +15,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
+import javafx.scene.control.CheckBox;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
@@ -22,6 +23,7 @@ import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -57,6 +59,9 @@ public class MapController
 	@FXML private Rectangle eDoorHitBox;
 	@FXML private ImageView playerIcon;
 	@FXML private ImageView exitIcon;
+	@FXML private Pane cheatPane;
+	@FXML private CheckBox cheatDoor;
+	@FXML private CheckBox cheatAnswer;
 	
 	private static double[][][] horizontalArchWays;
 	private static double[][][] verticalArchWays;
@@ -265,6 +270,10 @@ public class MapController
 		buttonColors();
 		doorColors();
 		arrowType();
+		
+		cheatPane.setVisible(Main.isCheatMode());
+		cheatDoor.setSelected(Main.isCheatDoor());
+		cheatAnswer.setSelected(Main.isCheatAnswer());
 	}
 
 	private void changeImageColor(ImageView imageToChange, Rectangle hitBox, Color mainColor, Color highlightColor)
@@ -387,6 +396,13 @@ public class MapController
 			showDoors();
 			return;
 		}
+		
+		else if(Main.isCheatDoor())
+		{
+			Main.cheatModeMove(direction);
+			updateMaze(true);
+			return;
+		}
 
 		Main.showQuestion(direction);
 	}
@@ -503,5 +519,31 @@ public class MapController
 				doorStatusGroup.getChildren().add(doorway);
 			}
 		}
+	}
+	
+	public void setCheatDoor()
+	{
+		Main.setCheatDoor(cheatDoor.isSelected());
+	}
+	
+	public void setCheatAnswer()
+	{
+		Main.setCheatAnswer(cheatAnswer.isSelected());
+	}
+	
+	public void disableCheat()
+	{
+		cheatPane.setVisible(false);
+		Main.setCheatMode(false);
+	}
+	
+	public void reloadQuestions()
+	{
+		Main.reloadQuestions();
+	}
+	
+	public void editDatabase()
+	{
+		
 	}
 }

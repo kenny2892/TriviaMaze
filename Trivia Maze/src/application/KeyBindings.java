@@ -4,7 +4,7 @@ import javafx.scene.input.KeyCode;
 
 public class KeyBindings
 {
-	private KeyCode north, south, east, west, customize, save, load, settings, help;
+	private KeyCode north, south, east, west, customize, save, load, settings, help, cheatIdentifier;
 	
 	public KeyBindings()
 	{
@@ -18,6 +18,7 @@ public class KeyBindings
 		load = KeyCode.E;
 		settings = KeyCode.R;
 		help = KeyCode.T;
+		cheatIdentifier = KeyCode.SLASH;
 	}
 
 	public KeyCode getNorth()
@@ -137,5 +138,18 @@ public class KeyBindings
 		this.help = help;
 	}
 	
+	public KeyCode getCheatIdentifier()
+	{
+		return cheatIdentifier;
+	}
 	
+	public boolean usesKey(KeyCode key)
+	{
+		if(key.equals(north) || key.equals(south) || key.equals(west) || key.equals(east) ||
+		   key.equals(customize) || key.equals(save) || key.equals(load) || key.equals(settings) || key.equals(help) ||
+		   key.equals(cheatIdentifier))
+			return true;
+		
+		return false;
+	}
 }

@@ -7,25 +7,36 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 
 public class SettingsController
 {
 	@FXML private TextArea northKeyTxt, southKeyTxt, westKeyTxt, eastKeyTxt;
 	@FXML private TextArea customizeKeyTxt, settingsKeyTxt, saveKeyTxt, loadKeyTxt, helpKeyTxt;
+	@FXML private Text invalidInput;
 
 	private KeyBindings bindings;
 	
 	public void initialize()
 	{
 		bindings = new KeyBindings();
+		invalidInput.setVisible(false);
 		
 		northKeyTxt.setOnKeyPressed(new EventHandler<KeyEvent>()
 		{
 			@Override
 			public void handle(KeyEvent event)
 			{
-				northKeyTxt.setText(event.getCode().toString());
-				bindings.setNorth(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{					
+					northKeyTxt.setText(event.getCode().toString());
+					bindings.setNorth(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 		
@@ -34,8 +45,16 @@ public class SettingsController
 			@Override
 			public void handle(KeyEvent event)
 			{
-				southKeyTxt.setText(event.getCode().toString());
-				bindings.setSouth(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{
+					southKeyTxt.setText(event.getCode().toString());
+					bindings.setSouth(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 		
@@ -44,8 +63,16 @@ public class SettingsController
 			@Override
 			public void handle(KeyEvent event)
 			{
-				westKeyTxt.setText(event.getCode().toString());
-				bindings.setWest(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{
+					westKeyTxt.setText(event.getCode().toString());
+					bindings.setWest(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 		
@@ -54,8 +81,16 @@ public class SettingsController
 			@Override
 			public void handle(KeyEvent event)
 			{
-				eastKeyTxt.setText(event.getCode().toString());
-				bindings.setEast(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{
+					eastKeyTxt.setText(event.getCode().toString());
+					bindings.setEast(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 		
@@ -64,8 +99,16 @@ public class SettingsController
 			@Override
 			public void handle(KeyEvent event)
 			{
-				customizeKeyTxt.setText(event.getCode().toString());
-				bindings.setCustomize(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{
+					customizeKeyTxt.setText(event.getCode().toString());
+					bindings.setCustomize(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 		
@@ -74,8 +117,16 @@ public class SettingsController
 			@Override
 			public void handle(KeyEvent event)
 			{
-				settingsKeyTxt.setText(event.getCode().toString());
-				bindings.setSettings(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{
+					settingsKeyTxt.setText(event.getCode().toString());
+					bindings.setSettings(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 		
@@ -84,8 +135,16 @@ public class SettingsController
 			@Override
 			public void handle(KeyEvent event)
 			{
-				saveKeyTxt.setText(event.getCode().toString());
-				bindings.setSave(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{
+					saveKeyTxt.setText(event.getCode().toString());
+					bindings.setSave(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 		
@@ -94,8 +153,16 @@ public class SettingsController
 			@Override
 			public void handle(KeyEvent event)
 			{
-				loadKeyTxt.setText(event.getCode().toString());
-				bindings.setLoad(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{
+					loadKeyTxt.setText(event.getCode().toString());
+					bindings.setLoad(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 		
@@ -104,8 +171,16 @@ public class SettingsController
 			@Override
 			public void handle(KeyEvent event)
 			{
-				helpKeyTxt.setText(event.getCode().toString());
-				bindings.setHelp(event.getCode());
+				invalidInput.setVisible(false);
+				
+				if(!bindings.usesKey(event.getCode()))
+				{
+					helpKeyTxt.setText(event.getCode().toString());
+					bindings.setHelp(event.getCode());
+				}
+				
+				else
+					invalidInput.setVisible(true);
 			}
 		});
 	}
@@ -122,6 +197,8 @@ public class SettingsController
 		saveKeyTxt.setText(bindings.getSave().toString());
 		loadKeyTxt.setText(bindings.getLoad().toString());
 		helpKeyTxt.setText(bindings.getHelp().toString());
+		
+		invalidInput.setVisible(false);
 	}
 	
 	public KeyBindings getKeyBindings()
