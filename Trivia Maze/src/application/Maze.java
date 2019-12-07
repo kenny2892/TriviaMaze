@@ -3,6 +3,8 @@ package application;
 import java.io.Serializable;
 import java.util.Random;
 
+import application.enums.Direction;
+
 public class Maze implements Serializable
 {
 	private static final long serialVersionUID = 9201369801085494420L;
@@ -167,16 +169,6 @@ public class Maze implements Serializable
 		return this.exitY;
 	}
 
-	public int getmazeRows()
-	{
-		return this.mazeRows;
-	}
-
-	public int getMazeColulumns()
-	{
-		return this.mazeColumns;
-	}
-
 	public Room[][] getMaze()
 	{
 		return this.gameMaze;
@@ -199,19 +191,17 @@ public class Maze implements Serializable
 
 	public void setExitX(int exitX)
 	{
-		if (exitX < 0 || exitX >= this.mazeRows)
-		{
+		if (exitX < 0 || exitX >= this.mazeColumns)
 			throw new IllegalArgumentException("Passed X value is out of the bounds of the maze.");
-		}
+		
 		this.exitX = exitX;
 	}
 
 	public void setExitY(int exitY)
 	{
-		if (exitX < 0 || exitX >= this.mazeRows)
-		{
+		if (exitY < 0 || exitY >= this.mazeRows)
 			throw new IllegalArgumentException("Passed Y value is out of the bounds of the maze.");
-		}
+		
 		this.exitY = exitY;
 	}
 

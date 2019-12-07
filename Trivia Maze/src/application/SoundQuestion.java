@@ -2,6 +2,8 @@ package application;
 
 import java.util.ArrayList;
 
+import application.enums.QuestionType;
+
 public class SoundQuestion extends Question
 {
 	private static final long serialVersionUID = 1803684093041585047L;

@@ -4,7 +4,7 @@ import java.io.File;
 import java.net.URL;
 
 import application.Main;
-import application.SceneType;
+import application.enums.SceneType;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;

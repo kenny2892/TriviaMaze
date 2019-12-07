@@ -1,4 +1,4 @@
-package application;
+package application.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,7 +8,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestMazeTester {
+import application.Maze;
+import application.Player;
+import application.Room;
+import application.enums.Direction;
+
+class MazeTests {
 	
 	private static int mazeRows;
 	private static int mazeColumns;

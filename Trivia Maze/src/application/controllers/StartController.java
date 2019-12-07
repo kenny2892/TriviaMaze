@@ -1,7 +1,7 @@
 package application.controllers;
 
-import application.DatabaseType;
 import application.Main;
+import application.enums.DatabaseType;
 
 public class StartController
 {

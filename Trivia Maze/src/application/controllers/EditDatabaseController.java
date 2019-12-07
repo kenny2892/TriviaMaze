@@ -6,10 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import application.DatabaseConnection;
-import application.DatabaseType;
 import application.Main;
-import application.QuestionType;
-import application.SceneType;
+import application.enums.DatabaseType;
+import application.enums.QuestionType;
+import application.enums.SceneType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
