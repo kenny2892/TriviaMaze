@@ -8,15 +8,16 @@ import application.Database;
 import application.EDatabaseType;
 import application.Question;
 
-class DatabaseTests {
-		
+class DatabaseTests
+{
+
 	@Test
-	void getInstanceOfDatabase_doesNotReturnNull_TRUE ()
+	void getInstanceOfDatabase_doesNotReturnNull_TRUE()
 	{
 		Database sut = Database.getInstanceOfDatabase();
 		assertTrue(sut != null);
 	}
-	
+
 	@Test
 	void createQuestions_incorrectParameterThrowsException_TRUE()
 	{
@@ -27,11 +28,11 @@ class DatabaseTests {
 		});
 		assertEquals("Null Database Type", exception.getMessage());
 	}
-	
+
 	@Test
 	void getQuestion_throwNullPointerExceptionWhenNoMoreQuestions_TRUE()
 	{
-		
+
 		NullPointerException exception = assertThrows(NullPointerException.class, () ->
 		{
 			Database sut = Database.getInstanceOfDatabase();
@@ -45,7 +46,7 @@ class DatabaseTests {
 		});
 		assertEquals("Questions ArrayList is empty", exception.getMessage());
 	}
-	
+
 	@Test
 	void getQuestion_eachQuestionOfJavaIsNotNull_TRUE()
 	{
@@ -55,18 +56,19 @@ class DatabaseTests {
 		Question test;
 		boolean trigger = false;
 
-			try
-			{
-				while((test = sut.getQuestion()) != null);
-			}
-			catch (NullPointerException e)
-			{
-				trigger = true;
-			}
+		try
+		{
+			while((test = sut.getQuestion()) != null)
+				;
+		}
+		catch(NullPointerException e)
+		{
+			trigger = true;
+		}
 
 		assertTrue(trigger);
 	}
-	
+
 	@Test
 	void getQuestion_eachQuestionOfAnimeIsNotNull_TRUE()
 	{
@@ -76,18 +78,19 @@ class DatabaseTests {
 		Question test;
 		boolean trigger = false;
 
-			try
-			{
-				while((test = sut.getQuestion()) != null);
-			}
-			catch (NullPointerException e)
-			{
-				trigger = true;
-			}
+		try
+		{
+			while((test = sut.getQuestion()) != null)
+				;
+		}
+		catch(NullPointerException e)
+		{
+			trigger = true;
+		}
 
 		assertTrue(trigger);
 	}
-	
+
 	@Test
 	void getQuestion_eachQuestionOfVideoGamesIsNotNull_TRUE()
 	{
@@ -97,14 +100,15 @@ class DatabaseTests {
 		Question test;
 		boolean trigger = false;
 
-			try
-			{
-				while((test = sut.getQuestion()) != null);
-			}
-			catch (NullPointerException e)
-			{
-				trigger = true;
-			}
+		try
+		{
+			while((test = sut.getQuestion()) != null)
+				;
+		}
+		catch(NullPointerException e)
+		{
+			trigger = true;
+		}
 
 		assertTrue(trigger);
 	}

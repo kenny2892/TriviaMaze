@@ -28,9 +28,6 @@ public class KeyBindings
 
 	public void setNorth(KeyCode north)
 	{
-		if(north == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.north = north;
 	}
 
@@ -41,9 +38,6 @@ public class KeyBindings
 
 	public void setSouth(KeyCode south)
 	{
-		if(south == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.south = south;
 	}
 
@@ -54,9 +48,6 @@ public class KeyBindings
 
 	public void setEast(KeyCode east)
 	{
-		if(east == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.east = east;
 	}
 
@@ -67,9 +58,6 @@ public class KeyBindings
 
 	public void setWest(KeyCode west)
 	{
-		if(west == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.west = west;
 	}
 
@@ -80,9 +68,6 @@ public class KeyBindings
 
 	public void setCustomize(KeyCode customize)
 	{
-		if(customize == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.customize = customize;
 	}
 
@@ -93,9 +78,6 @@ public class KeyBindings
 
 	public void setSave(KeyCode save)
 	{
-		if(save == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.save = save;
 	}
 
@@ -106,9 +88,6 @@ public class KeyBindings
 
 	public void setLoad(KeyCode load)
 	{
-		if(load == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.load = load;
 	}
 
@@ -119,9 +98,6 @@ public class KeyBindings
 
 	public void setSettings(KeyCode settings)
 	{
-		if(settings == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.settings = settings;
 	}
 
@@ -132,9 +108,6 @@ public class KeyBindings
 
 	public void setHelp(KeyCode help)
 	{
-		if(help == null)
-			throw new IllegalArgumentException("Null Key Code");
-		
 		this.help = help;
 	}
 	
