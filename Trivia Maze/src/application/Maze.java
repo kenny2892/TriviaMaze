@@ -10,8 +10,6 @@ public class Maze implements Serializable
 	private static final long serialVersionUID = 9201369801085494420L;
 	private Room[][] gameMaze;
 	private Direction currentDirection;
-	private int mazeRows;
-	private int mazeColumns;
 	private int exitX;
 	private int exitY;
 
@@ -19,14 +17,12 @@ public class Maze implements Serializable
 	{
 		this.gameMaze = createMaze(mazeRows, mazeColumns);
 		this.currentDirection = Direction.NULL;
-		this.mazeRows = mazeRows;
-		this.mazeColumns = mazeColumns;
 		this.exitX = -1;
 		this.exitY = -1;
 		setExit(mazeRows, mazeColumns);
 	}
 	
-	public Room[][] createMaze(int rows, int cols)
+	private Room[][] createMaze(int rows, int cols)
 	{
 		Room[][] maze = new Room[rows][cols];
 
@@ -49,6 +45,11 @@ public class Maze implements Serializable
 
 	public boolean updateMazeRooms(int x, int y, boolean isLocked)
 	{
+		if (x < 0 || x >= 5)
+			throw new IllegalArgumentException("Passed X value is out of the bounds of the maze.");
+		else if (y < 0 || y >= 5)
+			throw new IllegalArgumentException("Passed Y value is out of the bounds of the maze.");
+		
 		Room currentRoom = getRoom(x, y);
 		currentRoom.setDoorLock(currentDirection, isLocked);
 		gameMaze[y][x] = currentRoom;
@@ -186,12 +187,14 @@ public class Maze implements Serializable
 
 	public void setDirection(Direction newDirection)
 	{
+		if(newDirection == null)
+			throw new IllegalArgumentException("Direction was null");
 		this.currentDirection = newDirection;
 	}
 
 	public void setExitX(int exitX)
 	{
-		if (exitX < 0 || exitX >= this.mazeColumns)
+		if (exitX < 0 || exitX >= 5)
 			throw new IllegalArgumentException("Passed X value is out of the bounds of the maze.");
 		
 		this.exitX = exitX;
@@ -199,7 +202,7 @@ public class Maze implements Serializable
 
 	public void setExitY(int exitY)
 	{
-		if (exitY < 0 || exitY >= this.mazeRows)
+		if (exitY < 0 || exitY >= 5)
 			throw new IllegalArgumentException("Passed Y value is out of the bounds of the maze.");
 		
 		this.exitY = exitY;

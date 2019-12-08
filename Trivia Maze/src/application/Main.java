@@ -419,10 +419,8 @@ public class Main extends Application
 	
 	public static void setHorizontalArchway(int y, int x, ArchwayStatus status)
 	{
-		if (stage == null || gameMaze == null)
-			return;
 		
-		else if(status == null)
+		if(status == null)
 			throw new IllegalArgumentException("Null Archway Status");
 		
 		else if(y >= ROWS || y < 0)
@@ -436,10 +434,7 @@ public class Main extends Application
 	
 	public static void setVerticalArchway(int y, int x, ArchwayStatus status)
 	{
-		if (stage == null || gameMaze == null)
-			return;
-		
-		else if(status == null)
+		if(status == null)
 			throw new IllegalArgumentException("Null Archway Status");
 		
 		else if(y >= ROWS || y < 0)
@@ -655,5 +650,10 @@ public class Main extends Application
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void close()
+	{
+		stage.close();
 	}
 }

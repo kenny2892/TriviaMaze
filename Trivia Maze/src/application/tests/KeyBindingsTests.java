@@ -160,10 +160,66 @@ class KeyBindingsTests
 	}
 	
 	@Test
-	void usesKey_returnsTrueifKeyCodeNORTHProvided_TRUE()
+	void usesKey_returnsTrueifKeyCodeDOWNProvided_TRUE()
 	{
 		KeyBindings sut = new KeyBindings();
 		assertTrue(sut.usesKey(KeyCode.DOWN));
+	}
+	
+	@Test
+	void usesKey_returnsTrueifKeyCodeRIGHTProvided_TRUE()
+	{
+		KeyBindings sut = new KeyBindings();
+		assertTrue(sut.usesKey(KeyCode.RIGHT));
+	}
+	
+	@Test
+	void usesKey_returnsTrueifKeyCodeLEFTProvided_TRUE()
+	{
+		KeyBindings sut = new KeyBindings();
+		assertTrue(sut.usesKey(KeyCode.LEFT));
+	}
+	
+	@Test
+	void usesKey_returnsTrueifKeyCodeQProvided_TRUE()
+	{
+		KeyBindings sut = new KeyBindings();
+		assertTrue(sut.usesKey(KeyCode.Q));
+	}
+	
+	@Test
+	void usesKey_returnsTrueifKeyCodeWProvided_TRUE()
+	{
+		KeyBindings sut = new KeyBindings();
+		assertTrue(sut.usesKey(KeyCode.W));
+	}
+	
+	@Test
+	void usesKey_returnsTrueifKeyCodeEProvided_TRUE()
+	{
+		KeyBindings sut = new KeyBindings();
+		assertTrue(sut.usesKey(KeyCode.E));
+	}
+	
+	@Test
+	void usesKey_returnsTrueifKeyCodeRProvided_TRUE()
+	{
+		KeyBindings sut = new KeyBindings();
+		assertTrue(sut.usesKey(KeyCode.R));
+	}
+	
+	@Test
+	void usesKey_returnsTrueifKeyCodeTProvided_TRUE()
+	{
+		KeyBindings sut = new KeyBindings();
+		assertTrue(sut.usesKey(KeyCode.T));
+	}
+	
+	@Test
+	void usesKey_returnsTrueifKeyCodeSLASHProvided_TRUE()
+	{
+		KeyBindings sut = new KeyBindings();
+		assertTrue(sut.usesKey(KeyCode.SLASH));
 	}
 
 }
