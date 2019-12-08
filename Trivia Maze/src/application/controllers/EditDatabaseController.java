@@ -19,6 +19,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -102,6 +104,7 @@ public class EditDatabaseController
 		
 		currDatabaseType = databaseType;
 		currQuestionType = questionType;
+		playBtnSound();
 	}
 	
 	private void add(QuestionType questionType)
@@ -296,6 +299,8 @@ public class EditDatabaseController
 		
 		else
 			invalidInput.setVisible(true);
+
+		playBtnSound();
 	}
 	
 	private boolean addMC(String query)
@@ -479,10 +484,19 @@ public class EditDatabaseController
 		System.out.println("Remove");
 		
 		completedInput.setVisible(true);
+		playBtnSound();
 	}
 	
 	public void backToMap()
 	{
+		playBtnSound();
 		Main.changeScene(SceneType.MAP);
+	}
+	
+	private void playBtnSound()
+	{		
+		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
+		MediaPlayer player = new MediaPlayer(soundFX);
+		player.play();
 	}
 }

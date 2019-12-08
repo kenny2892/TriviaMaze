@@ -194,31 +194,37 @@ public class SoundQuestionController
 
 	public void selectmcA()
 	{
+		playBtnSound();
 		Main.checkAnswer(0);
 	}
 
 	public void selectmcB()
 	{
+		playBtnSound();
 		Main.checkAnswer(1);
 	}
 
 	public void selectmcC()
 	{
+		playBtnSound();
 		Main.checkAnswer(2);
 	}
 
 	public void selectmcD()
 	{
+		playBtnSound();
 		Main.checkAnswer(3);
 	}
 
 	public void selectmcE()
 	{
+		playBtnSound();
 		Main.checkAnswer(4);
 	}
 
 	public void selectmcF()
 	{
+		playBtnSound();
 		Main.checkAnswer(5);
 	}
 	
@@ -239,6 +245,8 @@ public class SoundQuestionController
 		if(mp3Player == null)
 			return;
 		
+		playBtnSound();
+		
 		if(mp3Player.getStatus() == Status.PLAYING)
 		{
 			mp3Player.pause();
@@ -254,6 +262,8 @@ public class SoundQuestionController
 	{
 		if(mp3Player == null)
 			return;
+
+		playBtnSound();
 		
 		mp3Player.seek(mp3Player.getMedia().getDuration().multiply(0));
 		mp3Player.pause();
@@ -277,6 +287,8 @@ public class SoundQuestionController
 	{
 		if(mp3Player == null)
 			return;
+
+		playBtnSound();
 		
 		if(mp3Player.isMute())
 		{
@@ -289,5 +301,12 @@ public class SoundQuestionController
 			mp3Player.setMute(true);
 			volumeBtn.setImage(new Image(this.getClass().getResource("/resources/images/Volume Mute.png").toExternalForm()));
 		}
+	}
+	
+	private void playBtnSound()
+	{		
+		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
+		MediaPlayer player = new MediaPlayer(soundFX);
+		player.play();
 	}
 }

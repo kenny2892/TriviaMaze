@@ -3,12 +3,19 @@ package application.controllers;
 import application.KeyBindings;
 import application.Main;
 import application.enums.SceneType;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 
 public class SettingsController
@@ -16,6 +23,8 @@ public class SettingsController
 	@FXML private TextArea northKeyTxt, southKeyTxt, westKeyTxt, eastKeyTxt;
 	@FXML private TextArea customizeKeyTxt, settingsKeyTxt, saveKeyTxt, loadKeyTxt, helpKeyTxt;
 	@FXML private Text invalidInput, clearTxt;
+	@FXML private Slider volumeSlider;
+	@FXML private ImageView volumeBtn;
 
 	private KeyBindings bindings;
 
@@ -25,10 +34,39 @@ public class SettingsController
 		invalidInput.setVisible(false);
 
 		setShowClearTxt();
-		setBindings();
+		setUpBindings();
+		setUpVolume();	
 	}
 	
-	private void setBindings()
+	private void setUpVolume()
+	{
+		volumeSlider.setMax(100);
+		volumeSlider.setMin(0);
+		volumeSlider.setValue(20);
+		
+		volumeSlider.valueProperty().addListener(new InvalidationListener()
+		{
+			@Override
+			public void invalidated(Observable observable)
+			{
+				if(volumeSlider.isPressed())
+					Main.setBgVolume(volumeSlider.getValue() / 100);
+			}
+		});
+	}
+	
+	public void mute()
+	{
+		playBtnSound();
+		
+		if(Main.setBgMuteOrUnmute())
+			volumeBtn.setImage(new Image(this.getClass().getResource("/resources/images/Volume Mute.png").toExternalForm()));
+		
+		else
+			volumeBtn.setImage(new Image(this.getClass().getResource("/resources/images/Volume.png").toExternalForm()));
+	}
+	
+	private void setUpBindings()
 	{
 		northKeyTxt.setOnKeyPressed(new EventHandler<KeyEvent>()
 		{
@@ -54,6 +92,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 
@@ -81,6 +121,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 
@@ -108,6 +150,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 
@@ -135,6 +179,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 
@@ -162,6 +208,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 
@@ -189,6 +237,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 
@@ -216,6 +266,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 
@@ -243,6 +295,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 
@@ -270,6 +324,8 @@ public class SettingsController
 
 				else
 					invalidInput.setVisible(true);
+
+				playBtnSound();
 			}
 		});
 	}
@@ -346,6 +402,14 @@ public class SettingsController
 
 	public void backToMap()
 	{
+		playBtnSound();
 		Main.changeScene(SceneType.MAP);
+	}
+	
+	private void playBtnSound()
+	{		
+		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
+		MediaPlayer player = new MediaPlayer(soundFX);
+		player.play();
 	}
 }
