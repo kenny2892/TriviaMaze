@@ -119,7 +119,10 @@ public class Main extends Application
 		
 		stage.setScene(scene);		
 		stage.sizeToScene();
-		stage.setResizable(false);
+		stage.setMinHeight(1080);
+		stage.setMinWidth(1920);
+		stage.setMaxHeight(1090);
+		stage.setMaxWidth(1930);
 		stage.setMaximized(true);
 		stage.show();
 	}
