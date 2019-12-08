@@ -3,9 +3,11 @@ package application;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import application.enums.DatabaseType;
+
 public class DatabaseConnection
 {
-	public static Connection dbConnector(EDatabaseType type)
+	public static Connection dbConnector(DatabaseType type)
 	{
 		if (type == null)
 			throw new IllegalArgumentException("Null Database Type");

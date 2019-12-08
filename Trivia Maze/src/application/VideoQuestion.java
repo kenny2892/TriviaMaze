@@ -2,6 +2,8 @@ package application;
 
 import java.util.ArrayList;
 
+import application.enums.QuestionType;
+
 public class VideoQuestion extends Question
 {
 	private static final long serialVersionUID = -5899766019568275257L;
@@ -9,7 +11,7 @@ public class VideoQuestion extends Question
 	
 	public VideoQuestion(String question, ArrayList<String> answers, int correctIndex, String fileName)
 	{
-		super(EQuestionType.VIDEO, question, answers, correctIndex);
+		super(QuestionType.VIDEO, question, answers, correctIndex);
 		
 		if(fileName == null)
 			throw new IllegalArgumentException("fileName is null.");

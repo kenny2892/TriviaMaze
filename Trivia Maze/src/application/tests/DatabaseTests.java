@@ -4,27 +4,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import application.Database;
-import application.EDatabaseType;
-import application.Question;
+import application.*;
+import application.enums.DatabaseType;
 
 class DatabaseTests
 {
-
 	@Test
-	void getInstanceOfDatabase_doesNotReturnNull_TRUE()
+	void database_correctParameters_TRUE()
 	{
-		Database sut = Database.getInstanceOfDatabase();
+		Database sut = new Database(DatabaseType.Java);
+		assertTrue(sut != null);
+
+		sut = new Database(DatabaseType.Anime);
+		assertTrue(sut != null);
+
+		sut = new Database(DatabaseType.Video_Games);
 		assertTrue(sut != null);
 	}
 
 	@Test
-	void createQuestions_incorrectParameterThrowsException_TRUE()
+	void database_nullParameterThrowsException_TRUE()
 	{
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
 		{
-			Database sut = Database.getInstanceOfDatabase();
-			sut.createQuestions(null);
+			new Database(null);
 		});
 		assertEquals("Null Database Type", exception.getMessage());
 	}
@@ -32,11 +35,9 @@ class DatabaseTests
 	@Test
 	void getQuestion_throwNullPointerExceptionWhenNoMoreQuestions_TRUE()
 	{
-
 		NullPointerException exception = assertThrows(NullPointerException.class, () ->
 		{
-			Database sut = Database.getInstanceOfDatabase();
-			sut.createQuestions(EDatabaseType.Java);
+			Database sut = new Database(DatabaseType.Java);
 			@SuppressWarnings("unused")
 			Question test;
 			while(true)
@@ -50,67 +51,38 @@ class DatabaseTests
 	@Test
 	void getQuestion_eachQuestionOfJavaIsNotNull_TRUE()
 	{
-		Database sut = Database.getInstanceOfDatabase();
-		sut.createQuestions(EDatabaseType.Java);
-		@SuppressWarnings("unused")
-		Question test;
-		boolean trigger = false;
-
-		try
-		{
-			while((test = sut.getQuestion()) != null)
-				;
-		}
-		catch(NullPointerException e)
-		{
-			trigger = true;
-		}
-
-		assertTrue(trigger);
+		assertTrue(checkEachQuestion(new Database(DatabaseType.Java)));
 	}
 
 	@Test
 	void getQuestion_eachQuestionOfAnimeIsNotNull_TRUE()
 	{
-		Database sut = Database.getInstanceOfDatabase();
-		sut.createQuestions(EDatabaseType.Anime);
-		@SuppressWarnings("unused")
-		Question test;
-		boolean trigger = false;
-
-		try
-		{
-			while((test = sut.getQuestion()) != null)
-				;
-		}
-		catch(NullPointerException e)
-		{
-			trigger = true;
-		}
-
-		assertTrue(trigger);
+		assertTrue(checkEachQuestion(new Database(DatabaseType.Anime)));
 	}
 
 	@Test
 	void getQuestion_eachQuestionOfVideoGamesIsNotNull_TRUE()
 	{
-		Database sut = Database.getInstanceOfDatabase();
-		sut.createQuestions(EDatabaseType.Video_Games);
-		@SuppressWarnings("unused")
-		Question test;
-		boolean trigger = false;
 
-		try
-		{
-			while((test = sut.getQuestion()) != null)
-				;
-		}
-		catch(NullPointerException e)
-		{
-			trigger = true;
-		}
-
-		assertTrue(trigger);
+		assertTrue(checkEachQuestion(new Database(DatabaseType.Video_Games)));
 	}
+	
+	private boolean checkEachQuestion(Database sut)
+	{
+			@SuppressWarnings("unused")
+			Question test;
+			boolean trigger = false;
 
+			try
+			{
+				while((test = sut.getQuestion()) != null)
+					;
+			}
+			catch(NullPointerException e)
+			{
+				trigger = true;
+			}
+
+			return trigger;
+	}
 }

@@ -2,6 +2,8 @@ package application;
 
 import java.io.Serializable;
 
+import application.enums.Direction;
+
 public class Room implements Serializable
 {
 	private static final long serialVersionUID = -1692660932359362367L;
@@ -27,7 +29,7 @@ public class Room implements Serializable
 		this.westDoor = westDoor;
 	}
 
-	public boolean isDoorLocked(EDirection direction)
+	public boolean isDoorLocked(Direction direction)
 	{
 		if(direction == null)
 			throw new IllegalArgumentException("Passed in direction is null.");
@@ -51,7 +53,7 @@ public class Room implements Serializable
 		}
 	}
 
-	public boolean isDoorOpened(EDirection direction)
+	public boolean isDoorOpened(Direction direction)
 	{
 		if(direction == null)
 			throw new IllegalArgumentException("Passed in direction is null.");
@@ -75,7 +77,7 @@ public class Room implements Serializable
 		}
 	}
 
-	public boolean setDoorLock(EDirection direction, boolean isLocked)
+	public boolean setDoorLock(Direction direction, boolean isLocked)
 	{
 		if(direction == null)
 			throw new IllegalArgumentException("Passed in direction is null.");

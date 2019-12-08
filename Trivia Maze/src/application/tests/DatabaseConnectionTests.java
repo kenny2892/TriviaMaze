@@ -7,7 +7,7 @@ import java.sql.Connection;
 import org.junit.jupiter.api.Test;
 
 import application.DatabaseConnection;
-import application.EDatabaseType;
+import application.enums.DatabaseType;
 
 class DatabaseConnectionTests
 {
@@ -25,21 +25,21 @@ class DatabaseConnectionTests
 	@Test
 	void dbConnector_returnedConnectionIsNotNullJava_TRUE()
 	{
-		Connection test = DatabaseConnection.dbConnector(EDatabaseType.Java);
+		Connection test = DatabaseConnection.dbConnector(DatabaseType.Java);
 		assertTrue(test != null);
 	}
 
 	@Test
 	void dbConnector_returnedConnectionIsNotNullAnime_TRUE()
 	{
-		Connection test = DatabaseConnection.dbConnector(EDatabaseType.Anime);
+		Connection test = DatabaseConnection.dbConnector(DatabaseType.Anime);
 		assertTrue(test != null);
 	}
 
 	@Test
 	void dbConnector_returnedConnectionIsNotNullVideoGames_TRUE()
 	{
-		Connection test = DatabaseConnection.dbConnector(EDatabaseType.Video_Games);
+		Connection test = DatabaseConnection.dbConnector(DatabaseType.Video_Games);
 		assertTrue(test != null);
 	}
 

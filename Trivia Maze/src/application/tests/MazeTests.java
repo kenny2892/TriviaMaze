@@ -7,11 +7,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import application.EDirection;
 import application.Maze;
 import application.Player;
 import application.Room;
+import application.enums.Direction;
 
 class MazeTests {
 	
@@ -102,10 +101,10 @@ class MazeTests {
 				
 				if
 				(
-					!(currentRoom.isDoorLocked(EDirection.NORTH) == northDoorIndex < 0) ||
-					!(currentRoom.isDoorLocked(EDirection.SOUTH) == southDoorIndex >= gameMaze.getMaze()[0].length) ||
-					!(currentRoom.isDoorLocked(EDirection.EAST) == eastDoorIndex >= gameMaze.getMaze().length) ||
-					!(currentRoom.isDoorLocked(EDirection.WEST) == westDoorIndex < 0)
+					!(currentRoom.isDoorLocked(Direction.NORTH) == northDoorIndex < 0) ||
+					!(currentRoom.isDoorLocked(Direction.SOUTH) == southDoorIndex >= gameMaze.getMaze()[0].length) ||
+					!(currentRoom.isDoorLocked(Direction.EAST) == eastDoorIndex >= gameMaze.getMaze().length) ||
+					!(currentRoom.isDoorLocked(Direction.WEST) == westDoorIndex < 0)
 				)
 				{
 					eachRoomHasFourDoors = false;

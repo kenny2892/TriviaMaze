@@ -3,6 +3,8 @@ package application;
 import java.io.Serializable;
 import java.util.Random;
 
+import application.enums.Direction;
+
 public class Player implements Serializable
 {
 	private static final long serialVersionUID = -3878147226103757777L;
@@ -21,7 +23,7 @@ public class Player implements Serializable
 		setPlayerLocation(rnjesus.nextInt(mazeColumns), rnjesus.nextInt(mazeRows));
 	}
 
-	public boolean movePlayer(Maze maze, EDirection direction)
+	public boolean movePlayer(Maze maze, Direction direction)
 	{
 		switch(direction)
 		{

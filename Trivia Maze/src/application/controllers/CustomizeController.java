@@ -4,7 +4,7 @@ import java.io.File;
 import java.net.URL;
 
 import application.Main;
-import application.ESceneType;
+import application.enums.SceneType;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.CacheHint;
@@ -155,7 +155,7 @@ public class CustomizeController
 	
 	public void backToMap()
 	{
-		Main.changeScene(ESceneType.MAP);
+		Main.changeScene(SceneType.MAP);
 	}
 
 	public static Color getBtnColor()

@@ -2,6 +2,8 @@ package application;
 
 import java.util.ArrayList;
 
+import application.enums.QuestionType;
+
 public class SoundQuestion extends Question
 {
 	private static final long serialVersionUID = 1803684093041585047L;
@@ -9,7 +11,7 @@ public class SoundQuestion extends Question
 	
 	public SoundQuestion(String question, ArrayList<String> answers, int correctIndex, String fileName)
 	{
-		super(EQuestionType.SOUND, question, answers, correctIndex);
+		super(QuestionType.SOUND, question, answers, correctIndex);
 		
 		if(fileName == null)
 			throw new IllegalArgumentException("fileName is null.");

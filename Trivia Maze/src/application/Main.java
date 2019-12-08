@@ -20,6 +20,10 @@ import application.controllers.SettingsController;
 import application.controllers.SoundQuestionController;
 import application.controllers.TrueFalseQuestionController;
 import application.controllers.VideoQuestionController;
+import application.enums.ArchwayStatus;
+import application.enums.DatabaseType;
+import application.enums.Direction;
+import application.enums.SceneType;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -36,8 +40,8 @@ public class Main extends Application
 	private static Maze gameMaze;
 	private static Player player;
 	private static Database database;
-	private static EDatabaseType dataType;
-	private static EArchwayStatus[][] horizontalArchways, verticalArchways;
+	private static DatabaseType dataType;
+	private static ArchwayStatus[][] horizontalArchways, verticalArchways;
 	private static KeyBindings keyBindings;
 	private static File saveLoadDir;
 	private static boolean cheatMode;
@@ -46,8 +50,8 @@ public class Main extends Application
 	private static String enteredCheatCode;
 	
 	private static Stage stage;
-	private static ESceneType currentScene;
-	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions;
+	private static SceneType currentScene;
+	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions, edit;
 	private static MapController mapController;
 	private static SettingsController settingsController;
 	private static MultipleChoiceQuestionController mcController;
@@ -59,7 +63,7 @@ public class Main extends Application
 	public void start(Stage primaryStage)
 	{
 		stage = primaryStage;
-		changeScene(ESceneType.START);
+		changeScene(SceneType.START);
 	}
 
 	public static void main(String[] args)
@@ -67,19 +71,17 @@ public class Main extends Application
 		launch(args);
 	}
 
-	public static void setUp(EDatabaseType type)
+	public static void setUp(DatabaseType type)
 	{
 		if(type == null)
 			throw new IllegalArgumentException("Null Database Type");
 		
-		else if (stage == null || gameMaze == null)
+		else if (stage == null)
 			return;
 		
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
-		database = Database.getInstanceOfDatabase();
-		database.createQuestions(type);
-		dataType = type;
+		database = new Database(type);
 		keyBindings = new KeyBindings();
 		
 		cheatMode = false;
@@ -87,14 +89,14 @@ public class Main extends Application
 		cheatAnswer = false;
 		enteredCheatCode = "";
 		
-		horizontalArchways = new EArchwayStatus[5][4];
-		verticalArchways = new EArchwayStatus[4][5];
+		horizontalArchways = new ArchwayStatus[5][4];
+		verticalArchways = new ArchwayStatus[4][5];
 		
-		for(EArchwayStatus[] archways : horizontalArchways)
-			Arrays.fill(archways, EArchwayStatus.UNOPENED);
+		for(ArchwayStatus[] archways : horizontalArchways)
+			Arrays.fill(archways, ArchwayStatus.UNOPENED);
 		
-		for(EArchwayStatus[] archways : verticalArchways)
-			Arrays.fill(archways, EArchwayStatus.UNOPENED);
+		for(ArchwayStatus[] archways : verticalArchways)
+			Arrays.fill(archways, ArchwayStatus.UNOPENED);
 
 		gameMaze.setExit(ROWS, COLS);
 		
@@ -106,12 +108,12 @@ public class Main extends Application
 			player.setSpawn(ROWS, COLS);
 		} while(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY());
 		
-		changeScene(ESceneType.MAP);
+		changeScene(SceneType.MAP);
 	}
 
 	private static void setStage(Scene scene)
 	{
-		if(stage == null || scene == null || gameMaze == null)
+		if(stage == null || scene == null || (gameMaze == null && currentScene != SceneType.START))
 			return;
 		
 		stage.setScene(scene);		
@@ -121,9 +123,9 @@ public class Main extends Application
 		stage.show();
 	}
 	
-	public static void changeScene(ESceneType type)
+	public static void changeScene(SceneType type)
 	{
-		if (stage == null || gameMaze == null)
+		if (stage == null || (gameMaze == null && type != SceneType.START))
 			return;
 		
 		try
@@ -144,18 +146,19 @@ public class Main extends Application
 					
 					if(settingsController != null)
 						keyBindings = settingsController.getKeyBindings();
-					
+
+					currentScene = SceneType.MAP;
 					setStage(map);
 					mapController.update();
-					currentScene = ESceneType.MAP;
 					break;
 
 				case CUSTOMIZE:
 					if(customize == null)
 						customize = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Customize.fxml")));
-					
+
+					currentScene = SceneType.CUSTOMIZE;
 					setStage(customize);
-					currentScene = ESceneType.CUSTOMIZE;
+
 					break;
 
 				case SETTINGS:
@@ -167,34 +170,34 @@ public class Main extends Application
 						settings = new Scene(root);
 						settingsController = loader.getController();
 					}
-					
+
+					currentScene = SceneType.SETTINGS;
 					settingsController.update();
 					setStage(settings);
-					currentScene = ESceneType.SETTINGS;
 					break;
 
 				case HELP:
 					if(help == null)
 						help = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Help.fxml")));
-					
+
+					currentScene = SceneType.HELP;
 					setStage(help);
-					currentScene = ESceneType.HELP;
 					break;
 
 				case WIN:
 					if(win == null)
 						win = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Win.fxml")));
-					
+
+					currentScene = SceneType.WIN;
 					setStage(win);
-					currentScene = ESceneType.WIN;
 					break;
 
 				case LOSE:
 					if(lose == null)
 						lose = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Lose.fxml")));
-					
+
+					currentScene = SceneType.LOSE;
 					setStage(lose);
-					currentScene = ESceneType.LOSE;
 					break;
 
 				case TRUE_FALSE:
@@ -206,9 +209,9 @@ public class Main extends Application
 						trueFalse = new Scene(root);
 						tfController = loader.getController();
 					}
-					
+
+					currentScene = SceneType.TRUE_FALSE;
 					setStage(trueFalse);
-					currentScene = ESceneType.TRUE_FALSE;
 					break;
 
 				case MULTIPLE_CHOICE:
@@ -220,9 +223,9 @@ public class Main extends Application
 						mcQuestions = new Scene(root);
 						mcController = loader.getController();
 					}
-					
+
+					currentScene = SceneType.MULTIPLE_CHOICE;
 					setStage(mcQuestions);
-					currentScene = ESceneType.MULTIPLE_CHOICE;
 					break;
 					
 				case SOUND:
@@ -234,9 +237,9 @@ public class Main extends Application
 						soundQuestions = new Scene(root);
 						soundController = loader.getController();
 					}
-					
+
+					currentScene = SceneType.SOUND;
 					setStage(soundQuestions);
-					currentScene = ESceneType.SOUND;
 					break;
 					
 				case VIDEO:
@@ -248,17 +251,25 @@ public class Main extends Application
 						videoQuestions = new Scene(root);
 						videoController = loader.getController();
 					}
-					
+
+					currentScene = SceneType.VIDEO;
 					setStage(videoQuestions);
-					currentScene = ESceneType.VIDEO;
 					break;
 					
 				case START:
 					if(start == null)
 						start = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Start.fxml")));
-					
+
+					currentScene = SceneType.START;
 					setStage(start);
-					currentScene = ESceneType.START;
+					break;
+					
+				case EDIT_DATABASE:
+					if(edit == null)
+						edit = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/EditDatabase.fxml")));
+
+					currentScene = SceneType.EDIT_DATABASE;
+					setStage(edit);
 					break;
 			}
 		}
@@ -279,17 +290,17 @@ public class Main extends Application
 		
 		if(!canComplete)
 		{
-			changeScene(ESceneType.LOSE);
+			changeScene(SceneType.LOSE);
 			return;
 		}
 		
 		mapController.updateMaze(correct);
 		
-		if(currentScene != ESceneType.WIN)
-			changeScene(ESceneType.MAP);
+		if(currentScene != SceneType.WIN)
+			changeScene(SceneType.MAP);
 	}
 	
-	public static void cheatModeMove(EDirection direction)
+	public static void cheatModeMove(Direction direction)
 	{
 		if (stage == null || gameMaze == null)
 			return;
@@ -301,7 +312,7 @@ public class Main extends Application
 		}
 	}
 	
-	public static void showQuestion(EDirection direction)
+	public static void showQuestion(Direction direction)
 	{
 		if (stage == null || gameMaze == null || direction == null)
 			return;
@@ -315,7 +326,7 @@ public class Main extends Application
 			case MULTIPLE_CHOICE:
 				if(question instanceof MultipleChoiceQuestion)
 				{
-					changeScene(ESceneType.MULTIPLE_CHOICE);
+					changeScene(SceneType.MULTIPLE_CHOICE);
 					mcController.setQuestion((MultipleChoiceQuestion) question);
 				}
 				break;			
@@ -323,7 +334,7 @@ public class Main extends Application
 			case TRUE_FALSE:
 				if(question instanceof TrueFalseQuestion)
 				{
-					changeScene(ESceneType.TRUE_FALSE);
+					changeScene(SceneType.TRUE_FALSE);
 					tfController.setQuestion((TrueFalseQuestion) question);
 				}
 				break;
@@ -331,7 +342,7 @@ public class Main extends Application
 			case SOUND:
 				if(question instanceof SoundQuestion)
 				{
-					changeScene(ESceneType.SOUND);
+					changeScene(SceneType.SOUND);
 					soundController.setQuestion((SoundQuestion) question);
 				}
 				break;
@@ -339,9 +350,13 @@ public class Main extends Application
 			case VIDEO:
 				if(question instanceof VideoQuestion)
 				{
-					changeScene(ESceneType.VIDEO);
+					changeScene(SceneType.VIDEO);
 					videoController.setQuestion((VideoQuestion) question);
 				}
+				break;
+				
+			case SHORT:
+				// TODO
 				break;
 		}
 	}
@@ -392,17 +407,17 @@ public class Main extends Application
 		cheatAnswer = cheat;
 	}
 	
-	public static EArchwayStatus[][] getHorizontalArchways()
+	public static ArchwayStatus[][] getHorizontalArchways()
 	{
 		return horizontalArchways;
 	}
 	
-	public static EArchwayStatus[][] getVerticalArchways()
+	public static ArchwayStatus[][] getVerticalArchways()
 	{
 		return verticalArchways;
 	}
 	
-	public static void setHorizontalArchway(int y, int x, EArchwayStatus status)
+	public static void setHorizontalArchway(int y, int x, ArchwayStatus status)
 	{
 		if (stage == null || gameMaze == null)
 			return;
@@ -419,7 +434,7 @@ public class Main extends Application
 		horizontalArchways[y][x] = status;
 	}
 	
-	public static void setVerticalArchway(int y, int x, EArchwayStatus status)
+	public static void setVerticalArchway(int y, int x, ArchwayStatus status)
 	{
 		if (stage == null || gameMaze == null)
 			return;
@@ -538,11 +553,11 @@ public class Main extends Application
 				if(itemAra.get(2) instanceof Database)
 					database = (Database) itemAra.get(2);
 				
-				if(itemAra.get(3) instanceof EArchwayStatus[][])
-					horizontalArchways = (EArchwayStatus[][]) itemAra.get(3);
+				if(itemAra.get(3) instanceof ArchwayStatus[][])
+					horizontalArchways = (ArchwayStatus[][]) itemAra.get(3);
 				
-				if(itemAra.get(4) instanceof EArchwayStatus[][])
-					verticalArchways = (EArchwayStatus[][]) itemAra.get(4);
+				if(itemAra.get(4) instanceof ArchwayStatus[][])
+					verticalArchways = (ArchwayStatus[][]) itemAra.get(4);
 			}
 			
 			in.close();
@@ -621,7 +636,7 @@ public class Main extends Application
 		if (stage == null || gameMaze == null)
 			return;
 		
-		database.createQuestions(dataType);
+		database = new Database(dataType);
 	}
 	
 	public static void openGitHub()

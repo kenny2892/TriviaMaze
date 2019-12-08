@@ -3,11 +3,13 @@ package application;
 import java.io.Serializable;
 import java.util.Random;
 
+import application.enums.Direction;
+
 public class Maze implements Serializable
 {
 	private static final long serialVersionUID = 9201369801085494420L;
 	private Room[][] gameMaze;
-	private EDirection currentDirection;
+	private Direction currentDirection;
 	private int mazeRows;
 	private int mazeColumns;
 	private int exitX;
@@ -16,7 +18,7 @@ public class Maze implements Serializable
 	public Maze(int mazeRows, int mazeColumns)
 	{
 		this.gameMaze = createMaze(mazeRows, mazeColumns);
-		this.currentDirection = EDirection.NULL;
+		this.currentDirection = Direction.NULL;
 		this.mazeRows = mazeRows;
 		this.mazeColumns = mazeColumns;
 		this.exitX = -1;
@@ -58,7 +60,7 @@ public class Maze implements Serializable
 				if (y - 1 >= 0)
 				{
 					connectedRoom = gameMaze[y - 1][x];
-					connectedRoom.setDoorLock(EDirection.SOUTH, isLocked);
+					connectedRoom.setDoorLock(Direction.SOUTH, isLocked);
 					gameMaze[y - 1][x] = connectedRoom;
 				}
 				break;
@@ -67,7 +69,7 @@ public class Maze implements Serializable
 				if (y + 1 < gameMaze[0].length)
 				{
 					connectedRoom = gameMaze[y + 1][x];
-					connectedRoom.setDoorLock(EDirection.NORTH, isLocked);
+					connectedRoom.setDoorLock(Direction.NORTH, isLocked);
 					gameMaze[y + 1][x] = connectedRoom;
 				}
 				break;
@@ -76,7 +78,7 @@ public class Maze implements Serializable
 				if (x + 1 < gameMaze.length)
 				{
 					connectedRoom = gameMaze[y][x + 1];
-					connectedRoom.setDoorLock(EDirection.WEST, isLocked);
+					connectedRoom.setDoorLock(Direction.WEST, isLocked);
 					gameMaze[y][x + 1] = connectedRoom;
 				}
 				break;
@@ -85,7 +87,7 @@ public class Maze implements Serializable
 				if (x - 1 >= 0)
 				{
 					connectedRoom = gameMaze[y][x - 1];
-					connectedRoom.setDoorLock(EDirection.EAST, isLocked);
+					connectedRoom.setDoorLock(Direction.EAST, isLocked);
 					gameMaze[y][x - 1] = connectedRoom;
 				}
 				break;
@@ -111,7 +113,7 @@ public class Maze implements Serializable
 			
 			if(!result)
 			{
-				if(curr.isDoorLocked(EDirection.SOUTH))
+				if(curr.isDoorLocked(Direction.SOUTH))
 					result = false;
 				
 				else
@@ -120,7 +122,7 @@ public class Maze implements Serializable
 			
 			if(!result)
 			{
-				if(curr.isDoorLocked(EDirection.NORTH))
+				if(curr.isDoorLocked(Direction.NORTH))
 					result = false;
 				
 				else
@@ -129,7 +131,7 @@ public class Maze implements Serializable
 			
 			if(!result)
 			{
-				if(curr.isDoorLocked(EDirection.EAST))
+				if(curr.isDoorLocked(Direction.EAST))
 					result = false;
 				
 				else
@@ -138,7 +140,7 @@ public class Maze implements Serializable
 			
 			if(!result)
 			{
-				if(curr.isDoorLocked(EDirection.WEST))
+				if(curr.isDoorLocked(Direction.WEST))
 					result = false;
 				
 				else
@@ -167,22 +169,12 @@ public class Maze implements Serializable
 		return this.exitY;
 	}
 
-	public int getMazeRows()
-	{
-		return this.mazeRows;
-	}
-
-	public int getMazeColumns()
-	{
-		return this.mazeColumns;
-	}
-
 	public Room[][] getMaze()
 	{
 		return this.gameMaze;
 	}
 
-	public EDirection getCurrentDirection()
+	public Direction getCurrentDirection()
 	{
 		return currentDirection;
 	}
@@ -192,26 +184,24 @@ public class Maze implements Serializable
 		return this.gameMaze[y][x];
 	}
 
-	public void setDirection(EDirection newDirection)
+	public void setDirection(Direction newDirection)
 	{
 		this.currentDirection = newDirection;
 	}
 
 	public void setExitX(int exitX)
 	{
-		if (exitX < 0 || exitX >= this.mazeRows)
-		{
+		if (exitX < 0 || exitX >= this.mazeColumns)
 			throw new IllegalArgumentException("Passed X value is out of the bounds of the maze.");
-		}
+		
 		this.exitX = exitX;
 	}
 
 	public void setExitY(int exitY)
 	{
-		if (exitX < 0 || exitX >= this.mazeRows)
-		{
+		if (exitY < 0 || exitY >= this.mazeRows)
 			throw new IllegalArgumentException("Passed Y value is out of the bounds of the maze.");
-		}
+		
 		this.exitY = exitY;
 	}
 

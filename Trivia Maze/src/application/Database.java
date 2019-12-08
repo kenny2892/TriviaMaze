@@ -8,42 +8,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import application.enums.DatabaseType;
 
-public final class Database implements Serializable
+public class Database implements Serializable
 {
-	private static Database database;
 	private static final long serialVersionUID = 5947245570442525353L;
 	private Question currentQuestion;
 	private ArrayList<Question> questions;
 
-	public static Database getInstanceOfDatabase()
+	public Database(DatabaseType type)
 	{
-		if (database == null)
-			database = new Database();
-		return database;
+		if (type == null)
+			throw new IllegalArgumentException("Null Database Type");
+
+		this.questions = createQuestionDatabase(type);
+		
+		if(questions == null)
+			throw new IllegalArgumentException("Invalid Database Type");
 	}
 
-	public boolean checkAnswer(int chosenAnswer)
-	{
-		if (currentQuestion == null)
-			return false;
-		return currentQuestion.getCorrectIndex() == chosenAnswer;
-	}
-
-	public Question getQuestion()
-	{
-		if (questions.size() <= 0)
-		{
-			throw new NullPointerException("Questions ArrayList is empty");
-		}
-
-		currentQuestion = questions.get(0);
-		questions.remove(0);
-
-		return currentQuestion;
-	}
-
-	public void createQuestions(EDatabaseType type)
+	public ArrayList<Question> createQuestionDatabase(DatabaseType type)
 	{
 		if (type == null)
 			throw new IllegalArgumentException("Null Database Type");
@@ -56,17 +40,21 @@ public final class Database implements Serializable
 
 			array = getMultipleChoice(connect, array);
 			array = getTrueFalse(connect, array);
+			array = getShort(connect, array);
+			array = getVideo(connect, array);
+			array = getSound(connect, array);
 
 			Collections.shuffle(array);
 
 			connect.close();
 		}
+
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 
-		this.questions = array;
+		return array;
 	}
 
 	private ArrayList<Question> getMultipleChoice(Connection connect, ArrayList<Question> array)
@@ -130,7 +118,8 @@ public final class Database implements Serializable
 				options.add("False");
 
 				int index = 0;
-				if (answer.compareTo("False") == 0)
+
+				if (answer.toLowerCase().compareTo("false") == 0)
 					index = 1;
 
 				TrueFalseQuestion tfQuestion = new TrueFalseQuestion(question, options, index);
@@ -148,6 +137,144 @@ public final class Database implements Serializable
 		}
 
 		return array;
+	}
+
+
+	private ArrayList<Question> getShort(Connection connect, ArrayList<Question> array)
+	{
+		try
+		{
+			String query = "Select * from ShortAnswerQuestions";
+			PreparedStatement pst = connect.prepareStatement(query);
+
+			ResultSet results = pst.executeQuery();
+			while(results.next())
+			{
+				String question = results.getString("Questions");
+				String keywords = results.getString("Keywords");
+
+				ShortQuestion shortQuestion = new ShortQuestion(question, new ArrayList<String>(Arrays.asList(keywords.split(" "))));
+				array.add(shortQuestion);
+			}
+
+			results.close();
+			pst.close();
+		}
+
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+
+		return array;
+	}
+
+	private ArrayList<Question> getVideo(Connection connect, ArrayList<Question> array)
+	{
+		try
+		{
+			String query = "Select * from VideoQuestions";
+			PreparedStatement pst = connect.prepareStatement(query);
+
+			ResultSet results = pst.executeQuery();
+			while(results.next())
+			{
+				String question = results.getString("Questions");
+				String options = results.getString("Options");
+				String answer = results.getString("Answers");
+				String fileName = results.getString("File");
+
+				ArrayList<String> optionAra = new ArrayList<String>(Arrays.asList(options.split("\n")));
+
+				int indexOfAnswer = 0;
+
+				for(int i = 0; i < optionAra.size(); i++)
+				{
+					if (optionAra.get(i).startsWith(answer.toLowerCase()))
+						indexOfAnswer = i;
+
+					optionAra.set(i, optionAra.get(i).substring(3));
+				}
+
+				VideoQuestion videoQuestion = new VideoQuestion(question, optionAra, indexOfAnswer, fileName);
+				array.add(videoQuestion);
+			}
+
+			results.close();
+			pst.close();
+		}
+
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+
+		return array;
+	}
+
+	private ArrayList<Question> getSound(Connection connect, ArrayList<Question> array)
+	{
+		try
+		{
+			String query = "Select * from SoundQuestions";
+			PreparedStatement pst = connect.prepareStatement(query);
+
+			ResultSet results = pst.executeQuery();
+			while(results.next())
+			{
+				String question = results.getString("Questions");
+				String options = results.getString("Options");
+				String answer = results.getString("Answers");
+				String fileName = results.getString("File");
+
+				ArrayList<String> optionAra = new ArrayList<String>(Arrays.asList(options.split("\n")));
+
+				int indexOfAnswer = 0;
+
+				for(int i = 0; i < optionAra.size(); i++)
+				{
+					if (optionAra.get(i).startsWith(answer.toLowerCase()))
+						indexOfAnswer = i;
+
+					optionAra.set(i, optionAra.get(i).substring(3));
+				}
+
+				SoundQuestion soundQuestion = new SoundQuestion(question, optionAra, indexOfAnswer, fileName);
+				array.add(soundQuestion);
+			}
+
+			results.close();
+			pst.close();
+		}
+
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+
+		return array;
+	}
+
+	public boolean checkAnswer(int chosenAnswer)
+	{
+		if (currentQuestion == null)
+			return false;
+
+		return currentQuestion.getCorrectIndex() == chosenAnswer;
+	}
+
+	public Question getQuestion()
+	{
+		if (questions == null || questions.isEmpty())
+			throw new NullPointerException("Questions ArrayList is empty");
+
+		currentQuestion = questions.get(0);
+		questions.remove(0);
+
+		return currentQuestion;
 	}
 
 }

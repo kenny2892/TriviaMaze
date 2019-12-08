@@ -1,6 +1,0 @@
-package application;
-
-public enum ESceneType
-{
-	START, MAP, CUSTOMIZE, SETTINGS, HELP, WIN, LOSE, TRUE_FALSE, MULTIPLE_CHOICE, VIDEO, SOUND
-}
