@@ -35,7 +35,6 @@ class DatabaseTests
 	@Test
 	void getQuestion_throwNullPointerExceptionWhenNoMoreQuestions_TRUE()
 	{
-
 		NullPointerException exception = assertThrows(NullPointerException.class, () ->
 		{
 			Database sut = new Database(DatabaseType.Java);
@@ -46,7 +45,6 @@ class DatabaseTests
 				test = sut.getQuestion();
 			}
 		});
-		
 		assertEquals("Questions ArrayList is empty", exception.getMessage());
 	}
 

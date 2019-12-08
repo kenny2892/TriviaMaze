@@ -167,6 +167,7 @@ public class Main extends Application
 
 					currentScene = SceneType.CUSTOMIZE;
 					setStage(customize);
+
 					break;
 
 				case SETTINGS:
@@ -433,10 +434,8 @@ public class Main extends Application
 	
 	public static void setHorizontalArchway(int y, int x, ArchwayStatus status)
 	{
-		if (stage == null || gameMaze == null)
-			return;
 		
-		else if(status == null)
+		if(status == null)
 			throw new IllegalArgumentException("Null Archway Status");
 		
 		else if(y >= ROWS || y < 0)
@@ -444,16 +443,15 @@ public class Main extends Application
 		
 		else if(x >= COLS || x < 0)
 			throw new IllegalArgumentException("Invalid x value");
+		else if(horizontalArchways == null)
+			throw new IllegalArgumentException("HorizontalArchways is Null");
 		
 		horizontalArchways[y][x] = status;
 	}
 	
 	public static void setVerticalArchway(int y, int x, ArchwayStatus status)
 	{
-		if (stage == null || gameMaze == null)
-			return;
-		
-		else if(status == null)
+		if(status == null)
 			throw new IllegalArgumentException("Null Archway Status");
 		
 		else if(y >= ROWS || y < 0)
@@ -461,6 +459,9 @@ public class Main extends Application
 		
 		else if(x >= COLS || x < 0)
 			throw new IllegalArgumentException("Invalid x value");
+		
+		else if(verticalArchways == null)
+			throw new IllegalArgumentException("VerticalArchways is Null");
 		
 		verticalArchways[y][x] = status;
 	}

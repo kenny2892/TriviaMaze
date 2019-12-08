@@ -24,7 +24,7 @@ public abstract class Question implements Serializable
 		else if(answers == null)
 			throw new IllegalArgumentException("The answers parameter was passed as null.");
 
-		else if(correctIndex >= answers.size())
+		else if(correctIndex >= answers.size() || correctIndex < 0)
 			throw new IllegalArgumentException("The correctIndex parameter was greater than or equal to the length of the \"answers\" parameter.");
 		
 		this.type = type;

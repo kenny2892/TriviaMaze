@@ -63,7 +63,7 @@ public class Player implements Serializable
 		return this.playerY;
 	}
 
-	public void setPlayerLocation(int newPlayerX, int newPlayerY)
+	private void setPlayerLocation(int newPlayerX, int newPlayerY)
 	{
 		setPlayerX(newPlayerX);
 		setPlayerY(newPlayerY);

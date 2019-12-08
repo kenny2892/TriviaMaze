@@ -2,95 +2,61 @@ package application.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import application.Maze;
-import application.Player;
 import application.Room;
 import application.enums.Direction;
 
 class MazeTests {
 	
-	private static int mazeRows;
-	private static int mazeColumns;
-	private static Player player;
-	private static Maze gameMaze;
-
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception
-	{
-		
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception
-	{
-		
-	}
-
-	@BeforeEach
-	void setUp() throws Exception
-	{
-		mazeRows = 5;
-		mazeColumns = 5;
-		gameMaze = new Maze(mazeRows, mazeColumns);
-		player = new Player();
-		
-		gameMaze.setExit(mazeRows, mazeColumns);
-		
-		do
-		{
-			player.setSpawn(mazeRows, mazeColumns);
-		} while(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY());
-	}
-
-	@AfterEach
-	void tearDown() throws Exception
-	{
-		
-	}
-
 	@Test
-	void createMaze_correctColumnLength_5()
+	void mazeConstructor_correctRowLength_TRUE()
 	{
-		assertEquals(5, gameMaze.getMaze().length);
+		Maze sut = new Maze(5, 5);
+		assertTrue((sut.getMaze()).length == 5);
 	}
 	
 	@Test
-	void createMaze_corretRowLength_5()
+	void mazeConstructor_correctColumnLength_TRUE()
 	{
-		assertEquals(5, gameMaze.getMaze()[0].length);
+		Maze sut = new Maze(5, 5);
+		assertTrue((sut.getMaze())[0].length == 5);
 	}
 	
 	@Test
-	void createMaze_eachElementIsARoom_True()
+	void mazeConstructor_defaultValueOfCurrentDirectionIsOfTypeNull_TRUE()
 	{
-		boolean eachElementIsARoom = true;
-		for(int rowIndex = 0; rowIndex < gameMaze.getMaze()[0].length; rowIndex++)
+		Maze sut = new Maze(5, 5);
+		assertTrue(sut.getCurrentDirection() == Direction.NULL);
+	}
+	
+	@Test
+	void mazeConstructor_gameMazeHasNoNullRooms_TRUE()
+	{
+		Maze sut = new Maze(5, 5);
+		Room[][] gameMaze = sut.getMaze();
+		boolean trigger  = true;
+		for(int rowIndex = 0; rowIndex < 5; rowIndex++)
 		{
-			for(int columnIndex = 0; columnIndex < gameMaze.getMaze().length; columnIndex++)
+			for(int columnIndex = 0; columnIndex < 5; columnIndex++)
 			{
-				if(!(gameMaze.getMaze()[rowIndex][columnIndex] instanceof Room))
-				{
-					eachElementIsARoom = false;
-					assertTrue(eachElementIsARoom);
-				}
+				if(gameMaze[rowIndex][columnIndex] == null)
+					trigger = false;
 			}
 		}
-		assertTrue(eachElementIsARoom);
+		assertTrue(trigger);
 	}
 	
 	@Test
-	void createMaze_eachRoomHasFourDoors_True()
+	void mazeConstructor_eachRoomHasFourDoors_TRUE()
 	{
-		boolean eachRoomHasFourDoors = true;
-		for(int rowIndex = 0; rowIndex < gameMaze.getMaze()[0].length; rowIndex++)
+		Maze sut = new Maze(5, 5);
+		Room[][] gameMaze = sut.getMaze();
+		boolean trigger = true;
+		for(int rowIndex = 0; rowIndex < 5; rowIndex++)
 		{
-			for(int columnIndex = 0; columnIndex < gameMaze.getMaze().length; columnIndex++)
+			for(int columnIndex = 0; columnIndex < 5; columnIndex++)
 			{
 				
 				int northDoorIndex = rowIndex - 1;
@@ -98,100 +64,123 @@ class MazeTests {
 				int eastDoorIndex = columnIndex + 1;
 				int westDoorIndex = columnIndex - 1;
 				
-				Room currentRoom = gameMaze.getMaze()[rowIndex][columnIndex];
+				Room currentRoom = gameMaze[rowIndex][columnIndex];
 				
 				if
 				(
 					!(currentRoom.isDoorLocked(Direction.NORTH) == northDoorIndex < 0) ||
-					!(currentRoom.isDoorLocked(Direction.SOUTH) == southDoorIndex >= gameMaze.getMaze()[0].length) ||
-					!(currentRoom.isDoorLocked(Direction.EAST) == eastDoorIndex >= gameMaze.getMaze().length) ||
+					!(currentRoom.isDoorLocked(Direction.SOUTH) == southDoorIndex >= 5) ||
+					!(currentRoom.isDoorLocked(Direction.EAST) == eastDoorIndex >= 5) ||
 					!(currentRoom.isDoorLocked(Direction.WEST) == westDoorIndex < 0)
 				)
 				{
-					eachRoomHasFourDoors = false;
-					assertTrue(eachRoomHasFourDoors);
+					trigger = false;
+					assertTrue(trigger);
 				}
 			}
 		}
-		assertTrue(eachRoomHasFourDoors);
+		assertTrue(trigger);
 	}
 	
 	@Test
-	void setEnteranceExit_playerXNotBelowZeroOrAbove4_True()
+	void updateMazeRooms_throwsIllegalArgumentExceptionIfXOutOFBoundsOfGameMaze_TRUE()
 	{
-		for(int runs = 25; runs >= 0; runs--)
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
 		{
-			if(player.getPlayerX() < 0 && player.getPlayerX() >= mazeColumns)
-			{
-				assertTrue(player.getPlayerX() >= 0 && player.getPlayerX() < mazeColumns);
-			}
-		}
+			Maze sut = new Maze(5, 5);
+			sut.updateMazeRooms(-1, 0, true);
+		});
+		assertEquals("Passed X value is out of the bounds of the maze.", exception.getMessage());
 	}
 	
 	@Test
-	void setEnteranceExit_playerYNotBelowZeroOrAbove4_True()
+	void updateMazeRooms_throwsIllegalArgumentExceptionIfYOutOFBoundsOfGameMaze_TRUE()
 	{
-		for(int runs = 25; runs >= 0; runs--)
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
 		{
-			if(player.getPlayerX() < 0 && player.getPlayerX() >= mazeColumns)
-			{
-				assertTrue(player.getPlayerY() >= 0 && player.getPlayerY() < mazeRows);
-			}
-		}
+			Maze sut = new Maze(5, 5);
+			sut.updateMazeRooms(0, -1, true);
+		});
+		assertEquals("Passed Y value is out of the bounds of the maze.", exception.getMessage());
 	}
 	
 	@Test
-	void setEnteranceExit_exitXNotBelowZeroOrAbove4_True()
+	void updateMazeRooms_returnsTrue_TRUE()
 	{
-		for(int runs = 25; runs >= 0; runs--)
-		{
-			if(player.getPlayerX() < 0 && player.getPlayerX() >= mazeColumns)
-			{
-				assertTrue(gameMaze.getExitX() >= 0 && gameMaze.getExitX() < mazeColumns);
-			}
-		}
+		Maze sut = new Maze(5, 5);
+		sut.setDirection(Direction.NORTH);
+		assertTrue(sut.updateMazeRooms(2, 2, true));
 	}
 	
 	@Test
-	void setEnteranceExit_exitYNotBelowZeroOrAbove4_True()
+	void setDirection_throwsIllegalArgumentExceptionIfPassedNull_TRUE()
 	{
-		for(int runs = 25; runs >= 0; runs--)
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
 		{
-			if(player.getPlayerX() < 0 && player.getPlayerX() >= mazeColumns)
-			{
-				assertTrue(gameMaze.getExitY() >= 0 && gameMaze.getExitY() < mazeRows);
-			}
-		}
+			Maze sut = new Maze(5, 5);
+			sut.setDirection(null);
+		});
+		assertEquals("Direction was null", exception.getMessage());
 	}
 	
 	@Test
-	void setEnteranceExit_playerAndMazeAreNotInSameIndex_True()
+	void setExitX_throwsIllegalArgumentExceptionIfPassedNegativeOne_TRUE()
 	{
-		for(int runs = 25; runs >= 0; runs--)
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
 		{
-			if(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY())
-			{
-				assertTrue(!(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY()));}
-		}
+			Maze sut = new Maze(5, 5);
+			sut.setExitX(-1);
+		});
+		assertEquals("Passed X value is out of the bounds of the maze.", exception.getMessage());
 	}
 	
-	// TODO test method Maze.createQuestionDatabase once enum implementation
+	@Test
+	void setExitX_throwsIllegalArgumentExceptionIfPassedSix_TRUE()
+	{
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+		{
+			Maze sut = new Maze(5, 5);
+			sut.setExitX(6);
+		});
+		assertEquals("Passed X value is out of the bounds of the maze.", exception.getMessage());
+	}
 	
 	@Test
-	void setPlayerLocation_worksForAllMazeIndexes_True()
+	void setExitY_throwsIllegalArgumentExceptionIfPassedNegativeOne_TRUE()
 	{
-		for(int playerX = 0; playerX < mazeRows; playerX++)
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
 		{
-			for(int playerY = 0; playerY < mazeColumns; playerY++)
-			{
-				player.setPlayerLocation(playerX, playerY);
-				if(player.getPlayerX() != playerX || player.getPlayerY() != playerY)
-				{
-					assertEquals(playerX, player.getPlayerX());
-					assertEquals(playerY, player.getPlayerY());
-				}
-			}
-		}
+			Maze sut = new Maze(5, 5);
+			sut.setExitY(-1);
+		});
+		assertEquals("Passed Y value is out of the bounds of the maze.", exception.getMessage());
+	}
+	
+	@Test
+	void setExitY_throwsIllegalArgumentExceptionIfPassedSix_TRUE()
+	{
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+		{
+			Maze sut = new Maze(5, 5);
+			sut.setExitY(6);
+		});
+		assertEquals("Passed Y value is out of the bounds of the maze.", exception.getMessage());
+	}
+
+	@Test
+	void setExit_valueOfExitYIsNegativeOne_TRUE()
+	{
+		Maze sut = new Maze(5, 5);
+		int yValue = sut.getExitY();
+		assertTrue(yValue >= 0 && yValue < 5);
+	}
+
+	@Test
+	void setExit_valueOfExitXIsNegativeOne_TRUE()
+	{
+		Maze sut = new Maze(5, 5);
+		int xValue = sut.getExitX();
+		assertTrue(xValue >= 0 && xValue < 5);
 	}
 
 }

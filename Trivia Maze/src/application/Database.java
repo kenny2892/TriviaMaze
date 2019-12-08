@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
 import application.enums.DatabaseType;
 
 public class Database implements Serializable
@@ -53,7 +52,6 @@ public class Database implements Serializable
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return null;
 		}
 
 		return array;
@@ -120,6 +118,7 @@ public class Database implements Serializable
 				options.add("False");
 
 				int index = 0;
+
 				if (answer.toLowerCase().compareTo("false") == 0)
 					index = 1;
 
@@ -139,6 +138,7 @@ public class Database implements Serializable
 
 		return array;
 	}
+
 
 	private ArrayList<Question> getShort(Connection connect, ArrayList<Question> array)
 	{
@@ -276,4 +276,5 @@ public class Database implements Serializable
 
 		return currentQuestion;
 	}
+
 }

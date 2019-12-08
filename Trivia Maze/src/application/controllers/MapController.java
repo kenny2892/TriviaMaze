@@ -2,7 +2,6 @@ package application.controllers;
 
 import java.io.File;
 import java.net.URL;
-
 import application.Main;
 import application.Maze;
 import application.Player;
