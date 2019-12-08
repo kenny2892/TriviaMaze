@@ -194,31 +194,37 @@ public class VideoQuestionController
 
 	public void selectmcA()
 	{
+		playBtnSound();
 		Main.checkAnswer(0);
 	}
 
 	public void selectmcB()
 	{
+		playBtnSound();
 		Main.checkAnswer(1);
 	}
 
 	public void selectmcC()
 	{
+		playBtnSound();
 		Main.checkAnswer(2);
 	}
 
 	public void selectmcD()
 	{
+		playBtnSound();
 		Main.checkAnswer(3);
 	}
 
 	public void selectmcE()
 	{
+		playBtnSound();
 		Main.checkAnswer(4);
 	}
 
 	public void selectmcF()
 	{
+		playBtnSound();
 		Main.checkAnswer(5);
 	}
 	
@@ -238,6 +244,8 @@ public class VideoQuestionController
 	{
 		if(mp4Player == null)
 			return;
+
+		playBtnSound();
 		
 		if(mp4Player.getStatus() == Status.PLAYING)
 		{
@@ -254,6 +262,8 @@ public class VideoQuestionController
 	{
 		if(mp4Player == null)
 			return;
+
+		playBtnSound();
 		
 		mp4Player.seek(mp4Player.getMedia().getDuration().multiply(0));
 		mp4Player.pause();
@@ -265,6 +275,8 @@ public class VideoQuestionController
 	{
 		if(mp4Player == null)
 			return;
+
+		playBtnSound();
 		
 		mp4Player.seek(mp4Player.getTotalDuration());
 		timeSlider.setValue(100);
@@ -277,6 +289,8 @@ public class VideoQuestionController
 	{
 		if(mp4Player == null)
 			return;
+
+		playBtnSound();
 		
 		if(mp4Player.isMute())
 		{
@@ -305,5 +319,12 @@ public class VideoQuestionController
 			return;
 		
 		videoControlPane.setVisible(false);
+	}
+	
+	private void playBtnSound()
+	{		
+		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
+		MediaPlayer player = new MediaPlayer(soundFX);
+		player.play();
 	}
 }

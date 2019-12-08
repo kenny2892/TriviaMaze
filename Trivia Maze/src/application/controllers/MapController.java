@@ -23,6 +23,8 @@ import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -333,26 +335,31 @@ public class MapController
 
 	public void customizeBtn()
 	{
+		playBtnSound();
 		Main.changeScene(SceneType.CUSTOMIZE);
 	}
 
 	public void saveBtn()
 	{
+		playBtnSound();
 		Main.save();
 	}
 
 	public void loadBtn()
 	{
+		playBtnSound();
 		Main.load();
 	}
 
 	public void settingsBtn()
 	{
+		playBtnSound();
 		Main.changeScene(SceneType.SETTINGS);
 	}
 
 	public void helpBtn()
 	{
+		playBtnSound();
 		Main.changeScene(SceneType.HELP);
 	}
 
@@ -382,6 +389,7 @@ public class MapController
 
 	private void doorBtn(Direction direction)
 	{
+		playBtnSound();
 		Maze maze = Main.getMaze();
 		Player player = Main.getPlayer();
 
@@ -544,5 +552,12 @@ public class MapController
 	public void editDatabase()
 	{
 		Main.changeScene(SceneType.EDIT_DATABASE);
+	}
+	
+	private void playBtnSound()
+	{		
+		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
+		MediaPlayer player = new MediaPlayer(soundFX);
+		player.play();
 	}
 }

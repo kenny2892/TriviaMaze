@@ -7,6 +7,8 @@ import application.MultipleChoiceQuestion;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.TextArea;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 
 public class MultipleChoiceQuestionController
@@ -115,31 +117,44 @@ public class MultipleChoiceQuestionController
 
 	public void selectmcA()
 	{
+		playBtnSound();
 		Main.checkAnswer(0);
 	}
 
 	public void selectmcB()
 	{
+		playBtnSound();
 		Main.checkAnswer(1);
 	}
 
 	public void selectmcC()
 	{
+		playBtnSound();
 		Main.checkAnswer(2);
 	}
 
 	public void selectmcD()
 	{
+		playBtnSound();
 		Main.checkAnswer(3);
 	}
 
 	public void selectmcE()
 	{
+		playBtnSound();
 		Main.checkAnswer(4);
 	}
 
 	public void selectmcF()
 	{
+		playBtnSound();
 		Main.checkAnswer(5);
+	}
+	
+	private void playBtnSound()
+	{		
+		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
+		MediaPlayer player = new MediaPlayer(soundFX);
+		player.play();
 	}
 }

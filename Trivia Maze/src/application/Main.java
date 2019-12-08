@@ -30,6 +30,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -58,6 +60,8 @@ public class Main extends Application
 	private static TrueFalseQuestionController tfController;
 	private static VideoQuestionController videoController;
 	private static SoundQuestionController soundController;
+	private static Media bgMusic;
+	private static MediaPlayer bgPlayer;
 	
 	@Override
 	public void start(Stage primaryStage)
@@ -118,7 +122,10 @@ public class Main extends Application
 		
 		stage.setScene(scene);		
 		stage.sizeToScene();
-		stage.setResizable(false);
+		stage.setMinHeight(1080);
+		stage.setMinWidth(1920);
+		stage.setMaxHeight(1090);
+		stage.setMaxWidth(1930);
 		stage.setMaximized(true);
 		stage.show();
 	}
@@ -142,6 +149,7 @@ public class Main extends Application
 						mapController = loader.getController();
 						
 						keyBindMap();
+						playBgMusic();
 					}
 					
 					if(settingsController != null)
@@ -272,6 +280,12 @@ public class Main extends Application
 					setStage(edit);
 					break;
 			}
+			
+			if(type != SceneType.VIDEO && type != SceneType.SOUND && bgPlayer != null)
+				bgPlayer.play();
+			
+			else if(bgPlayer != null)
+				bgPlayer.pause();
 		}
 
 		catch(IOException e)
@@ -652,8 +666,55 @@ public class Main extends Application
 		}
 	}
 	
-	public void close()
+	private static void playBgMusic()
 	{
-		stage.close();
+		switch(dataType)
+		{
+			case Java:
+				bgMusic = new Media(Main.class.getResource("/resources/sounds/Kevin MacLeod - Scheming Weasel (faster version).mp3").toExternalForm());
+				break;
+
+			case Anime:
+				bgMusic = new Media(Main.class.getResource("/resources/sounds/Baccano - Guns & Roses.mp3").toExternalForm());
+				break;
+
+			case Video_Games:
+				bgMusic = new Media(Main.class.getResource("/resources/sounds/Undertale - Megalovania.mp3").toExternalForm());
+				break;
+		}
+		
+		if(bgMusic == null)
+			return;
+			
+		bgPlayer = new MediaPlayer(bgMusic);
+		bgPlayer.setVolume(20);
+		bgPlayer.setOnEndOfMedia(new Runnable() 
+		{
+	        @Override
+	        public void run() 
+	        {
+	        	bgPlayer.seek(bgPlayer.getStartTime());
+	            bgPlayer.play();
+	        }
+	    });
+	}
+	
+	public static void setBgVolume(double volume)
+	{
+		if(bgPlayer == null)
+			return;
+		
+		bgPlayer.setVolume(volume);
+	}
+	
+	public static boolean setBgMuteOrUnmute()
+	{
+		if(bgPlayer.isMute())
+			bgPlayer.setMute(false);
+		
+		else
+			bgPlayer.setMute(true);
+		
+		return bgPlayer.isMute();
 	}
 }

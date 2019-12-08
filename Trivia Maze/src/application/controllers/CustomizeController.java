@@ -17,6 +17,8 @@ import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -108,6 +110,7 @@ public class CustomizeController
 		
 		btnColor = mainColor;
 		btnHighlightColor = highlightColor;
+		playBtnSound();
 	}
 
 	public void doorColors()
@@ -119,12 +122,14 @@ public class CustomizeController
 		
 		doorColor = mainColor;
 		doorHighlightColor = highlightColor;
+		playBtnSound();
 	}
 	
 	public void arrowType()
 	{
 		int index = arrowTypeSpinner.getValueFactory().getValue();
 		setArrow(index);
+		playBtnSound();
 	}
 	
 	private void setArrow(int index)
@@ -155,6 +160,7 @@ public class CustomizeController
 	
 	public void backToMap()
 	{
+		playBtnSound();
 		Main.changeScene(SceneType.MAP);
 	}
 
@@ -204,5 +210,12 @@ public class CustomizeController
 		Image pic = new Image(path);
 		
 		return pic;
-	}	
+	}
+	
+	private void playBtnSound()
+	{		
+		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
+		MediaPlayer player = new MediaPlayer(soundFX);
+		player.play();
+	}
 }

@@ -5,14 +5,14 @@ import javafx.scene.input.KeyCode;
 public class KeyBindings
 {
 	private KeyCode north, south, east, west, customize, save, load, settings, help, cheatIdentifier;
-	
+
 	public KeyBindings()
 	{
 		north = KeyCode.UP;
 		south = KeyCode.DOWN;
 		east = KeyCode.RIGHT;
 		west = KeyCode.LEFT;
-		
+
 		customize = KeyCode.Q;
 		save = KeyCode.W;
 		load = KeyCode.E;
@@ -110,19 +110,22 @@ public class KeyBindings
 	{
 		this.help = help;
 	}
-	
+
 	public KeyCode getCheatIdentifier()
 	{
 		return cheatIdentifier;
 	}
-	
+
 	public boolean usesKey(KeyCode key)
 	{
-		if(key.equals(north) || key.equals(south) || key.equals(west) || key.equals(east) ||
-		   key.equals(customize) || key.equals(save) || key.equals(load) || key.equals(settings) || key.equals(help) ||
-		   key.equals(cheatIdentifier))
+		if (key == null)
+			return false;
+
+		else if (key.equals(north) || key.equals(south) || key.equals(west) || key.equals(east) 
+				|| key.equals(customize) || key.equals(save) || key.equals(load) || key.equals(settings) || key.equals(help)
+				|| key.equals(cheatIdentifier))
 			return true;
-		
+
 		return false;
 	}
 }
