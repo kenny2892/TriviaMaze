@@ -86,6 +86,7 @@ public class Main extends Application
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
 		database = new Database(type);
+		dataType = type;
 		keyBindings = new KeyBindings();
 		
 		cheatMode = false;
@@ -442,6 +443,8 @@ public class Main extends Application
 		
 		else if(x >= COLS || x < 0)
 			throw new IllegalArgumentException("Invalid x value");
+		else if(horizontalArchways == null)
+			throw new IllegalArgumentException("HorizontalArchways is Null");
 		
 		horizontalArchways[y][x] = status;
 	}
@@ -456,6 +459,9 @@ public class Main extends Application
 		
 		else if(x >= COLS || x < 0)
 			throw new IllegalArgumentException("Invalid x value");
+		
+		else if(verticalArchways == null)
+			throw new IllegalArgumentException("VerticalArchways is Null");
 		
 		verticalArchways[y][x] = status;
 	}

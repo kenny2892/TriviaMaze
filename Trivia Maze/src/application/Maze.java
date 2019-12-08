@@ -45,9 +45,9 @@ public class Maze implements Serializable
 
 	public boolean updateMazeRooms(int x, int y, boolean isLocked)
 	{
-		if (x < 0 || x >= 5)
+		if (x < 0 || x >= Main.ROWS)
 			throw new IllegalArgumentException("Passed X value is out of the bounds of the maze.");
-		else if (y < 0 || y >= 5)
+		else if (y < 0 || y >= Main.COLS)
 			throw new IllegalArgumentException("Passed Y value is out of the bounds of the maze.");
 		
 		Room currentRoom = getRoom(x, y);
@@ -194,7 +194,7 @@ public class Maze implements Serializable
 
 	public void setExitX(int exitX)
 	{
-		if (exitX < 0 || exitX >= 5)
+		if (exitX < 0 || exitX >= Main.ROWS)
 			throw new IllegalArgumentException("Passed X value is out of the bounds of the maze.");
 		
 		this.exitX = exitX;
@@ -202,7 +202,7 @@ public class Maze implements Serializable
 
 	public void setExitY(int exitY)
 	{
-		if (exitY < 0 || exitY >= 5)
+		if (exitY < 0 || exitY >= Main.COLS)
 			throw new IllegalArgumentException("Passed Y value is out of the bounds of the maze.");
 		
 		this.exitY = exitY;
