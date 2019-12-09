@@ -11,7 +11,7 @@
    <children>
       <Rectangle fx:id="bgRectangle" height="1080.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1920.0" />
       <Rectangle fx:id="correctAnswer" arcHeight="5.0" arcWidth="5.0" fill="#1fff57" height="130.0" layoutX="1130.0" layoutY="537.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="271.0" />
-      <TextArea fx:id="tfQuestionText" layoutX="517.0" layoutY="348.0" prefHeight="128.0" prefWidth="885.0" wrapText="true">
+      <TextArea fx:id="tfQuestionText" editable="false" layoutX="517.0" layoutY="348.0" prefHeight="128.0" prefWidth="885.0" wrapText="true">
          <font>
             <Font name="Arial" size="32.0" />
          </font>

@@ -185,14 +185,14 @@
                   </TextArea>
                </children>
             </Group>
-            <Group fx:id="fileName" layoutX="1182.0" layoutY="263.5888671875">
+            <Group fx:id="fileNameGroup" layoutX="1182.0" layoutY="263.5888671875">
                <children>
                   <Text fill="WHITE" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File Name:">
                      <font>
                         <Font name="Arial" size="59.0" />
                      </font>
                   </Text>
-                  <TextArea layoutX="290.0" layoutY="2.4111328125" prefHeight="74.0" prefWidth="372.0">
+                  <TextArea fx:id="filename" layoutX="290.0" layoutY="2.4111328125" prefHeight="74.0" prefWidth="372.0">
                      <font>
                         <Font name="Arial" size="25.0" />
                      </font>

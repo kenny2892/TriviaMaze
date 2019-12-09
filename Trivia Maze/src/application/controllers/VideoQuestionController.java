@@ -53,7 +53,7 @@ public class VideoQuestionController
 	
 	public void setQuestion(VideoQuestion question)
 	{
-		mp4Player = new MediaPlayer( new Media(getClass().getResource("/resources/videos/" + question.getFileName()).toExternalForm()));
+		mp4Player = new MediaPlayer( new Media(getClass().getResource("/resources/videos/" + question.getFileName() + ".mp4").toExternalForm()));
 		mp4View.setMediaPlayer(mp4Player);
 		
 		mp4Player.currentTimeProperty().addListener(new InvalidationListener()
@@ -104,10 +104,13 @@ public class VideoQuestionController
 		});
 		
 		setUpText(question);
+		skipBack();
 	}
 	
 	private void setUpText(VideoQuestion question)
 	{
+		videoQuestionText.setText(question.getQuestion());
+		
 		ArrayList<String> answers = question.getAnswers();
 
 		hideAllAnswers();
@@ -194,38 +197,39 @@ public class VideoQuestionController
 
 	public void selectmcA()
 	{
-		playBtnSound();
-		Main.checkAnswer(0);
+		selectMc(0);
 	}
 
 	public void selectmcB()
 	{
-		playBtnSound();
-		Main.checkAnswer(1);
+		selectMc(1);
 	}
 
 	public void selectmcC()
 	{
-		playBtnSound();
-		Main.checkAnswer(2);
+		selectMc(2);
 	}
 
 	public void selectmcD()
 	{
-		playBtnSound();
-		Main.checkAnswer(3);
+		selectMc(3);
 	}
 
 	public void selectmcE()
 	{
-		playBtnSound();
-		Main.checkAnswer(4);
+		selectMc(4);
 	}
 
 	public void selectmcF()
 	{
+		selectMc(5);
+	}
+	
+	private void selectMc(int num)
+	{
 		playBtnSound();
-		Main.checkAnswer(5);
+		mp4Player.stop();
+		Main.checkAnswer(num);
 	}
 	
 	private void updatePlayer()
@@ -325,6 +329,7 @@ public class VideoQuestionController
 	{		
 		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
 		MediaPlayer player = new MediaPlayer(soundFX);
+		player.setVolume(Main.getVolume());
 		player.play();
 	}
 }

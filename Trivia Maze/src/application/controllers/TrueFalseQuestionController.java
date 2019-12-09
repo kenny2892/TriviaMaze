@@ -53,6 +53,7 @@ public class TrueFalseQuestionController
 	{		
 		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
 		MediaPlayer player = new MediaPlayer(soundFX);
+		player.setVolume(Main.getVolume());
 		player.play();
 	}
 }

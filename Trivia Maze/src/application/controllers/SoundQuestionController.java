@@ -53,7 +53,7 @@ public class SoundQuestionController
 	
 	public void setQuestion(SoundQuestion question)
 	{
-		mp3Player = new MediaPlayer( new Media(getClass().getResource("/resources/sounds/" + question.getFileName()).toExternalForm()));
+		mp3Player = new MediaPlayer( new Media(getClass().getResource("/resources/sounds/" + question.getFileName() + ".mp3").toExternalForm()));
 		mp3View.setMediaPlayer(mp3Player);
 		
 		mp3Player.currentTimeProperty().addListener(new InvalidationListener()
@@ -104,10 +104,13 @@ public class SoundQuestionController
 		});
 		
 		setUpText(question);
+		skipBack();
 	}
 	
 	private void setUpText(SoundQuestion question)
 	{
+		soundQuestionText.setText(question.getQuestion());
+		
 		ArrayList<String> answers = question.getAnswers();
 
 		hideAllAnswers();
@@ -194,38 +197,39 @@ public class SoundQuestionController
 
 	public void selectmcA()
 	{
-		playBtnSound();
-		Main.checkAnswer(0);
+		selectMc(0);
 	}
 
 	public void selectmcB()
 	{
-		playBtnSound();
-		Main.checkAnswer(1);
+		selectMc(1);
 	}
 
 	public void selectmcC()
 	{
-		playBtnSound();
-		Main.checkAnswer(2);
+		selectMc(2);
 	}
 
 	public void selectmcD()
 	{
-		playBtnSound();
-		Main.checkAnswer(3);
+		selectMc(3);
 	}
 
 	public void selectmcE()
 	{
-		playBtnSound();
-		Main.checkAnswer(4);
+		selectMc(4);
 	}
 
 	public void selectmcF()
 	{
+		selectMc(5);
+	}
+	
+	private void selectMc(int num)
+	{
 		playBtnSound();
-		Main.checkAnswer(5);
+		mp3Player.stop();
+		Main.checkAnswer(num);
 	}
 	
 	private void updatePlayer()
@@ -307,6 +311,7 @@ public class SoundQuestionController
 	{		
 		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
 		MediaPlayer player = new MediaPlayer(soundFX);
+		player.setVolume(Main.getVolume());
 		player.play();
 	}
 }
