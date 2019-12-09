@@ -71,10 +71,10 @@ public class Main extends Application
 	public void start(Stage primaryStage)
 	{
 		stage = primaryStage;
-		
-		if(stage == null)
+
+		if (stage == null)
 			return;
-		
+
 		stage.setMinHeight(1080);
 		stage.setMinWidth(1920);
 		stage.setMaxHeight(1090);
@@ -165,8 +165,10 @@ public class Main extends Application
 						mapController = loader.getController();
 
 						keyBindMap();
-						playBgMusic();
 					}
+
+					if (bgPlayer == null)
+						playBgMusic();
 
 					if (settingsController != null)
 						keyBindings = settingsController.getKeyBindings();
@@ -213,6 +215,8 @@ public class Main extends Application
 						win = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Win.fxml")));
 
 					currentScene = SceneType.WIN;
+					bgPlayer.stop();
+					bgPlayer = null;
 					setStage(win);
 					break;
 
@@ -221,6 +225,8 @@ public class Main extends Application
 						lose = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Lose.fxml")));
 
 					currentScene = SceneType.LOSE;
+					bgPlayer.stop();
+					bgPlayer = null;
 					setStage(lose);
 					break;
 
@@ -385,12 +391,12 @@ public class Main extends Application
 		gameMaze.setDirection(direction);
 
 		Question question = null;
-		
+
 		try
 		{
 			question = database.getQuestion();
 		}
-		
+
 		catch(NullPointerException e)
 		{
 			changeScene(SceneType.LOSE);
@@ -828,5 +834,11 @@ public class Main extends Application
 			bgPlayer.setMute(true);
 
 		return bgPlayer.isMute();
+	}
+
+	public static void restart()
+	{
+		map = null;
+		changeScene(SceneType.START);
 	}
 }
