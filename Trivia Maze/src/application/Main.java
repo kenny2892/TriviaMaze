@@ -50,11 +50,12 @@ public class Main extends Application
 	private static boolean cheatMode;
 	private static boolean cheatDoor;
 	private static boolean cheatAnswer;
-	private static String enteredCheatCode;
+	private static String enteredCheatCode, enteredDemoCode = "";
 
 	private static Stage stage;
 	private static SceneType currentScene;
-	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions, shortQuestions, edit;
+	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions,
+			shortQuestions, edit;
 	private static MapController mapController;
 	private static SettingsController settingsController;
 	private static MultipleChoiceQuestionController mcController;
@@ -87,9 +88,14 @@ public class Main extends Application
 
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
-		database = new Database(type);
 		dataType = type;
 		keyBindings = new KeyBindings();
+
+		if (type == DatabaseType.DEMO)
+			database = new DemoDatabase();
+
+		else
+			database = new Database(type);
 
 		cheatMode = false;
 		cheatDoor = false;
@@ -273,6 +279,7 @@ public class Main extends Application
 
 					currentScene = SceneType.START;
 					setStage(start);
+					keyBindStart();
 					break;
 
 				case EDIT_DATABASE:
@@ -282,7 +289,7 @@ public class Main extends Application
 					currentScene = SceneType.EDIT_DATABASE;
 					setStage(edit);
 					break;
-					
+
 				case SHORT:
 					if (shortQuestions == null)
 					{
@@ -632,7 +639,7 @@ public class Main extends Application
 
 	private static void keyBindMap()
 	{
-		if (stage == null || gameMaze == null || map == null)
+		if (stage == null || gameMaze == null || map == null || keyBindings == null || mapController == null)
 			return;
 
 		map.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -686,10 +693,40 @@ public class Main extends Application
 		});
 	}
 
+	private static void keyBindStart()
+	{
+		if (stage == null || start == null)
+			return;
+
+		start.setOnKeyPressed(new EventHandler<KeyEvent>()
+		{
+			@Override
+			public void handle(KeyEvent event)
+			{
+				String demoCode = "SLASHDEMO";
+				enteredDemoCode += event.getCode().toString();
+
+				if (demoCode.startsWith(enteredDemoCode))
+				{
+					if (demoCode.compareTo(enteredDemoCode) == 0)
+					{
+						setUp(DatabaseType.DEMO);
+					}
+				}
+
+				else
+					enteredDemoCode = "";
+			}
+		});
+	}
+
 	public static void reloadQuestions()
 	{
 		if (stage == null || gameMaze == null)
 			return;
+
+		else if (dataType == DatabaseType.DEMO)
+			database = new DemoDatabase();
 
 		database = new Database(dataType);
 	}
@@ -716,16 +753,20 @@ public class Main extends Application
 	{
 		switch(dataType)
 		{
-			case Java:
+			case JAVA:
 				bgMusic = new Media(Main.class
 						.getResource("/resources/sounds/Kevin MacLeod - Scheming Weasel (faster version).mp3").toExternalForm());
 				break;
 
-			case Anime:
+			case ANIME:
 				bgMusic = new Media(Main.class.getResource("/resources/sounds/Baccano - Guns & Roses.mp3").toExternalForm());
 				break;
 
-			case Video_Games:
+			case VIDEO_GAMES:
+				bgMusic = new Media(Main.class.getResource("/resources/sounds/Undertale - Megalovania.mp3").toExternalForm());
+				break;
+
+			case DEMO:
 				bgMusic = new Media(Main.class.getResource("/resources/sounds/Undertale - Megalovania.mp3").toExternalForm());
 				break;
 		}
@@ -753,12 +794,12 @@ public class Main extends Application
 
 		bgPlayer.setVolume(volume);
 	}
-	
+
 	public static double getVolume()
 	{
-		if(bgPlayer == null)
+		if (bgPlayer == null)
 			return 20;
-		
+
 		return bgPlayer.getVolume();
 	}
 

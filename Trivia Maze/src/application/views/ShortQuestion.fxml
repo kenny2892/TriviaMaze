@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.TrueFalseQuestionController">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ShortQuestionController">
    <children>
       <Rectangle height="1080.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1920.0" />
       <Group fx:id="correctAnswer" layoutX="1423.0" layoutY="79.0">

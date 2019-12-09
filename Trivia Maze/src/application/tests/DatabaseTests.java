@@ -12,13 +12,13 @@ class DatabaseTests
 	@Test
 	void database_correctParameters_TRUE()
 	{
-		Database sut = new Database(DatabaseType.Java);
+		Database sut = new Database(DatabaseType.JAVA);
 		assertTrue(sut != null);
 
-		sut = new Database(DatabaseType.Anime);
+		sut = new Database(DatabaseType.ANIME);
 		assertTrue(sut != null);
 
-		sut = new Database(DatabaseType.Video_Games);
+		sut = new Database(DatabaseType.VIDEO_GAMES);
 		assertTrue(sut != null);
 	}
 
@@ -37,7 +37,7 @@ class DatabaseTests
 	{
 		NullPointerException exception = assertThrows(NullPointerException.class, () ->
 		{
-			Database sut = new Database(DatabaseType.Java);
+			Database sut = new Database(DatabaseType.JAVA);
 			@SuppressWarnings("unused")
 			Question test;
 			while(true)
@@ -51,20 +51,20 @@ class DatabaseTests
 	@Test
 	void getQuestion_eachQuestionOfJavaIsNotNull_TRUE()
 	{
-		assertTrue(checkEachQuestion(new Database(DatabaseType.Java)));
+		assertTrue(checkEachQuestion(new Database(DatabaseType.JAVA)));
 	}
 
 	@Test
 	void getQuestion_eachQuestionOfAnimeIsNotNull_TRUE()
 	{
-		assertTrue(checkEachQuestion(new Database(DatabaseType.Anime)));
+		assertTrue(checkEachQuestion(new Database(DatabaseType.ANIME)));
 	}
 
 	@Test
 	void getQuestion_eachQuestionOfVideoGamesIsNotNull_TRUE()
 	{
 
-		assertTrue(checkEachQuestion(new Database(DatabaseType.Video_Games)));
+		assertTrue(checkEachQuestion(new Database(DatabaseType.VIDEO_GAMES)));
 	}
 	
 	private boolean checkEachQuestion(Database sut)

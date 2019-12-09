@@ -91,7 +91,7 @@ public class SoundQuestionController
 		
 		volumeSlider.setMax(100);
 		volumeSlider.setMin(0);
-		volumeSlider.setValue(50);
+		volumeSlider.setValue(25);
 		
 		volumeSlider.valueProperty().addListener(new InvalidationListener()
 		{
