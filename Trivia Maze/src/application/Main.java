@@ -727,9 +727,7 @@ public class Main extends Application
 				if (demoCode.startsWith(enteredDemoCode))
 				{
 					if (demoCode.compareTo(enteredDemoCode) == 0)
-					{
 						setUp(DatabaseType.DEMO);
-					}
 				}
 
 				else
@@ -816,7 +814,7 @@ public class Main extends Application
 	public static double getVolume()
 	{
 		if (bgPlayer == null)
-			return 20;
+			return 0.2;
 
 		return bgPlayer.getVolume();
 	}

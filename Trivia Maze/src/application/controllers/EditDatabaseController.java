@@ -81,7 +81,7 @@ public class EditDatabaseController
 
 		try
 		{
-			databaseType = DatabaseType.valueOf(database.toUpperCase());
+			databaseType = DatabaseType.valueOf(database.toUpperCase().replace(" ", "_"));
 			questionType = QuestionType.valueOf(question.replace(" ", "_").toUpperCase());
 		}
 
