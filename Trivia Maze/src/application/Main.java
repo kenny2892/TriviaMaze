@@ -30,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -70,6 +71,17 @@ public class Main extends Application
 	public void start(Stage primaryStage)
 	{
 		stage = primaryStage;
+		
+		if(stage == null)
+			return;
+		
+		stage.setMinHeight(1080);
+		stage.setMinWidth(1920);
+		stage.setMaxHeight(1090);
+		stage.setMaxWidth(1930);
+		stage.setMaximized(true);
+		stage.getIcons().add(new Image(Main.class.getResource("/resources/images/Icon.png").toExternalForm()));
+		stage.setTitle("Trivia Maze");
 		changeScene(SceneType.START);
 	}
 
@@ -131,11 +143,6 @@ public class Main extends Application
 
 		stage.setScene(scene);
 		stage.sizeToScene();
-		stage.setMinHeight(1080);
-		stage.setMinWidth(1920);
-		stage.setMaxHeight(1090);
-		stage.setMaxWidth(1930);
-		stage.setMaximized(true);
 		stage.show();
 	}
 
@@ -377,7 +384,18 @@ public class Main extends Application
 
 		gameMaze.setDirection(direction);
 
-		Question question = database.getQuestion();
+		Question question = null;
+		
+		try
+		{
+			question = database.getQuestion();
+		}
+		
+		catch(NullPointerException e)
+		{
+			changeScene(SceneType.LOSE);
+			return;
+		}
 
 		switch(question.getQuestionsType())
 		{

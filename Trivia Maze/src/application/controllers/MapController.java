@@ -1,7 +1,7 @@
 package application.controllers;
 
-import java.io.File;
 import java.net.URL;
+
 import application.Main;
 import application.Maze;
 import application.Player;
@@ -227,30 +227,24 @@ public class MapController
 
 	private void setClippingMasks()
 	{
-		File customizeFile = new File(
-				this.getClass().getResource("/resources/images/Customize.png").getPath().replace("%20", " ").substring(1));
-
-		ImageView clip = new ImageView(new Image(customizeFile.toURI().toString()));
+		URL customizeFile = this.getClass().getResource("/resources/images/Customize.png");
+		ImageView clip = new ImageView(new Image(customizeFile.toExternalForm()));
 		customizeImg.setClip(clip);
 
-		File saveFile = new File(
-				this.getClass().getResource("/resources/images/Save.png").getPath().replace("%20", " ").substring(1));
-		clip = new ImageView(new Image(saveFile.toURI().toString()));
+		URL saveFile = this.getClass().getResource("/resources/images/Save.png");
+		clip = new ImageView(new Image(saveFile.toExternalForm()));
 		saveImg.setClip(clip);
 
-		File loadFile = new File(
-				this.getClass().getResource("/resources/images/Load.png").getPath().replace("%20", " ").substring(1));
-		clip = new ImageView(new Image(loadFile.toURI().toString()));
+		URL loadFile = this.getClass().getResource("/resources/images/Load.png");
+		clip = new ImageView(new Image(loadFile.toExternalForm()));
 		loadImg.setClip(clip);
 
-		File settingFile = new File(
-				this.getClass().getResource("/resources/images/Settings.png").getPath().replace("%20", " ").substring(1));
-		clip = new ImageView(new Image(settingFile.toURI().toString()));
+		URL settingFile = this.getClass().getResource("/resources/images/Settings.png");
+		clip = new ImageView(new Image(settingFile.toExternalForm()));
 		settingsImg.setClip(clip);
 
-		File helpFile = new File(
-				this.getClass().getResource("/resources/images/Help.png").getPath().replace("%20", " ").substring(1));
-		clip = new ImageView(new Image(helpFile.toURI().toString()));
+		URL helpFile = this.getClass().getResource("/resources/images/Help.png");
+		clip = new ImageView(new Image(helpFile.toExternalForm()));
 		helpImg.setClip(clip);
 
 		nDoorImg.setClip(clipDoor());
@@ -261,9 +255,8 @@ public class MapController
 
 	private ImageView clipDoor()
 	{
-		File doorFile = new File(
-				this.getClass().getResource("/resources/images/Door.png").getPath().replace("%20", " ").substring(1));
-		return new ImageView(new Image(doorFile.toURI().toString()));
+		URL doorFile = this.getClass().getResource("/resources/images/Door.png");
+		return new ImageView(new Image(doorFile.toExternalForm()));
 	}
 	
 	public void update()

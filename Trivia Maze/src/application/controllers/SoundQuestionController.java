@@ -91,7 +91,7 @@ public class SoundQuestionController
 		
 		volumeSlider.setMax(100);
 		volumeSlider.setMin(0);
-		volumeSlider.setValue(25);
+		volumeSlider.setValue(50);
 		
 		volumeSlider.valueProperty().addListener(new InvalidationListener()
 		{
@@ -142,7 +142,7 @@ public class SoundQuestionController
 				mcTextA.setText(answers.get(0));
 		}
 		
-		int[] correctX = new int[] {309, 854, 1393};
+		int[] correctX = new int[] {310, 854, 1393};
 		int[] correctY = new int[] {712, 847};
 		
 		switch(question.getCorrectIndex())

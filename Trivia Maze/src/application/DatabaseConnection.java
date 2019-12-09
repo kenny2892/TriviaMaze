@@ -16,7 +16,7 @@ public class DatabaseConnection
 		{
 			String firstLetter = type.toString().substring(0, 1);
 			String databaseName = firstLetter + type.toString().toLowerCase().substring(1);
-			
+
 			Class.forName("org.sqlite.JDBC");
 			Connection connect = DriverManager.getConnection("jdbc:sqlite::resource:"
 					+ DatabaseConnection.class.getResource("/resources/databases/" + databaseName + ".sqlite"));

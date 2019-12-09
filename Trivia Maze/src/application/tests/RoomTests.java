@@ -1,12 +1,12 @@
 package application.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 import application.Door;
 import application.Room;
-import application.TrueFalseQuestion;
 
 class RoomTests
 {
