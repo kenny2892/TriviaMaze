@@ -10,6 +10,6 @@ public class ShortQuestion extends Question
 
 	public ShortQuestion(String question, ArrayList<String> keywords)
 	{
-		super(QuestionType.SHORT, question, keywords, -1);
+		super(QuestionType.SHORT, question, keywords, 0);
 	}
 }

@@ -266,6 +266,27 @@ public class Database implements Serializable
 		return currentQuestion.getCorrectIndex() == chosenAnswer;
 	}
 
+	public boolean checkShortAnswer(String answerTxt)
+	{
+		if (currentQuestion == null || !(currentQuestion instanceof ShortQuestion) )
+			return false;
+		
+		boolean result = true;
+		
+		for(int i = 0; i < currentQuestion.getAnswers().size(); i++)
+		{
+			String keyword = currentQuestion.getAnswers().get(i);
+			
+			if(!answerTxt.contains(keyword))
+			{
+				result = false;
+				break;
+			}
+		}
+
+		return result;
+	}
+
 	public Question getQuestion()
 	{
 		if (questions == null || questions.isEmpty())

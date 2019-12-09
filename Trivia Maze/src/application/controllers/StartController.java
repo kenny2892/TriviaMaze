@@ -9,7 +9,7 @@ public class StartController
 {
 	public void javaDatabase()
 	{
-//		playBtnSound();
+		playBtnSound();
 		Main.setUp(DatabaseType.Java);
 	}
 	
@@ -35,6 +35,7 @@ public class StartController
 	{		
 		Media soundFX = new Media(this.getClass().getResource("/resources/sounds/Button.mp3").toExternalForm());
 		MediaPlayer player = new MediaPlayer(soundFX);
+		player.setVolume(Main.getVolume());
 		player.play();
 	}
 }

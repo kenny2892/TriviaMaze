@@ -17,6 +17,7 @@ import java.util.Arrays;
 import application.controllers.MapController;
 import application.controllers.MultipleChoiceQuestionController;
 import application.controllers.SettingsController;
+import application.controllers.ShortQuestionController;
 import application.controllers.SoundQuestionController;
 import application.controllers.TrueFalseQuestionController;
 import application.controllers.VideoQuestionController;
@@ -50,19 +51,20 @@ public class Main extends Application
 	private static boolean cheatDoor;
 	private static boolean cheatAnswer;
 	private static String enteredCheatCode;
-	
+
 	private static Stage stage;
 	private static SceneType currentScene;
-	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions, edit;
+	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions, shortQuestions, edit;
 	private static MapController mapController;
 	private static SettingsController settingsController;
 	private static MultipleChoiceQuestionController mcController;
 	private static TrueFalseQuestionController tfController;
 	private static VideoQuestionController videoController;
 	private static SoundQuestionController soundController;
+	private static ShortQuestionController shortController;
 	private static Media bgMusic;
 	private static MediaPlayer bgPlayer;
-	
+
 	@Override
 	public void start(Stage primaryStage)
 	{
@@ -77,34 +79,34 @@ public class Main extends Application
 
 	public static void setUp(DatabaseType type)
 	{
-		if(type == null)
+		if (type == null)
 			throw new IllegalArgumentException("Null Database Type");
-		
+
 		else if (stage == null)
 			return;
-		
+
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
 		database = new Database(type);
 		dataType = type;
 		keyBindings = new KeyBindings();
-		
+
 		cheatMode = false;
 		cheatDoor = false;
 		cheatAnswer = false;
 		enteredCheatCode = "";
-		
+
 		horizontalArchways = new ArchwayStatus[5][4];
 		verticalArchways = new ArchwayStatus[4][5];
-		
+
 		for(ArchwayStatus[] archways : horizontalArchways)
 			Arrays.fill(archways, ArchwayStatus.UNOPENED);
-		
+
 		for(ArchwayStatus[] archways : verticalArchways)
 			Arrays.fill(archways, ArchwayStatus.UNOPENED);
 
 		gameMaze.setExit(ROWS, COLS);
-		
+
 		String home = System.getProperty("user.home");
 		saveLoadDir = new File(home + "/Documents/");
 
@@ -112,16 +114,16 @@ public class Main extends Application
 		{
 			player.setSpawn(ROWS, COLS);
 		} while(player.getPlayerX() == gameMaze.getExitX() && player.getPlayerY() == gameMaze.getExitY());
-		
+
 		changeScene(SceneType.MAP);
 	}
 
 	private static void setStage(Scene scene)
 	{
-		if(stage == null || scene == null || (gameMaze == null && currentScene != SceneType.START))
+		if (stage == null || scene == null || (gameMaze == null && currentScene != SceneType.START))
 			return;
-		
-		stage.setScene(scene);		
+
+		stage.setScene(scene);
 		stage.sizeToScene();
 		stage.setMinHeight(1080);
 		stage.setMinWidth(1920);
@@ -130,30 +132,30 @@ public class Main extends Application
 		stage.setMaximized(true);
 		stage.show();
 	}
-	
+
 	public static void changeScene(SceneType type)
 	{
 		if (stage == null || (gameMaze == null && type != SceneType.START))
 			return;
-		
+
 		try
 		{
 			switch(type)
 			{
 				case MAP:
-					if(map == null || mapController == null)
+					if (map == null || mapController == null)
 					{
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(Main.class.getResource("/application/views/Map.fxml"));
 						Parent root = loader.load();
 						map = new Scene(root);
 						mapController = loader.getController();
-						
+
 						keyBindMap();
 						playBgMusic();
 					}
-					
-					if(settingsController != null)
+
+					if (settingsController != null)
 						keyBindings = settingsController.getKeyBindings();
 
 					currentScene = SceneType.MAP;
@@ -162,7 +164,7 @@ public class Main extends Application
 					break;
 
 				case CUSTOMIZE:
-					if(customize == null)
+					if (customize == null)
 						customize = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Customize.fxml")));
 
 					currentScene = SceneType.CUSTOMIZE;
@@ -171,7 +173,7 @@ public class Main extends Application
 					break;
 
 				case SETTINGS:
-					if(settings == null)
+					if (settings == null)
 					{
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(Main.class.getResource("/application/views/Settings.fxml"));
@@ -186,7 +188,7 @@ public class Main extends Application
 					break;
 
 				case HELP:
-					if(help == null)
+					if (help == null)
 						help = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Help.fxml")));
 
 					currentScene = SceneType.HELP;
@@ -194,7 +196,7 @@ public class Main extends Application
 					break;
 
 				case WIN:
-					if(win == null)
+					if (win == null)
 						win = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Win.fxml")));
 
 					currentScene = SceneType.WIN;
@@ -202,7 +204,7 @@ public class Main extends Application
 					break;
 
 				case LOSE:
-					if(lose == null)
+					if (lose == null)
 						lose = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Lose.fxml")));
 
 					currentScene = SceneType.LOSE;
@@ -210,7 +212,7 @@ public class Main extends Application
 					break;
 
 				case TRUE_FALSE:
-					if(trueFalse == null)
+					if (trueFalse == null)
 					{
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(Main.class.getResource("/application/views/TrueFalseQuestion.fxml"));
@@ -224,7 +226,7 @@ public class Main extends Application
 					break;
 
 				case MULTIPLE_CHOICE:
-					if(mcQuestions == null)
+					if (mcQuestions == null)
 					{
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(Main.class.getResource("/application/views/MultipleChoiceQuestion.fxml"));
@@ -236,9 +238,9 @@ public class Main extends Application
 					currentScene = SceneType.MULTIPLE_CHOICE;
 					setStage(mcQuestions);
 					break;
-					
+
 				case SOUND:
-					if(soundQuestions == null)
+					if (soundQuestions == null)
 					{
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(Main.class.getResource("/application/views/SoundQuestion.fxml"));
@@ -250,9 +252,9 @@ public class Main extends Application
 					currentScene = SceneType.SOUND;
 					setStage(soundQuestions);
 					break;
-					
+
 				case VIDEO:
-					if(videoQuestions == null)
+					if (videoQuestions == null)
 					{
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(Main.class.getResource("/application/views/VideoQuestion.fxml"));
@@ -264,28 +266,42 @@ public class Main extends Application
 					currentScene = SceneType.VIDEO;
 					setStage(videoQuestions);
 					break;
-					
+
 				case START:
-					if(start == null)
+					if (start == null)
 						start = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Start.fxml")));
 
 					currentScene = SceneType.START;
 					setStage(start);
 					break;
-					
+
 				case EDIT_DATABASE:
-					if(edit == null)
+					if (edit == null)
 						edit = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/EditDatabase.fxml")));
 
 					currentScene = SceneType.EDIT_DATABASE;
 					setStage(edit);
 					break;
+					
+				case SHORT:
+					if (shortQuestions == null)
+					{
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(Main.class.getResource("/application/views/ShortQuestion.fxml"));
+						Parent root = loader.load();
+						shortQuestions = new Scene(root);
+						shortController = loader.getController();
+					}
+
+					currentScene = SceneType.SHORT;
+					setStage(shortQuestions);
+					break;
 			}
-			
-			if(type != SceneType.VIDEO && type != SceneType.SOUND && bgPlayer != null)
+
+			if (type != SceneType.VIDEO && type != SceneType.SOUND && bgPlayer != null)
 				bgPlayer.play();
-			
-			else if(bgPlayer != null)
+
+			else if (bgPlayer != null)
 				bgPlayer.pause();
 		}
 
@@ -294,84 +310,108 @@ public class Main extends Application
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void checkAnswer(int chosenAnswer)
 	{
 		if (stage == null || gameMaze == null)
 			return;
-		
+
 		boolean correct = database.checkAnswer(chosenAnswer);
 		boolean canComplete = gameMaze.updateMazeRooms(player.getPlayerX(), player.getPlayerY(), !correct);
-		
-		if(!canComplete)
+
+		if (!canComplete)
 		{
 			changeScene(SceneType.LOSE);
 			return;
 		}
-		
+
 		mapController.updateMaze(correct);
-		
-		if(currentScene != SceneType.WIN)
+
+		if (currentScene != SceneType.WIN)
 			changeScene(SceneType.MAP);
 	}
-	
+
+	public static void checkShortAnswer(String answerTxt)
+	{
+		if (stage == null || gameMaze == null)
+			return;
+
+		boolean correct = database.checkShortAnswer(answerTxt);
+		boolean canComplete = gameMaze.updateMazeRooms(player.getPlayerX(), player.getPlayerY(), !correct);
+
+		if (!canComplete)
+		{
+			changeScene(SceneType.LOSE);
+			return;
+		}
+
+		mapController.updateMaze(correct);
+
+		if (currentScene != SceneType.WIN)
+			changeScene(SceneType.MAP);
+	}
+
 	public static void cheatModeMove(Direction direction)
 	{
 		if (stage == null || gameMaze == null)
 			return;
-		
-		if(cheatDoor)
+
+		if (cheatDoor)
 		{
 			gameMaze.setDirection(direction);
 			gameMaze.updateMazeRooms(player.getPlayerX(), player.getPlayerY(), false);
 		}
 	}
-	
+
 	public static void showQuestion(Direction direction)
 	{
 		if (stage == null || gameMaze == null || direction == null)
 			return;
 
 		gameMaze.setDirection(direction);
-		
+
 		Question question = database.getQuestion();
-		
+
 		switch(question.getQuestionsType())
 		{
 			case MULTIPLE_CHOICE:
-				if(question instanceof MultipleChoiceQuestion)
+				if (question instanceof MultipleChoiceQuestion)
 				{
 					changeScene(SceneType.MULTIPLE_CHOICE);
 					mcController.setQuestion((MultipleChoiceQuestion) question);
 				}
-				break;			
-			
+				break;
+
 			case TRUE_FALSE:
-				if(question instanceof TrueFalseQuestion)
+				if (question instanceof TrueFalseQuestion)
 				{
 					changeScene(SceneType.TRUE_FALSE);
 					tfController.setQuestion((TrueFalseQuestion) question);
 				}
 				break;
-				
+
 			case SOUND:
-				if(question instanceof SoundQuestion)
+				if (question instanceof SoundQuestion)
 				{
 					changeScene(SceneType.SOUND);
 					soundController.setQuestion((SoundQuestion) question);
 				}
 				break;
-				
+
 			case VIDEO:
-				if(question instanceof VideoQuestion)
+				if (question instanceof VideoQuestion)
 				{
 					changeScene(SceneType.VIDEO);
 					videoController.setQuestion((VideoQuestion) question);
 				}
 				break;
-				
+
 			case SHORT:
-				// TODO
+				if (question instanceof ShortQuestion)
+				{
+					changeScene(SceneType.SHORT);
+					shortController.setQuestion((ShortQuestion) question);
+				}
 				break;
 		}
 	}
@@ -385,118 +425,118 @@ public class Main extends Application
 	{
 		return player;
 	}
-	
+
 	public static boolean isCheatMode()
 	{
 		return cheatMode;
 	}
-	
+
 	public static boolean isCheatDoor()
 	{
-		if(cheatMode)
+		if (cheatMode)
 			return cheatDoor;
-		
+
 		return false;
 	}
-	
+
 	public static boolean isCheatAnswer()
 	{
-		if(cheatMode)
+		if (cheatMode)
 			return cheatAnswer;
-		
+
 		return false;
 	}
-	
+
 	public static void setCheatMode(boolean cheat)
 	{
 		cheatMode = cheat;
 	}
-	
+
 	public static void setCheatDoor(boolean cheat)
 	{
 		cheatDoor = cheat;
 	}
-	
+
 	public static void setCheatAnswer(boolean cheat)
 	{
 		cheatAnswer = cheat;
 	}
-	
+
 	public static ArchwayStatus[][] getHorizontalArchways()
 	{
 		return horizontalArchways;
 	}
-	
+
 	public static ArchwayStatus[][] getVerticalArchways()
 	{
 		return verticalArchways;
 	}
-	
+
 	public static void setHorizontalArchway(int y, int x, ArchwayStatus status)
 	{
-		
-		if(status == null)
+
+		if (status == null)
 			throw new IllegalArgumentException("Null Archway Status");
-		
-		else if(y >= ROWS || y < 0)
+
+		else if (y >= ROWS || y < 0)
 			throw new IllegalArgumentException("Invalid y value");
-		
-		else if(x >= COLS || x < 0)
+
+		else if (x >= COLS || x < 0)
 			throw new IllegalArgumentException("Invalid x value");
-		else if(horizontalArchways == null)
+		else if (horizontalArchways == null)
 			throw new IllegalArgumentException("HorizontalArchways is Null");
-		
+
 		horizontalArchways[y][x] = status;
 	}
-	
+
 	public static void setVerticalArchway(int y, int x, ArchwayStatus status)
 	{
-		if(status == null)
+		if (status == null)
 			throw new IllegalArgumentException("Null Archway Status");
-		
-		else if(y >= ROWS || y < 0)
+
+		else if (y >= ROWS || y < 0)
 			throw new IllegalArgumentException("Invalid y value");
-		
-		else if(x >= COLS || x < 0)
+
+		else if (x >= COLS || x < 0)
 			throw new IllegalArgumentException("Invalid x value");
-		
-		else if(verticalArchways == null)
+
+		else if (verticalArchways == null)
 			throw new IllegalArgumentException("VerticalArchways is Null");
-		
+
 		verticalArchways[y][x] = status;
 	}
-	
+
 	public static boolean save()
 	{
 		if (stage == null || gameMaze == null)
 			return false;
 
 		File fileToSaveTo = null;
-		
+
 		DirectoryChooser chooser = new DirectoryChooser();
 		chooser.setTitle("Choose a Save Directory");
 		chooser.setInitialDirectory(saveLoadDir);
 
 		File temp = chooser.showDialog(stage);
-		
-		if(temp != null)
+
+		if (temp != null)
 		{
 			saveLoadDir = temp;
-			
+
 			fileToSaveTo = new File(temp.getPath() + "\\saveData.save");
 			int num = 1;
-			
+
 			while(fileToSaveTo.exists())
 			{
 				fileToSaveTo = new File(temp.getPath() + "\\saveData" + num + ".save");
 				num++;
 			}
 		}
-		
+
 		else
 			return false;
-		
-		try 
+
+		try
 		{
 			ArrayList<Object> itemsToSave = new ArrayList<Object>();
 			itemsToSave.add(gameMaze);
@@ -504,97 +544,97 @@ public class Main extends Application
 			itemsToSave.add(database);
 			itemsToSave.add(horizontalArchways);
 			itemsToSave.add(verticalArchways);
-			
+
 			FileOutputStream fileOutStream = new FileOutputStream(fileToSaveTo);
 			ObjectOutputStream out = new ObjectOutputStream(fileOutStream);
-			
+
 			out.writeObject(itemsToSave);
 			out.close();
 			fileOutStream.close();
 			return true;
 		}
-		
+
 		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
-	
+
 	public static boolean load()
 	{
 		if (stage == null || gameMaze == null)
 			return false;
 
 		File fileToLoad = null;
-		
+
 		FileChooser chooser = new FileChooser();
 		chooser.setTitle("Choose a Save File");
 		chooser.setInitialDirectory(saveLoadDir);
-		
+
 		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Save fils (*.save)", "*.save");
 		chooser.getExtensionFilters().add(filter);
 
 		File temp = chooser.showOpenDialog(stage);
-		
-		if(temp != null)
+
+		if (temp != null)
 		{
 			fileToLoad = temp;
 			saveLoadDir = new File(fileToLoad.getParent());
 		}
-		
-		else if(temp == null || !fileToLoad.getPath().endsWith(".save"))
+
+		else if (temp == null || !fileToLoad.getPath().endsWith(".save"))
 			return false;
-		
+
 		try
 		{
 			FileInputStream fileInStream = new FileInputStream(fileToLoad);
 			ObjectInputStream in = new ObjectInputStream(fileInStream);
-			
+
 			Object objRead = in.readObject();
-			
-			if(objRead instanceof ArrayList<?>)
+
+			if (objRead instanceof ArrayList<?>)
 			{
 				@SuppressWarnings("unchecked")
 				ArrayList<Object> itemAra = (ArrayList<Object>) objRead;
-				
-				if(itemAra.get(0) instanceof Maze)
+
+				if (itemAra.get(0) instanceof Maze)
 					gameMaze = (Maze) itemAra.get(0);
-				
-				if(itemAra.get(1) instanceof Player)
+
+				if (itemAra.get(1) instanceof Player)
 					player = (Player) itemAra.get(1);
-				
-				if(itemAra.get(2) instanceof Database)
+
+				if (itemAra.get(2) instanceof Database)
 					database = (Database) itemAra.get(2);
-				
-				if(itemAra.get(3) instanceof ArchwayStatus[][])
+
+				if (itemAra.get(3) instanceof ArchwayStatus[][])
 					horizontalArchways = (ArchwayStatus[][]) itemAra.get(3);
-				
-				if(itemAra.get(4) instanceof ArchwayStatus[][])
+
+				if (itemAra.get(4) instanceof ArchwayStatus[][])
 					verticalArchways = (ArchwayStatus[][]) itemAra.get(4);
 			}
-			
+
 			in.close();
 			fileInStream.close();
 			mapController.loadMaze();
-			
+
 			return true;
 		}
-		
+
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
-	
+
 	private static void keyBindMap()
 	{
 		if (stage == null || gameMaze == null || map == null)
 			return;
-		
+
 		map.setOnKeyPressed(new EventHandler<KeyEvent>()
 		{
 			@Override
@@ -603,81 +643,82 @@ public class Main extends Application
 				String cheatCode = keyBindings.getCheatIdentifier() + "UPUPDOWNDOWNLEFTRIGHTLEFTRIGHTBA";
 				enteredCheatCode += event.getCode().toString();
 
-				if(cheatCode.startsWith(enteredCheatCode))
+				if (cheatCode.startsWith(enteredCheatCode))
 				{
-					if(cheatCode.compareTo(enteredCheatCode) == 0)
+					if (cheatCode.compareTo(enteredCheatCode) == 0)
 					{
 						cheatMode = true;
 						mapController.update();
 					}
 					return;
 				}
-				
+
 				else
 					enteredCheatCode = "";
-				
-				if(event.getCode().equals(keyBindings.getCustomize()))
+
+				if (event.getCode().equals(keyBindings.getCustomize()))
 					mapController.customizeBtn();
-				
-				else if(event.getCode().equals(keyBindings.getSave()))
+
+				else if (event.getCode().equals(keyBindings.getSave()))
 					mapController.saveBtn();
-				
-				else if(event.getCode().equals(keyBindings.getLoad()))
+
+				else if (event.getCode().equals(keyBindings.getLoad()))
 					mapController.saveBtn();
-				
-				else if(event.getCode().equals(keyBindings.getSettings()))
+
+				else if (event.getCode().equals(keyBindings.getSettings()))
 					mapController.settingsBtn();
-				
-				else if(event.getCode().equals(keyBindings.getHelp()))
+
+				else if (event.getCode().equals(keyBindings.getHelp()))
 					mapController.helpBtn();
-				
-				else if(event.getCode().equals(keyBindings.getNorth()))
+
+				else if (event.getCode().equals(keyBindings.getNorth()))
 					mapController.nDoorBtn();
-				
-				else if(event.getCode().equals(keyBindings.getSouth()))
+
+				else if (event.getCode().equals(keyBindings.getSouth()))
 					mapController.sDoorBtn();
-				
-				else if(event.getCode().equals(keyBindings.getWest()))
+
+				else if (event.getCode().equals(keyBindings.getWest()))
 					mapController.wDoorBtn();
-				
-				else if(event.getCode().equals(keyBindings.getEast()))
+
+				else if (event.getCode().equals(keyBindings.getEast()))
 					mapController.eDoorBtn();
 			}
 		});
 	}
-	
+
 	public static void reloadQuestions()
 	{
 		if (stage == null || gameMaze == null)
 			return;
-		
+
 		database = new Database(dataType);
 	}
-	
+
 	public static void openGitHub()
 	{
 		try
 		{
 			Desktop.getDesktop().browse(new URL("https://github.com/kenny2892/TriviaMaze").toURI());
 		}
-		
+
 		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		catch(URISyntaxException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static void playBgMusic()
 	{
 		switch(dataType)
 		{
 			case Java:
-				bgMusic = new Media(Main.class.getResource("/resources/sounds/Kevin MacLeod - Scheming Weasel (faster version).mp3").toExternalForm());
+				bgMusic = new Media(Main.class
+						.getResource("/resources/sounds/Kevin MacLeod - Scheming Weasel (faster version).mp3").toExternalForm());
 				break;
 
 			case Anime:
@@ -688,39 +729,47 @@ public class Main extends Application
 				bgMusic = new Media(Main.class.getResource("/resources/sounds/Undertale - Megalovania.mp3").toExternalForm());
 				break;
 		}
-		
-		if(bgMusic == null)
+
+		if (bgMusic == null)
 			return;
-			
+
 		bgPlayer = new MediaPlayer(bgMusic);
-		bgPlayer.setVolume(20);
-		bgPlayer.setOnEndOfMedia(new Runnable() 
+		bgPlayer.setVolume(0.2);
+		bgPlayer.setOnEndOfMedia(new Runnable()
 		{
-	        @Override
-	        public void run() 
-	        {
-	        	bgPlayer.seek(bgPlayer.getStartTime());
-	            bgPlayer.play();
-	        }
-	    });
+			@Override
+			public void run()
+			{
+				bgPlayer.seek(bgPlayer.getStartTime());
+				bgPlayer.play();
+			}
+		});
 	}
-	
+
 	public static void setBgVolume(double volume)
 	{
-		if(bgPlayer == null)
+		if (bgPlayer == null)
 			return;
-		
+
 		bgPlayer.setVolume(volume);
 	}
 	
+	public static double getVolume()
+	{
+		if(bgPlayer == null)
+			return 20;
+		
+		return bgPlayer.getVolume();
+	}
+
 	public static boolean setBgMuteOrUnmute()
 	{
-		if(bgPlayer.isMute())
+		if (bgPlayer.isMute())
 			bgPlayer.setMute(false);
-		
+
 		else
 			bgPlayer.setMute(true);
-		
+
 		return bgPlayer.isMute();
 	}
 }
