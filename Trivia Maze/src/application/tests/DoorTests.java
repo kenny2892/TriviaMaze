@@ -8,7 +8,6 @@ import application.Door;
 
 class DoorTests
 {
-
 	@Test
 	void doorConstructor_getCorrectIslockedValueOfTrue_TRUE()
 	{
@@ -59,5 +58,4 @@ class DoorTests
 		sut.open();
 		assertTrue(sut.isOpen() == true);
 	}
-
 }

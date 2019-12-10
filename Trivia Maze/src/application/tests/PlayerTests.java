@@ -13,7 +13,6 @@ import application.enums.Direction;
 
 class PlayerTests
 {
-
 	@Test
 	void playerConstructor_defaultValueOfPlayerXIsNegativeOne_TRUE()
 	{
@@ -105,5 +104,4 @@ class PlayerTests
 		});
 		assertEquals("Passed Y value is out of the bounds of the maze.", exception.getMessage());
 	}
-
 }

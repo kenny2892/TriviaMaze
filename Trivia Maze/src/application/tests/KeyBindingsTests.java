@@ -9,7 +9,6 @@ import javafx.scene.input.KeyCode;
 
 class KeyBindingsTests
 {
-
 	@Test
 	void getNorth_defaultValueIsKeyCodeUP_TRUE()
 	{
@@ -221,5 +220,4 @@ class KeyBindingsTests
 		KeyBindings sut = new KeyBindings();
 		assertTrue(sut.usesKey(KeyCode.SLASH));
 	}
-
 }
