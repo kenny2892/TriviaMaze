@@ -176,43 +176,41 @@ public class EditDatabaseController
 
 	private void remove(DatabaseType databaseType, QuestionType questionType)
 	{
-		int max = 0;
-		int min = 0;
+		int[] minMax = new int[2];
 		addPane.setVisible(false);
 		removePane.setVisible(true);
 
 		switch(questionType)
 		{
 			case MULTIPLE_CHOICE:
-				max = showQuestion(databaseType, "Select * from MultipleChoiceQuestions");
+				minMax = showQuestion(databaseType, "Select * from MultipleChoiceQuestions");
 				break;
 
 			case TRUE_FALSE:
-				max = showQuestion(databaseType, "Select * from TrueFalseQuestions");
+				minMax = showQuestion(databaseType, "Select * from TrueFalseQuestions");
 				break;
 
 			case SHORT:
-				max = showQuestion(databaseType, "Select * from ShortAnswerQuestions");
+				minMax = showQuestion(databaseType, "Select * from ShortAnswerQuestions");
 				break;
 
 			case VIDEO:
-				max = showQuestion(databaseType, "Select * from VideoQuestions");
+				minMax = showQuestion(databaseType, "Select * from VideoQuestions");
 				break;
 
 			case SOUND:
-				max = showQuestion(databaseType, "Select * from SoundQuestions");
+				minMax = showQuestion(databaseType, "Select * from SoundQuestions");
 				break;
 		}
 
-		if (max != min)
-			min = 1;
-
-		removeIdSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, min));
+		removeIdSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(minMax[0], minMax[1], minMax[0]));
 	}
 
-	private int showQuestion(DatabaseType databaseType, String query)
+	private int[] showQuestion(DatabaseType databaseType, String query)
 	{
-		int totalQuestions = 0;
+		int[] minMax = new int[2];
+		minMax[0] = 10000;
+		minMax[1] = 0;
 
 		questionsTextFlow.getChildren().clear();
 		try
@@ -241,7 +239,13 @@ public class EditDatabaseController
 
 				Group group = new Group(idTxt, questionTxt);
 				questionsTextFlow.getChildren().add(group);
-				totalQuestions++;
+				
+				int num = Integer.parseInt(id);
+				if(num < minMax[0])
+					minMax[0] = num;
+				
+				else if(num > minMax[1])
+					minMax[1] = num;
 			}
 
 			results.close();
@@ -253,7 +257,13 @@ public class EditDatabaseController
 			e.printStackTrace();
 		}
 
-		return totalQuestions;
+		if(minMax[0] > minMax[1])
+		{
+			minMax[0] = 0;
+			minMax[1] = 0;
+		}
+		
+		return minMax;
 	}
 
 	public void addToDatabase()
@@ -627,6 +637,7 @@ public class EditDatabaseController
 			invalidInput.setVisible(true);
 
 		playBtnSound();
+		change();
 	}
 	
 	private void resetUI()
