@@ -42,7 +42,7 @@ public class SettingsController
 	{
 		volumeSlider.setMax(100);
 		volumeSlider.setMin(0);
-		volumeSlider.setValue(20);
+		volumeSlider.setValue(Main.getVolume() * 100);
 		
 		volumeSlider.valueProperty().addListener(new InvalidationListener()
 		{

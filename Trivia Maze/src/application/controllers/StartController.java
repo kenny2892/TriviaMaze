@@ -10,19 +10,19 @@ public class StartController
 	public void javaDatabase()
 	{
 		playBtnSound();
-		Main.setUp(DatabaseType.Java);
+		Main.setUp(DatabaseType.JAVA);
 	}
 	
 	public void animeDatabase()
 	{
 		playBtnSound();
-		Main.setUp(DatabaseType.Anime);
+		Main.setUp(DatabaseType.ANIME);
 	}
 	
 	public void videoGamesDatabase()
 	{
 		playBtnSound();
-		Main.setUp(DatabaseType.Video_Games);
+		Main.setUp(DatabaseType.VIDEO_GAMES);
 	}
 	
 	public void openGitHub()

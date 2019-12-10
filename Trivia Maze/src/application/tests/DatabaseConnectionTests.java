@@ -25,21 +25,21 @@ class DatabaseConnectionTests
 	@Test
 	void dbConnector_returnedConnectionIsNotNullJava_TRUE()
 	{
-		Connection test = DatabaseConnection.dbConnector(DatabaseType.Java);
+		Connection test = DatabaseConnection.dbConnector(DatabaseType.JAVA);
 		assertTrue(test != null);
 	}
 
 	@Test
 	void dbConnector_returnedConnectionIsNotNullAnime_TRUE()
 	{
-		Connection test = DatabaseConnection.dbConnector(DatabaseType.Anime);
+		Connection test = DatabaseConnection.dbConnector(DatabaseType.ANIME);
 		assertTrue(test != null);
 	}
 
 	@Test
 	void dbConnector_returnedConnectionIsNotNullVideoGames_TRUE()
 	{
-		Connection test = DatabaseConnection.dbConnector(DatabaseType.Video_Games);
+		Connection test = DatabaseConnection.dbConnector(DatabaseType.VIDEO_GAMES);
 		assertTrue(test != null);
 	}
 

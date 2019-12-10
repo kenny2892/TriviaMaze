@@ -142,7 +142,7 @@ public class SoundQuestionController
 				mcTextA.setText(answers.get(0));
 		}
 		
-		int[] correctX = new int[] {309, 854, 1393};
+		int[] correctX = new int[] {310, 854, 1393};
 		int[] correctY = new int[] {712, 847};
 		
 		switch(question.getCorrectIndex())

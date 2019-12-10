@@ -142,8 +142,8 @@ public class VideoQuestionController
 				mcTextA.setText(answers.get(0));
 		}
 		
-		int[] correctX = new int[] {297, 842, 1379};
-		int[] correctY = new int[] {899, 983};
+		int[] correctX = new int[] {298, 843, 1382};
+		int[] correctY = new int[] {882, 969};
 		
 		switch(question.getCorrectIndex())
 		{

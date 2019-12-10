@@ -2,5 +2,5 @@ package application.enums;
 
 public enum DatabaseType
 {
-	Java, Anime, Video_Games
+	JAVA, ANIME, VIDEO_GAMES, DEMO
 }

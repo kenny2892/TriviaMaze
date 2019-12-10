@@ -18,7 +18,7 @@
    <children>
       <Rectangle fx:id="bgRectangle" height="1080.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1920.0" />
       <Rectangle fill="WHITE" height="109.0" layoutX="305.0" layoutY="460.0" stroke="BLACK" strokeType="INSIDE" width="1318.0" />
-      <Rectangle fx:id="correctAnswer" arcHeight="5.0" arcWidth="5.0" fill="#1fff57" height="88.0" layoutX="1393.0" layoutY="847.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="92.0" />
+      <Rectangle fx:id="correctAnswer" arcHeight="5.0" arcWidth="5.0" fill="#1fff57" height="88.0" layoutX="310.0" layoutY="712.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="92.0" />
       <MediaView fx:id="mp3View" fitHeight="720.0" fitWidth="1280.0" layoutX="322.0" layoutY="46.0" />
       <Pane fx:id="soundControlPane" layoutX="319.0" layoutY="444.0">
          <children>

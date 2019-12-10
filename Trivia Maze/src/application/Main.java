@@ -30,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -50,11 +51,12 @@ public class Main extends Application
 	private static boolean cheatMode;
 	private static boolean cheatDoor;
 	private static boolean cheatAnswer;
-	private static String enteredCheatCode;
+	private static String enteredCheatCode, enteredDemoCode = "";
 
 	private static Stage stage;
 	private static SceneType currentScene;
-	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions, shortQuestions, edit;
+	private static Scene start, map, customize, help, settings, win, lose, trueFalse, mcQuestions, videoQuestions, soundQuestions,
+			shortQuestions, edit;
 	private static MapController mapController;
 	private static SettingsController settingsController;
 	private static MultipleChoiceQuestionController mcController;
@@ -69,6 +71,17 @@ public class Main extends Application
 	public void start(Stage primaryStage)
 	{
 		stage = primaryStage;
+
+		if (stage == null)
+			return;
+
+		stage.setMinHeight(1080);
+		stage.setMinWidth(1920);
+		stage.setMaxHeight(1090);
+		stage.setMaxWidth(1930);
+		stage.setMaximized(true);
+		stage.getIcons().add(new Image(Main.class.getResource("/resources/images/Icon.png").toExternalForm()));
+		stage.setTitle("Trivia Maze");
 		changeScene(SceneType.START);
 	}
 
@@ -87,9 +100,14 @@ public class Main extends Application
 
 		gameMaze = new Maze(ROWS, COLS);
 		player = new Player();
-		database = new Database(type);
 		dataType = type;
 		keyBindings = new KeyBindings();
+
+		if (type == DatabaseType.DEMO)
+			database = new DemoDatabase();
+
+		else
+			database = new Database(type);
 
 		cheatMode = false;
 		cheatDoor = false;
@@ -125,11 +143,6 @@ public class Main extends Application
 
 		stage.setScene(scene);
 		stage.sizeToScene();
-		stage.setMinHeight(1080);
-		stage.setMinWidth(1920);
-		stage.setMaxHeight(1090);
-		stage.setMaxWidth(1930);
-		stage.setMaximized(true);
 		stage.show();
 	}
 
@@ -152,8 +165,10 @@ public class Main extends Application
 						mapController = loader.getController();
 
 						keyBindMap();
-						playBgMusic();
 					}
+
+					if (bgPlayer == null)
+						playBgMusic();
 
 					if (settingsController != null)
 						keyBindings = settingsController.getKeyBindings();
@@ -200,6 +215,8 @@ public class Main extends Application
 						win = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Win.fxml")));
 
 					currentScene = SceneType.WIN;
+					bgPlayer.stop();
+					bgPlayer = null;
 					setStage(win);
 					break;
 
@@ -208,6 +225,8 @@ public class Main extends Application
 						lose = new Scene(FXMLLoader.load(Main.class.getResource("/application/views/Lose.fxml")));
 
 					currentScene = SceneType.LOSE;
+					bgPlayer.stop();
+					bgPlayer = null;
 					setStage(lose);
 					break;
 
@@ -273,6 +292,7 @@ public class Main extends Application
 
 					currentScene = SceneType.START;
 					setStage(start);
+					keyBindStart();
 					break;
 
 				case EDIT_DATABASE:
@@ -282,7 +302,7 @@ public class Main extends Application
 					currentScene = SceneType.EDIT_DATABASE;
 					setStage(edit);
 					break;
-					
+
 				case SHORT:
 					if (shortQuestions == null)
 					{
@@ -370,7 +390,18 @@ public class Main extends Application
 
 		gameMaze.setDirection(direction);
 
-		Question question = database.getQuestion();
+		Question question = null;
+
+		try
+		{
+			question = database.getQuestion();
+		}
+
+		catch(NullPointerException e)
+		{
+			changeScene(SceneType.LOSE);
+			return;
+		}
 
 		switch(question.getQuestionsType())
 		{
@@ -632,7 +663,7 @@ public class Main extends Application
 
 	private static void keyBindMap()
 	{
-		if (stage == null || gameMaze == null || map == null)
+		if (stage == null || gameMaze == null || map == null || keyBindings == null || mapController == null)
 			return;
 
 		map.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -686,10 +717,38 @@ public class Main extends Application
 		});
 	}
 
+	private static void keyBindStart()
+	{
+		if (stage == null || start == null)
+			return;
+
+		start.setOnKeyPressed(new EventHandler<KeyEvent>()
+		{
+			@Override
+			public void handle(KeyEvent event)
+			{
+				String demoCode = "SLASHDEMO";
+				enteredDemoCode += event.getCode().toString();
+
+				if (demoCode.startsWith(enteredDemoCode))
+				{
+					if (demoCode.compareTo(enteredDemoCode) == 0)
+						setUp(DatabaseType.DEMO);
+				}
+
+				else
+					enteredDemoCode = "";
+			}
+		});
+	}
+
 	public static void reloadQuestions()
 	{
 		if (stage == null || gameMaze == null)
 			return;
+
+		else if (dataType == DatabaseType.DEMO)
+			database = new DemoDatabase();
 
 		database = new Database(dataType);
 	}
@@ -716,16 +775,20 @@ public class Main extends Application
 	{
 		switch(dataType)
 		{
-			case Java:
+			case JAVA:
 				bgMusic = new Media(Main.class
 						.getResource("/resources/sounds/Kevin MacLeod - Scheming Weasel (faster version).mp3").toExternalForm());
 				break;
 
-			case Anime:
+			case ANIME:
 				bgMusic = new Media(Main.class.getResource("/resources/sounds/Baccano - Guns & Roses.mp3").toExternalForm());
 				break;
 
-			case Video_Games:
+			case VIDEO_GAMES:
+				bgMusic = new Media(Main.class.getResource("/resources/sounds/Undertale - Megalovania.mp3").toExternalForm());
+				break;
+
+			case DEMO:
 				bgMusic = new Media(Main.class.getResource("/resources/sounds/Undertale - Megalovania.mp3").toExternalForm());
 				break;
 		}
@@ -753,12 +816,12 @@ public class Main extends Application
 
 		bgPlayer.setVolume(volume);
 	}
-	
+
 	public static double getVolume()
 	{
-		if(bgPlayer == null)
-			return 20;
-		
+		if (bgPlayer == null)
+			return 0.2;
+
 		return bgPlayer.getVolume();
 	}
 
@@ -771,5 +834,11 @@ public class Main extends Application
 			bgPlayer.setMute(true);
 
 		return bgPlayer.isMute();
+	}
+
+	public static void restart()
+	{
+		map = null;
+		changeScene(SceneType.START);
 	}
 }

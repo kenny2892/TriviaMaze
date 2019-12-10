@@ -21,6 +21,7 @@ public class ShortQuestionController
 	
 	public void setQuestion(ShortQuestion question)
 	{
+		shortAnswerText.setText("");
 		shortQuestionText.setText(question.getQuestion());
 		
 		String keywords = "";

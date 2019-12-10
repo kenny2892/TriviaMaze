@@ -270,16 +270,16 @@ public class Database implements Serializable
 	{
 		if (currentQuestion == null || !(currentQuestion instanceof ShortQuestion) )
 			return false;
-		
-		boolean result = true;
+
+		boolean result = false;
 		
 		for(int i = 0; i < currentQuestion.getAnswers().size(); i++)
 		{
 			String keyword = currentQuestion.getAnswers().get(i);
 			
-			if(!answerTxt.contains(keyword))
+			if(answerTxt.contains(keyword))
 			{
-				result = false;
+				result = true;
 				break;
 			}
 		}
@@ -297,5 +297,4 @@ public class Database implements Serializable
 
 		return currentQuestion;
 	}
-
 }
