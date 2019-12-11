@@ -10,7 +10,6 @@ import application.Room;
 
 class RoomTests
 {
-
 	@Test
 	void roomContrsuctor_throwsIllegalArgumentExceptionIfNorthDoorIsNull_TRUE()
 	{
@@ -72,5 +71,4 @@ class RoomTests
 		});
 		assertEquals("Passed in direction is null.", exception.getMessage());
 	}
-
 }

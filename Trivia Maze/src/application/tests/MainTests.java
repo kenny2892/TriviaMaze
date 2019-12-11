@@ -10,7 +10,6 @@ import application.enums.ArchwayStatus;
 
 class MainTests
 {
-
 	@Test
 	void setUp_throwsIllegalArgumentExceptionWhenDatabaseTypeIsNull_TRUE()
 	{
@@ -80,5 +79,4 @@ class MainTests
 		});
 		assertEquals("Invalid x value", exception.getMessage());
 	}
-
 }

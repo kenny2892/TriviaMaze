@@ -11,7 +11,6 @@ import application.enums.DatabaseType;
 
 class DatabaseConnectionTests
 {
-
 	@Test
 	void dbconnector_throwsIllegalArgumentExceptionIfEnumTypeIsNull_TRUE()
 	{
@@ -42,5 +41,4 @@ class DatabaseConnectionTests
 		Connection test = DatabaseConnection.dbConnector(DatabaseType.VIDEO_GAMES);
 		assertTrue(test != null);
 	}
-
 }

@@ -11,7 +11,6 @@ import application.enums.QuestionType;
 
 class QuestionTests
 {
-
 	@Test
 	void questionsConstructor_throwsIllegalArgumentExceptionWhenPassedNullQuestionString_TRUE()
 	{
@@ -81,5 +80,4 @@ class QuestionTests
 		TrueFalseQuestion sut = new TrueFalseQuestion("", answers, 0);
 		assertTrue(sut.getCorrectIndex() == 0);
 	}
-
 }

@@ -1,6 +1,5 @@
 package application.controllers;
 
-import java.io.File;
 import java.net.URL;
 
 import application.Main;
@@ -63,16 +62,12 @@ public class CustomizeController
 	
 	private void setClippingMasks()
 	{
-		File previewFile = new File(
-				this.getClass().getResource("/resources/images/Preview.png").getPath().replace("%20", " ").substring(1));
-
-		ImageView clip = new ImageView(new Image(previewFile.toURI().toString()));
+		URL previewFile = this.getClass().getResource("/resources/images/Preview.png");
+		ImageView clip = new ImageView(new Image(previewFile.toExternalForm()));
 		btnImg.setClip(clip);
 		
-		File doorFile = new File(
-				this.getClass().getResource("/resources/images/Door.png").getPath().replace("%20", " ").substring(1));
-		
-		clip = new ImageView(new Image(doorFile.toURI().toString()));
+		URL doorFile = this.getClass().getResource("/resources/images/Door.png");
+		clip = new ImageView(new Image(doorFile.toExternalForm()));
 		doorImg.setClip(clip);
 	}
 

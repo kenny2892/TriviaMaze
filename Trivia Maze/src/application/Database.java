@@ -139,7 +139,6 @@ public class Database implements Serializable
 		return array;
 	}
 
-
 	private ArrayList<Question> getShort(Connection connect, ArrayList<Question> array)
 	{
 		try
