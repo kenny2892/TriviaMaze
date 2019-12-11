@@ -18,6 +18,7 @@ class QuestionTests
 		{
 			ArrayList<String> answers = new ArrayList<String>();
 			answers.add("1");
+			@SuppressWarnings("unused")
 			TrueFalseQuestion sut = new TrueFalseQuestion(null, answers, 0);
 		});
 		assertEquals("The question parameter was passed as null.", exception.getMessage());
@@ -28,6 +29,7 @@ class QuestionTests
 	{
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
 		{
+			@SuppressWarnings("unused")
 			TrueFalseQuestion sut = new TrueFalseQuestion("", null, 0);
 		});
 		assertEquals("The answers parameter was passed as null.", exception.getMessage());
@@ -40,6 +42,7 @@ class QuestionTests
 		{
 			ArrayList<String> answers = new ArrayList<String>();
 			answers.add("1");
+			@SuppressWarnings("unused")
 			TrueFalseQuestion sut = new TrueFalseQuestion("", answers, -1);
 		});
 		assertEquals("The correctIndex parameter was greater than or equal to the length of the \"answers\" parameter.", exception.getMessage());
